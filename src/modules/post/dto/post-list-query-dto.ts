@@ -4,7 +4,7 @@ import { SortDto } from '@src/dtos/sort.dto';
 import { IsBoolean, IsInt, IsOptional, MaxLength } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { BooleanString } from '@src/constants/enum';
-import { StringBooleanTransform } from '@src/common/common';
+import { stringBooleanTransform } from '@src/common/common';
 
 export class PostListQueryDto extends IntersectionType(PageDto, SortDto) {
   @ApiProperty({
@@ -23,7 +23,7 @@ export class PostListQueryDto extends IntersectionType(PageDto, SortDto) {
   })
   @IsOptional()
   @IsBoolean()
-  @Transform(StringBooleanTransform)
+  @Transform(stringBooleanTransform)
   published?: boolean | null;
 
   @ApiProperty({
