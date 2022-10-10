@@ -7,6 +7,7 @@ import {
 } from 'class-validator';
 import { PrismaService } from '@src/modules/core/database/prisma/prisma.service';
 import { Target } from '@src/types/type';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 @ValidatorConstraint({ async: true })
 export class IsRecordConstraint implements ValidatorConstraintInterface {
@@ -34,11 +35,16 @@ export class IsRecordConstraint implements ValidatorConstraintInterface {
     const { model, field } = constraints[0];
     const modelName = model || object['model'];
     const isShouldBeExist = constraints[1];
-    const middleMessage = isShouldBeExist
-      ? "doesn't exist"
-      : 'is already exist';
 
-    return `${value} ${middleMessage} ${field || property} in ${modelName}`;
+    if (isShouldBeExist) {
+      throw new NotFoundException(
+        `${value} 'doesn't exist' ${field || property} in ${modelName}`,
+      );
+    }
+
+    throw new ConflictException(
+      `${value} 'is already exist' ${field || property} in ${modelName}`,
+    );
   }
 }
 
