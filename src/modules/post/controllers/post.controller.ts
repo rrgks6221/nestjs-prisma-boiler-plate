@@ -29,7 +29,7 @@ import { PatchUpdatePostDto } from '@src/modules/post/dto/patch-update-post.dto'
 import { PutUpdatePostDto } from '@src/modules/post/dto/put-update-post-dto';
 import { ModelName } from '@src/constants/enum';
 import { PostListQueryDto } from '@src/modules/post/dto/post-list-query-dto';
-import { SetDefaultPageSize } from '@src/decorators/set-default-pageSize.decorator';
+import { SetDefaultPageSize } from '@src/decorators/set-default-page-size.decorator';
 
 @ApiBearerAuth()
 @ApiTags('post')
