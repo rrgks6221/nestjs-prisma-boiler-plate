@@ -3,6 +3,7 @@ import { ROUTE_ARGS_METADATA } from '@nestjs/common/constants';
 export const mockRequest = {
   query: {},
   params: {},
+  user: {},
 };
 export const mock = {
   switchToHttp() {
@@ -13,9 +14,9 @@ export const mock = {
   },
 };
 
-export function getParamDecoratorFactory(decorator) {
+export function getParamDecoratorFactory(decorator, prop?) {
   class Test {
-    public test(@decorator() value) {
+    public test(@decorator(prop) value) {
       return;
     }
   }
