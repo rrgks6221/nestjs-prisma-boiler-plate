@@ -15,9 +15,20 @@ enum Role {
   ADMIN
 }
 
+enum LoginType {
+  EMAIL
+  KAKAO
+  NAVER
+  GOOGLE
+  APPLE
+  GITHUB
+}
+
 model User {
   // 고유 ID
   id        Int       @id @default(autoincrement())
+  // 로그인 타입
+  loginType LoginType
   // 패스워드
   password  String?   @db.VarChar(255)
   // email
