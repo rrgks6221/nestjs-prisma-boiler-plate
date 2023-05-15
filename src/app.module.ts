@@ -3,8 +3,9 @@ import { AppController } from '@src/app.controller';
 import { AppService } from '@src/app.service';
 import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
-import { modules } from '@src/modules';
 import { LoggerMiddleware } from '@src/middlewares/logger.middleware';
+import { apiModules } from '@src/apis';
+import { CoreModule } from '@src/core/core.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { LoggerMiddleware } from '@src/middlewares/logger.middleware';
       }),
       isGlobal: true,
     }),
-    ...modules,
+    CoreModule,
+    ...apiModules,
   ],
   controllers: [AppController],
   providers: [AppService],

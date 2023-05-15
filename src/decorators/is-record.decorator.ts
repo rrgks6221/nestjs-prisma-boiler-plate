@@ -5,7 +5,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { PrismaService } from '@src/modules/core/database/prisma/prisma.service';
+import { PrismaService } from '@src/core/database/prisma/prisma.service';
 import { Target } from '@src/types/type';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 

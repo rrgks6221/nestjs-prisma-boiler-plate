@@ -5,7 +5,7 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { SuccessInterceptor } from '@src/interceptors/success.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '@src/modules/core/database/prisma/prisma.service';
+import { PrismaService } from '@src/core/database/prisma/prisma.service';
 import { useContainer } from 'class-validator';
 import { HttpBadRequestExceptionFilter } from '@src/filters/http-bad-request-exception.filter';
 import { HttpNodeInternalServerErrorExceptionFilter } from '@src/filters/http-node-internal-server-error-exception.filter';

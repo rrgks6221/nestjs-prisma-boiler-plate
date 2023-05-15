@@ -1,7 +1,7 @@
 import { IsEnum, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { OrderBy } from '@src/constants/enum';
-import { PostField } from '@src/modules/post/constants/enum';
+import { PostField } from '@src/apis/post/constants/enum';
 import { IsEssential } from '@src/decorators/is-essential.decorator';
 
 export class SortDto {
