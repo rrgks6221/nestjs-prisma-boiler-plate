@@ -19,5 +19,5 @@ export class PutUpdatePostDto {
   })
   @IsOptional()
   @IsNotEmptyString('description')
-  description: string | null = null;
+  description: string;
 }

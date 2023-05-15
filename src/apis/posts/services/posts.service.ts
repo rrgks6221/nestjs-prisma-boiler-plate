@@ -27,7 +27,7 @@ export class PostsService {
       data: {
         title: createPostDto.title,
         description: createPostDto.description,
-        authorId: userId,
+        userId: userId,
       },
     });
   }
@@ -101,7 +101,7 @@ export class PostsService {
         id,
       },
       data: {
-        published: patchUpdatePostDto.published,
+        description: patchUpdatePostDto.description,
       },
     });
   }
