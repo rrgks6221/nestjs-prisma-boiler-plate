@@ -1,14 +1,13 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { CreatePostDto } from '../dto/create-post.dto';
 import { PrismaService } from '@src/core/database/prisma/prisma.service';
 import { Post } from '@prisma/client';
-import { PostEntity } from '@src/apis/post/entities/post.entity';
 import { PatchUpdatePostDto } from '@src/apis/post/dto/patch-update-post.dto';
 import { PostAuthorityHelper } from '@src/apis/post/helpers/post-authority.helper';
 import { PutUpdatePostDto } from '@src/apis/post/dto/put-update-post-dto';
 import { QueryHelper } from '@src/helpers/query.helper';
 import { PostListQueryDto } from '@src/apis/post/dto/post-list-query-dto';
 import { PostField } from '@src/apis/post/constants/enum';
+import { CreatePostDto } from '@src/apis/post/dto/create-post.dto';
 
 @Injectable()
 export class PostService {

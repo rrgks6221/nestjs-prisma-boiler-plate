@@ -14,9 +14,12 @@ export const mock = {
   },
 };
 
-export function getParamDecoratorFactory(decorator, prop?) {
+export function getParamDecoratorFactory(
+  decorator: (prop?: any) => ParameterDecorator,
+  prop?: string,
+) {
   class Test {
-    public test(@decorator(prop) value) {
+    public test(@decorator(prop) value: unknown) {
       return;
     }
   }

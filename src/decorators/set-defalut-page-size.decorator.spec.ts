@@ -1,15 +1,11 @@
 import { SetDefaultPageSize } from '@src/decorators/set-default-page-size.decorator';
 import { faker } from '@faker-js/faker';
-import {
-  getParamDecoratorFactory,
-  mock,
-  mockRequest,
-} from '../../test/mock/mock';
+import { getParamDecoratorFactory, mock, mockRequest } from '@test/mock/mock';
 
 describe('SetDefaultPageSize decorator', () => {
-  let factory;
-  let ctx;
-  let request;
+  let factory: any;
+  let ctx: any;
+  let request: any;
 
   beforeEach(() => {
     factory = getParamDecoratorFactory(SetDefaultPageSize);

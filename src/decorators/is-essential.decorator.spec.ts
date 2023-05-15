@@ -6,14 +6,14 @@ import { validate } from 'class-validator';
 let field: (keyof TestClass)[] = ['essentialField1'];
 
 class TestClass {
-  essentialField1;
+  essentialField1: unknown;
 
-  essentialField2;
+  essentialField2: unknown;
 
-  notEssentialField;
+  notEssentialField: unknown;
 
   @IsEssential<TestClass>(field)
-  targetField;
+  targetField: unknown;
 }
 
 describe('IsEssential decorator', () => {
@@ -29,14 +29,14 @@ describe('IsEssential decorator', () => {
     field = ['essentialField1'];
 
     class TestClass {
-      essentialField1;
+      essentialField1: unknown;
 
-      essentialField2;
+      essentialField2: unknown;
 
-      notEssentialField;
+      notEssentialField: unknown;
 
       @IsEssential<TestClass>(field)
-      targetField;
+      targetField: unknown;
     }
 
     testInstance.targetField = randomProp;
@@ -55,14 +55,14 @@ describe('IsEssential decorator', () => {
     field = ['essentialField1', 'essentialField2'];
 
     class TestClass {
-      essentialField1;
+      essentialField1: unknown;
 
-      essentialField2;
+      essentialField2: unknown;
 
-      notEssentialField;
+      notEssentialField: unknown;
 
       @IsEssential<TestClass>(field)
-      targetField;
+      targetField: unknown;
     }
 
     testInstance.targetField = randomProp;
@@ -83,14 +83,14 @@ describe('IsEssential decorator', () => {
     field = [];
 
     class TestClass {
-      essentialField1;
+      essentialField1: unknown;
 
-      essentialField2;
+      essentialField2: unknown;
 
-      notEssentialField;
+      notEssentialField: unknown;
 
       @IsEssential<TestClass>(field)
-      targetField;
+      targetField: unknown;
     }
 
     testInstance.targetField = randomProp;
@@ -108,14 +108,14 @@ describe('IsEssential decorator', () => {
     field = ['essentialField1'];
 
     class TestClass {
-      essentialField1;
+      essentialField1: unknown;
 
-      essentialField2;
+      essentialField2: unknown;
 
-      notEssentialField;
+      notEssentialField: unknown;
 
       @IsEssential<TestClass>(field)
-      targetField;
+      targetField: unknown;
     }
 
     testInstance.targetField = randomProp;
@@ -130,6 +130,6 @@ describe('IsEssential decorator', () => {
   });
 
   afterEach(() => {
-    field = undefined;
+    field = [];
   });
 });

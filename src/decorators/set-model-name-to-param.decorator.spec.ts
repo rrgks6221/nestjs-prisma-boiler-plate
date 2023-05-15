@@ -1,15 +1,11 @@
-import {
-  getParamDecoratorFactory,
-  mock,
-  mockRequest,
-} from '../../test/mock/mock';
 import { faker } from '@faker-js/faker';
 import { SetModelNameToParam } from '@src/decorators/set-model-name-to-param.decorator';
+import { getParamDecoratorFactory, mock, mockRequest } from '@test/mock/mock';
 
 describe('SetModelNameToParam decorator', () => {
-  let factory;
-  let ctx;
-  let request;
+  let factory: any;
+  let ctx: any;
+  let request: any;
 
   beforeEach(() => {
     factory = getParamDecoratorFactory(SetModelNameToParam);

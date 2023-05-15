@@ -1,14 +1,7 @@
 import { IsRecordConstraint } from '@src/decorators/is-record.decorator';
 import { PrismaService } from '@src/core/database/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
-
-jest.mock('@src/modules/core/database/prisma/prisma.service');
-
-const mockPrismaService = {
-  user: {
-    findFirst: jest.fn(),
-  },
-};
+import { mockPrismaService } from '@test/mock/prisma-service.mock';
 
 describe('IsRecord decorator validate 메서드', () => {
   let isRecordConstraint: IsRecordConstraint;
@@ -39,7 +32,7 @@ describe('IsRecord decorator validate 메서드', () => {
   });
 
   it('raw 가 존재해야하고 실제 존재할 경우', async () => {
-    mockPrismaService.user.findFirst.mockReturnValue(true);
+    mockPrismaService.user.findFirst.mockReturnValue(true as any);
     args.constraints.push(true);
 
     const isRecord = await isRecordConstraint.validate('', args);
@@ -48,7 +41,7 @@ describe('IsRecord decorator validate 메서드', () => {
   });
 
   it('raw 가 존재해야하고 실제 존재하지 경우', async () => {
-    mockPrismaService.user.findFirst.mockReturnValue(false);
+    mockPrismaService.user.findFirst.mockReturnValue(false as any);
     args.constraints.push(true);
 
     const isRecord = await isRecordConstraint.validate('', args);
@@ -57,7 +50,7 @@ describe('IsRecord decorator validate 메서드', () => {
   });
 
   it('raw 가 존재해야하지 않고 실제 존재할 경우', async () => {
-    mockPrismaService.user.findFirst.mockReturnValue(true);
+    mockPrismaService.user.findFirst.mockReturnValue(true as any);
     args.constraints.push(false);
 
     const isRecord = await isRecordConstraint.validate('', args);
@@ -66,7 +59,7 @@ describe('IsRecord decorator validate 메서드', () => {
   });
 
   it('raw 가 존재해야하지 않고 실제 존재하지 않는 경우', async () => {
-    mockPrismaService.user.findFirst.mockReturnValue(false);
+    mockPrismaService.user.findFirst.mockReturnValue(false as any);
     args.constraints.push(false);
 
     const isRecord = await isRecordConstraint.validate('', args);

@@ -8,7 +8,7 @@ describe('IsNotEmptyString decorator', () => {
 
   class TestClass {
     @IsNotEmptyString('test')
-    test;
+    test: unknown;
   }
 
   it('비어있지 않은 string 이 들어왔을 경우', async () => {
