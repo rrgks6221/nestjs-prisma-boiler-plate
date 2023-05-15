@@ -13,7 +13,7 @@ describe('User decorator', () => {
     request = mockRequest;
   });
 
-  it('user 의 모든 정보 가져오기', () => {
+  it('users 의 모든 정보 가져오기', () => {
     const id = faker.datatype.number();
     const name = faker.name.fullName();
 
@@ -28,7 +28,7 @@ describe('User decorator', () => {
     });
   });
 
-  it('user 의 특정 프로퍼티 가져오기', () => {
+  it('users 의 특정 프로퍼티 가져오기', () => {
     const id = faker.datatype.number();
     const name = faker.name.fullName();
 
@@ -40,7 +40,7 @@ describe('User decorator', () => {
     expect(user).toBe(id);
   });
 
-  it('user 의 존재하지 않는 프로퍼티 접근 시 모든 정보를 반환', () => {
+  it('users 의 존재하지 않는 프로퍼티 접근 시 모든 정보를 반환', () => {
     const id = faker.datatype.number();
     const name = faker.name.fullName();
 

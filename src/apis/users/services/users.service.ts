@@ -4,11 +4,10 @@ import { PrismaService } from '@src/core/database/prisma/prisma.service';
 import bcrypt from 'bcrypt';
 import { AuthService } from '@src/core/auth/services/auth.service';
 import { User } from '@prisma/client';
-import { AccessTokenType } from '@src/apis/user/types/access-token.type';
-import { NotFoundError } from 'rxjs';
+import { AccessTokenType } from '@src/apis/users/types/access-token.type';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   private readonly SALT = 10;
 
   constructor(

@@ -30,7 +30,7 @@ import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
 import { ModelName } from '@src/constants/enum';
 import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { SetDefaultPageSize } from '@src/decorators/set-default-page-size.decorator';
-import { UserEntity } from '@src/apis/user/entities/user.entity';
+import { UserEntity } from '@src/apis/users/entities/user.entity';
 
 @ApiBearerAuth()
 @ApiTags('post')

@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateUserRequestBodyDto {
   @ApiProperty({
     example: 'password',
-    description: 'user password',
+    description: 'users password',
     required: true,
     type: 'string',
   })
@@ -14,7 +14,7 @@ export class CreateUserRequestBodyDto {
 
   @ApiProperty({
     example: 'example@example.com',
-    description: 'user eamil',
+    description: 'users eamil',
     required: true,
     type: 'string',
   })
@@ -24,7 +24,7 @@ export class CreateUserRequestBodyDto {
 
   @ApiProperty({
     example: '홍길동',
-    description: 'user 이름',
+    description: 'users 이름',
     required: true,
     type: 'string',
   })
@@ -33,7 +33,7 @@ export class CreateUserRequestBodyDto {
 
   @ApiProperty({
     example: 1,
-    description: 'user 권한',
+    description: 'users 권한',
     required: true,
     type: 'number',
   })
