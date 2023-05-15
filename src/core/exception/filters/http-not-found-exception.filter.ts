@@ -5,11 +5,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { HttpExceptionHelper } from '@src/core/exceptions/helpers/http-exception.helper';
+import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
 import {
   ExceptionError,
   ResponseJson,
-} from '@src/core/exceptions/types/exception.type';
+} from '@src/core/exception/types/exception.type';
 
 /**
  * 404 번 에러를 잡는 exception filter

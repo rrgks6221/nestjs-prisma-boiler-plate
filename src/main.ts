@@ -5,13 +5,13 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { SuccessInterceptor } from '@src/interceptors/success.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '@src/core/database/prisma/prisma.service';
+import { PrismaService } from '@src/core/prisma/prisma.service';
 import { useContainer } from 'class-validator';
-import { HttpNotFoundExceptionFilter } from '@src/core/exceptions/filters/http-not-found-exception.filter';
-import { HttpBadRequestExceptionFilter } from '@src/core/exceptions/filters/http-bad-request-exception.filter';
-import { HttpNodeInternalServerErrorExceptionFilter } from '@src/core/exceptions/filters/http-node-internal-server-error-exception.filter';
-import { HttpRemainderExceptionFilter } from '@src/core/exceptions/filters/http-remainder-exception.filter';
-import { HttpNestInternalServerErrorExceptionFilter } from '@src/core/exceptions/filters/http-nest-Internal-server-error-exception.filter';
+import { HttpNotFoundExceptionFilter } from '@src/core/exception/filters/http-not-found-exception.filter';
+import { HttpBadRequestExceptionFilter } from '@src/core/exception/filters/http-bad-request-exception.filter';
+import { HttpNodeInternalServerErrorExceptionFilter } from '@src/core/exception/filters/http-node-internal-server-error-exception.filter';
+import { HttpRemainderExceptionFilter } from '@src/core/exception/filters/http-remainder-exception.filter';
+import { HttpNestInternalServerErrorExceptionFilter } from '@src/core/exception/filters/http-nest-Internal-server-error-exception.filter';
 
 declare const module: any;
 

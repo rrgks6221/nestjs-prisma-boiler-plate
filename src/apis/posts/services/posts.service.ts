@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from '@src/core/database/prisma/prisma.service';
+import { PrismaService } from '@src/core/prisma/prisma.service';
 import { Post } from '@prisma/client';
 import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
 import { PostsAuthorityHelper } from '@src/apis/posts/helpers/posts-authority.helper';

@@ -8,8 +8,8 @@ import { Response } from 'express';
 import {
   ExceptionError,
   ResponseJson,
-} from '@src/core/exceptions/types/exception.type';
-import { HttpExceptionHelper } from '@src/core/exceptions/helpers/http-exception.helper';
+} from '@src/core/exception/types/exception.type';
+import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
 
 /**
  * 400 번 에러를 잡는 exception filter

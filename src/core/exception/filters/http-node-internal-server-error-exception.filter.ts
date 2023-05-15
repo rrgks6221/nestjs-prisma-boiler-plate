@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
-import { HttpExceptionHelper } from '@src/core/exceptions/helpers/http-exception.helper';
-import { ResponseJson } from '@src/core/exceptions/types/exception.type';
+import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
+import { ResponseJson } from '@src/core/exception/types/exception.type';
 import { ConfigService } from '@nestjs/config';
 
 /**

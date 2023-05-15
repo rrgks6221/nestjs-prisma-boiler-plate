@@ -3,7 +3,7 @@ import {
   MockPostAuthorityHelper,
   MockQueryHelper,
 } from '@test/mock/helper.mock';
-import { PrismaService } from '@src/core/database/prisma/prisma.service';
+import { PrismaService } from '@src/core/prisma/prisma.service';
 import { mockPrismaService } from '@test/mock/prisma-service.mock';
 import { QueryHelper } from '@src/helpers/query.helper';
 import { PostsService } from '@src/apis/posts/services/posts.service';

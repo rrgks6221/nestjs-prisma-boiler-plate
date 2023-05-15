@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserRequestBodyDto } from '../dto/create-user-request-body.dto';
-import { PrismaService } from '@src/core/database/prisma/prisma.service';
+import { PrismaService } from '@src/core/prisma/prisma.service';
 import bcrypt from 'bcrypt';
 import { AuthService } from '@src/core/auth/services/auth.service';
 import { User } from '@prisma/client';

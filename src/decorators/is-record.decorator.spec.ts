@@ -1,5 +1,5 @@
 import { IsRecordConstraint } from '@src/decorators/is-record.decorator';
-import { PrismaService } from '@src/core/database/prisma/prisma.service';
+import { PrismaService } from '@src/core/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { mockPrismaService } from '@test/mock/prisma-service.mock';
 
