@@ -3,7 +3,7 @@ import { PrismaService } from '@src/core/database/prisma/prisma.service';
 import { Post } from '@prisma/client';
 
 @Injectable()
-export class PostAuthorityHelper {
+export class PostsAuthorityHelper {
   constructor(private readonly prismaService: PrismaService) {}
 
   checkIdentification(postId: number, authorId: number): Promise<Post | null> {

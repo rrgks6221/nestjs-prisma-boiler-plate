@@ -8,7 +8,7 @@ import { stringBooleanTransform } from '@src/common/common';
 
 export class PostListQueryDto extends IntersectionType(PageDto, SortDto) {
   @ApiProperty({
-    description: 'post 고유 Id',
+    description: 'posts 고유 Id',
     required: false,
   })
   @IsOptional()

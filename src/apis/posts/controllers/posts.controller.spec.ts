@@ -1,23 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MockPostService } from '@test/mock/servies.mock';
-import { PostController } from '@src/apis/post/controllers/post.controller';
-import { PostService } from '@src/apis/post/services/post.service';
+import { PostsController } from '@src/apis/posts/controllers/posts.controller';
+import { PostsService } from '@src/apis/posts/services/posts.service';
 
-describe('PostController', () => {
-  let controller: PostController;
+describe('PostsController', () => {
+  let controller: PostsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [PostController],
+      controllers: [PostsController],
       providers: [
         {
-          provide: PostService,
+          provide: PostsService,
           useClass: MockPostService,
         },
       ],
     }).compile();
 
-    controller = module.get<PostController>(PostController);
+    controller = module.get<PostsController>(PostsController);
   });
 
   it('should be defined', () => {

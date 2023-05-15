@@ -6,22 +6,22 @@ import {
 import { PrismaService } from '@src/core/database/prisma/prisma.service';
 import { mockPrismaService } from '@test/mock/prisma-service.mock';
 import { QueryHelper } from '@src/helpers/query.helper';
-import { PostService } from '@src/apis/post/services/post.service';
-import { PostAuthorityHelper } from '@src/apis/post/helpers/post-authority.helper';
+import { PostsService } from '@src/apis/posts/services/posts.service';
+import { PostsAuthorityHelper } from '@src/apis/posts/helpers/posts-authority.helper';
 
-describe('PostService', () => {
-  let service: PostService;
+describe('PostsService', () => {
+  let service: PostsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        PostService,
+        PostsService,
         {
           provide: PrismaService,
           useValue: mockPrismaService,
         },
         {
-          provide: PostAuthorityHelper,
+          provide: PostsAuthorityHelper,
           useClass: MockPostAuthorityHelper,
         },
         {
@@ -31,7 +31,7 @@ describe('PostService', () => {
       ],
     }).compile();
 
-    service = module.get<PostService>(PostService);
+    service = module.get<PostsService>(PostsService);
   });
 
   it('should be defined', () => {

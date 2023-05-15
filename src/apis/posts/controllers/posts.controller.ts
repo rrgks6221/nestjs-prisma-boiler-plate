@@ -10,7 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { PostService } from '../services/post.service';
+import { PostsService } from '../services/posts.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { JwtAuthGuard } from '@src/guards/jwt-auth.guard';
 import {
@@ -22,23 +22,23 @@ import {
 } from '@nestjs/swagger';
 import { UserLogin } from '@src/decorators/user.decorator';
 import { Post as PostModel } from '@prisma/client';
-import { PostEntity } from '@src/apis/post/entities/post.entity';
+import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { IdRequestParamDto } from '@src/dtos/id-request-param.dto';
 import { SetModelNameToParam } from '@src/decorators/set-model-name-to-param.decorator';
-import { PatchUpdatePostDto } from '@src/apis/post/dto/patch-update-post.dto';
-import { PutUpdatePostDto } from '@src/apis/post/dto/put-update-post-dto';
+import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
+import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
 import { ModelName } from '@src/constants/enum';
-import { PostListQueryDto } from '@src/apis/post/dto/post-list-query-dto';
+import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { SetDefaultPageSize } from '@src/decorators/set-default-page-size.decorator';
 import { UserEntity } from '@src/apis/user/entities/user.entity';
 
 @ApiBearerAuth()
 @ApiTags('post')
-@Controller('api/post')
-export class PostController {
-  constructor(private readonly postService: PostService) {}
+@Controller('api/posts')
+export class PostsController {
+  constructor(private readonly postService: PostsService) {}
 
-  @ApiOperation({ summary: 'post 생성' })
+  @ApiOperation({ summary: 'posts 생성' })
   @ApiCreatedResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -50,7 +50,7 @@ export class PostController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'post 전체 조회' })
+  @ApiOperation({ summary: 'posts 전체 조회' })
   @ApiOkResponse({ type: [PostEntity] })
   findAll(
     @Query()
@@ -61,7 +61,7 @@ export class PostController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'post 상세 조회' })
+  @ApiOperation({ summary: 'posts 상세 조회' })
   @ApiOkResponse({ type: PostEntity })
   findOne(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
@@ -69,7 +69,7 @@ export class PostController {
     return this.postService.findOne(param.id);
   }
 
-  @ApiOperation({ summary: 'post 수정' })
+  @ApiOperation({ summary: 'posts 수정' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
   @Put(':id')
@@ -81,7 +81,7 @@ export class PostController {
     return this.postService.putUpdate(param.id, authorId, putUpdatePostDto);
   }
 
-  @ApiOperation({ summary: 'post 일부 수정' })
+  @ApiOperation({ summary: 'posts 일부 수정' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
@@ -93,7 +93,7 @@ export class PostController {
     return this.postService.patchUpdate(param.id, authorId, patchUpdatePostDto);
   }
 
-  @ApiOperation({ summary: 'post 삭제' })
+  @ApiOperation({ summary: 'posts 삭제' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
   @Delete(':id')

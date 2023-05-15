@@ -1,16 +1,16 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@src/core/database/prisma/prisma.service';
 import { Post } from '@prisma/client';
-import { PatchUpdatePostDto } from '@src/apis/post/dto/patch-update-post.dto';
-import { PostAuthorityHelper } from '@src/apis/post/helpers/post-authority.helper';
-import { PutUpdatePostDto } from '@src/apis/post/dto/put-update-post-dto';
+import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
+import { PostsAuthorityHelper } from '@src/apis/posts/helpers/posts-authority.helper';
+import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
 import { QueryHelper } from '@src/helpers/query.helper';
-import { PostListQueryDto } from '@src/apis/post/dto/post-list-query-dto';
-import { PostField } from '@src/apis/post/constants/enum';
-import { CreatePostDto } from '@src/apis/post/dto/create-post.dto';
+import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
+import { PostField } from '@src/apis/posts/constants/post.enum';
+import { CreatePostDto } from '@src/apis/posts/dto/create-post.dto';
 
 @Injectable()
-export class PostService {
+export class PostsService {
   private readonly LIKE_SEARCH_FIELDS = [
     PostField.Title,
     PostField.Description,
@@ -18,7 +18,7 @@ export class PostService {
 
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly postAuthorityHelper: PostAuthorityHelper,
+    private readonly postAuthorityHelper: PostsAuthorityHelper,
     private readonly queryHelper: QueryHelper,
   ) {}
 
