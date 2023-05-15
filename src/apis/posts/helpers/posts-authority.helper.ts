@@ -6,10 +6,10 @@ import { Post } from '@prisma/client';
 export class PostsAuthorityHelper {
   constructor(private readonly prismaService: PrismaService) {}
 
-  checkIdentification(postId: number, authorId: number): Promise<Post | null> {
+  checkIdentification(postId: number, userId: number): Promise<Post | null> {
     return this.prismaService.post.findFirst({
       where: {
-        authorId,
+        userId,
         id: postId,
       },
     });
