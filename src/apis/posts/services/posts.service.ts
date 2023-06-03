@@ -1,13 +1,17 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaService } from '@src/core/prisma/prisma.service';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Post } from '@prisma/client';
-import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
-import { PostsAuthorityHelper } from '@src/apis/posts/helpers/posts-authority.helper';
-import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
-import { QueryHelper } from '@src/helpers/query.helper';
-import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { PostField } from '@src/apis/posts/constants/post.enum';
 import { CreatePostDto } from '@src/apis/posts/dto/create-post.dto';
+import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
+import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
+import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
+import { PostsAuthorityHelper } from '@src/apis/posts/helpers/posts-authority.helper';
+import { PrismaService } from '@src/core/prisma/prisma.service';
+import { QueryHelper } from '@src/helpers/query.helper';
 
 @Injectable()
 export class PostsService {
@@ -22,12 +26,18 @@ export class PostsService {
     private readonly queryHelper: QueryHelper,
   ) {}
 
-  findOne(id: number): Promise<Post | null> {
-    return this.prismaService.post.findUnique({
+  async findOneByIdOrNotFound(id: number) {
+    const post = await this.prismaService.post.findUnique({
       where: {
         id,
       },
     });
+
+    if (!post) {
+      throw new NotFoundException();
+    }
+
+    return post;
   }
 
   create(userId: number, createPostDto: CreatePostDto): Promise<Post> {

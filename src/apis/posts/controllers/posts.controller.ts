@@ -65,8 +65,8 @@ export class PostsController {
   @ApiOkResponse({ type: PostEntity })
   findOne(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
-  ): Promise<PostModel | null> {
-    return this.postService.findOne(param.id);
+  ): Promise<PostModel> {
+    return this.postService.findOneByIdOrNotFound(param.id);
   }
 
   @ApiOperation({ summary: 'posts 수정' })
