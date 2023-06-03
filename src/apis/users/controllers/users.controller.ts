@@ -1,19 +1,19 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { IntersectionType } from '@nestjs/mapped-types';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
-  IntersectionType,
 } from '@nestjs/swagger';
-import { UserResponseType } from '@src/apis/users/types/response/success/user-response.type';
-import { IdRequestParamDto } from '@src/dtos/id-request-param.dto';
 import { User } from '@prisma/client';
 import { AccessTokenType } from '@src/apis/users/types/access-token.type';
-import { SetModelNameToParam } from '@src/decorators/set-model-name-to-param.decorator';
+import { UserResponseType } from '@src/apis/users/types/response/success/user-response.type';
 import { ModelName } from '@src/constants/enum';
-import { UsersService } from '../services/users.service';
+import { SetModelNameToParam } from '@src/decorators/set-model-name-to-param.decorator';
+import { IdRequestParamDto } from '@src/dtos/id-request-param.dto';
 import { CreateUserRequestBodyDto } from '../dto/create-user-request-body.dto';
+import { UsersService } from '../services/users.service';
 
 @ApiTags('유저')
 @Controller('api/users')

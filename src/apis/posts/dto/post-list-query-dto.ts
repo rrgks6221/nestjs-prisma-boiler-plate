@@ -1,10 +1,11 @@
-import { ApiProperty, IntersectionType } from '@nestjs/swagger';
+import { IntersectionType } from '@nestjs/mapped-types';
+import { ApiProperty } from '@nestjs/swagger';
+import { stringBooleanTransform } from '@src/common/common';
+import { BooleanString } from '@src/constants/enum';
 import { PageDto } from '@src/dtos/page.dto';
 import { SortDto } from '@src/dtos/sort.dto';
-import { IsBoolean, IsInt, IsOptional, MaxLength } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { BooleanString } from '@src/constants/enum';
-import { stringBooleanTransform } from '@src/common/common';
+import { IsBoolean, IsInt, IsOptional, MaxLength } from 'class-validator';
 
 export class PostListQueryDto extends IntersectionType(PageDto, SortDto) {
   @ApiProperty({
