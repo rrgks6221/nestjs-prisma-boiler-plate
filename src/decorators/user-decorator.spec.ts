@@ -1,6 +1,6 @@
-import { getParamDecoratorFactory, mock, mockRequest } from '@test/mock/mock';
-import { UserLogin } from '@src/decorators/user.decorator';
 import { faker } from '@faker-js/faker';
+import { User } from '@src/decorators/user.decorator';
+import { getParamDecoratorFactory, mock, mockRequest } from '@test/mock/mock';
 
 describe('User decorator', () => {
   let factory: any;
@@ -8,7 +8,7 @@ describe('User decorator', () => {
   let request: any;
 
   beforeEach(() => {
-    factory = getParamDecoratorFactory(UserLogin);
+    factory = getParamDecoratorFactory(User);
     ctx = mock;
     request = mockRequest;
   });

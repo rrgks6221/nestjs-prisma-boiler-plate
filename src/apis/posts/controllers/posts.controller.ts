@@ -10,9 +10,6 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { PostsService } from '../services/posts.service';
-import { CreatePostDto } from '../dto/create-post.dto';
-import { JwtAuthGuard } from '@src/guards/jwt-auth.guard';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
@@ -20,17 +17,20 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { UserLogin } from '@src/decorators/user.decorator';
 import { Post as PostModel } from '@prisma/client';
-import { PostEntity } from '@src/apis/posts/entities/post.entity';
-import { IdRequestParamDto } from '@src/dtos/id-request-param.dto';
-import { SetModelNameToParam } from '@src/decorators/set-model-name-to-param.decorator';
 import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
-import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
-import { ModelName } from '@src/constants/enum';
 import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
-import { SetDefaultPageSize } from '@src/decorators/set-default-page-size.decorator';
+import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
+import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
+import { ModelName } from '@src/constants/enum';
+import { SetDefaultPageSize } from '@src/decorators/set-default-page-size.decorator';
+import { SetModelNameToParam } from '@src/decorators/set-model-name-to-param.decorator';
+import { User } from '@src/decorators/user.decorator';
+import { IdRequestParamDto } from '@src/dtos/id-request-param.dto';
+import { JwtAuthGuard } from '@src/guards/jwt-auth.guard';
+import { CreatePostDto } from '../dto/create-post.dto';
+import { PostsService } from '../services/posts.service';
 
 @ApiBearerAuth()
 @ApiTags('post')
@@ -43,7 +43,7 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @Post()
   create(
-    @UserLogin() user: UserEntity,
+    @User() user: UserEntity,
     @Body() createPostDto: CreatePostDto,
   ): Promise<PostModel> {
     return this.postService.create(user.id, createPostDto);
@@ -75,7 +75,7 @@ export class PostsController {
   @Put(':id')
   putUpdate(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
-    @UserLogin('id') authorId: number,
+    @User('id') authorId: number,
     @Body() putUpdatePostDto: PutUpdatePostDto,
   ): Promise<PostModel> {
     return this.postService.putUpdate(param.id, authorId, putUpdatePostDto);
@@ -87,7 +87,7 @@ export class PostsController {
   @Patch(':id')
   patchUpdate(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
-    @UserLogin('id') authorId: number,
+    @User('id') authorId: number,
     @Body() patchUpdatePostDto: PatchUpdatePostDto,
   ): Promise<PostModel> {
     return this.postService.patchUpdate(param.id, authorId, patchUpdatePostDto);
@@ -99,7 +99,7 @@ export class PostsController {
   @Delete(':id')
   remove(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
-    @UserLogin('id') authorId: number,
+    @User('id') authorId: number,
   ): Promise<PostModel> {
     return this.postService.remove(param.id, authorId);
   }
