@@ -1,6 +1,7 @@
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { Global, Module, OnApplicationBootstrap } from '@nestjs/common';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 
+@Global()
 @Module({
   providers: [AppConfigService],
   exports: [AppConfigService],

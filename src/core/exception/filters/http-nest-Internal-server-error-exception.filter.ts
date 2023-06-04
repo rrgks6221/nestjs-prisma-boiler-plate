@@ -4,10 +4,10 @@ import {
   ExceptionFilter,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
 import { ResponseJson } from '@src/core/exception/types/exception.type';
-import { ConfigService } from '@nestjs/config';
+import { Response } from 'express';
 
 /**
  * nestJS 메서드를 이용한 500번 에러 를 잡는 exception filter
@@ -18,7 +18,7 @@ export class HttpNestInternalServerErrorExceptionFilter
   extends HttpExceptionHelper
   implements ExceptionFilter<InternalServerErrorException>
 {
-  constructor(private readonly configService: ConfigService) {
+  constructor(private readonly appConfigService: AppConfigService) {
     super();
   }
 
@@ -26,8 +26,7 @@ export class HttpNestInternalServerErrorExceptionFilter
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
-    const isProduction =
-      this.configService.get<string>('NODE_ENV') === 'production';
+    const isProduction = this.appConfigService.isProduction();
 
     const responseJson: ResponseJson = this.buildResponseJson(status);
 

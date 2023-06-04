@@ -1,24 +1,25 @@
-import { NestFactory, Reflector } from '@nestjs/core';
-import { AppModule } from '@src/app.module';
-import helmet from 'helmet';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
-import { SuccessInterceptor } from '@src/interceptors/success.interceptor';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '@src/core/prisma/prisma.service';
-import { useContainer } from 'class-validator';
-import { HttpNotFoundExceptionFilter } from '@src/core/exception/filters/http-not-found-exception.filter';
+import { AppModule } from '@src/app.module';
+import { ENV_KEY } from '@src/core/app-config/constants/api-config.constant';
+import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { HttpBadRequestExceptionFilter } from '@src/core/exception/filters/http-bad-request-exception.filter';
-import { HttpNodeInternalServerErrorExceptionFilter } from '@src/core/exception/filters/http-node-internal-server-error-exception.filter';
-import { HttpRemainderExceptionFilter } from '@src/core/exception/filters/http-remainder-exception.filter';
 import { HttpNestInternalServerErrorExceptionFilter } from '@src/core/exception/filters/http-nest-Internal-server-error-exception.filter';
+import { HttpNodeInternalServerErrorExceptionFilter } from '@src/core/exception/filters/http-node-internal-server-error-exception.filter';
+import { HttpNotFoundExceptionFilter } from '@src/core/exception/filters/http-not-found-exception.filter';
+import { HttpRemainderExceptionFilter } from '@src/core/exception/filters/http-remainder-exception.filter';
+import { PrismaService } from '@src/core/prisma/prisma.service';
+import { SuccessInterceptor } from '@src/interceptors/success.interceptor';
+import { useContainer } from 'class-validator';
+import helmet from 'helmet';
 
 declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const configService = app.get<ConfigService>(ConfigService);
-  const isProduction = configService.get<string>('NODE_ENV') === 'production';
+  const appConfigService = app.get<AppConfigService>(AppConfigService);
+  const isProduction = appConfigService.isProduction();
 
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
@@ -65,7 +66,7 @@ async function bootstrap() {
     SwaggerModule.setup('api-docs', app, document);
   }
 
-  const PORT = configService.get<number>('PORT') as number;
+  const PORT = appConfigService.get<number>(ENV_KEY.PORT);
 
   await app.listen(PORT);
 

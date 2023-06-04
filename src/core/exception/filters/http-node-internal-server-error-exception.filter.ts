@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
+import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
 import { ResponseJson } from '@src/core/exception/types/exception.type';
-import { ConfigService } from '@nestjs/config';
 
 /**
  * 예상하지 못한 에러 발생 시 nodeJS 레벨에서 발생하는 에러
@@ -19,7 +19,7 @@ export class HttpNodeInternalServerErrorExceptionFilter
   extends HttpExceptionHelper
   implements ExceptionFilter
 {
-  constructor(private readonly configService: ConfigService) {
+  constructor(private readonly appConfigService: AppConfigService) {
     super();
   }
 
@@ -27,8 +27,7 @@ export class HttpNodeInternalServerErrorExceptionFilter
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = HttpStatus.INTERNAL_SERVER_ERROR;
-    const isProduction =
-      this.configService.get<string>('NODE_ENV') === 'production';
+    const isProduction = this.appConfigService.isProduction();
 
     const responseJson: ResponseJson = this.buildResponseJson(status);
 

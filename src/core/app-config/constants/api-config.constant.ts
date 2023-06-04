@@ -1,5 +1,5 @@
-const DATA_BASE = {
-  DATA_BASE_URL: 'DATA_BASE_URL',
+const DATABASE = {
+  DATABASE_URL: 'DATABASE_URL',
 } as const;
 
 // JWT
@@ -11,5 +11,5 @@ export const ENV_KEY = {
   PORT: 'PORT',
   NODE_ENV: 'NODE_ENV',
   ...JWT,
-  ...DATA_BASE,
+  ...DATABASE,
 } as const;
