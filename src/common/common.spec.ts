@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker';
-import { pageTransform, stringBooleanTransform } from '@src/common/common';
+import { transformPage, transformStringBoolean } from '@src/common/common';
 
 describe('common.ts 단위 테스트', () => {
-  describe('pageTransform', () => {
+  describe('transformPage', () => {
     it('들어는 value 가 string number 일 경우', () => {
       const randomNumber = faker.datatype.number();
       const randomStringNumber = String(randomNumber);
-      const transformValue = pageTransform({ value: randomStringNumber });
+      const transformValue = transformPage({ value: randomStringNumber });
 
       expect(typeof randomNumber).toBe('number');
       expect(typeof randomStringNumber).toBe('string');
@@ -17,7 +17,7 @@ describe('common.ts 단위 테스트', () => {
     it('들어온 value 가 string 일 경우', () => {
       const randomString = faker.datatype.string();
       const randomStringNumber = Number(randomString);
-      const transformValue = pageTransform({ value: randomString });
+      const transformValue = transformPage({ value: randomString });
 
       expect(randomStringNumber).toBeNaN();
       expect(typeof randomString).toBe('string');
@@ -26,11 +26,11 @@ describe('common.ts 단위 테스트', () => {
     });
   });
 
-  describe('stringBooleanTransform', () => {
+  describe('transformStringBoolean', () => {
     it('들어온 value 가 string boolean 일 경우', () => {
       const boolean = faker.datatype.boolean();
       const stringBoolean = String(boolean);
-      const transformValue = stringBooleanTransform({ value: stringBoolean });
+      const transformValue = transformStringBoolean({ value: stringBoolean });
 
       expect(typeof boolean).toBe('boolean');
       expect(typeof stringBoolean).toBe('string');
@@ -39,7 +39,7 @@ describe('common.ts 단위 테스트', () => {
 
     it('들어온 value 가 string boolean 이 아닐 경우 경우', () => {
       const randomString = faker.datatype.string();
-      const transformValue = stringBooleanTransform({ value: randomString });
+      const transformValue = transformStringBoolean({ value: randomString });
 
       expect(typeof randomString).toBe('string');
       expect(randomString).not.toBe('true');

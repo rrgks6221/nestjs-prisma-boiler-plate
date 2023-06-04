@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { pageTransform } from '@src/common/common';
+import { transformPage } from '@src/common/common';
 import { DEFAULT_PAGE_SIZE } from '@src/constants/constant';
 import { Transform, Type } from 'class-transformer';
 import { IsInt, IsOptional } from 'class-validator';
@@ -12,7 +12,7 @@ export class PageDto {
   })
   @IsOptional()
   @IsInt()
-  @Transform(pageTransform)
+  @Transform(transformPage)
   page = 0;
 
   @ApiPropertyOptional({

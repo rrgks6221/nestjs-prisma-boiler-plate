@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Post } from '@prisma/client';
 import { POST_ORDER_FIELD } from '@src/apis/posts/constants/post.constant';
-import { stringBooleanTransform } from '@src/common/common';
+import { transformStringBoolean } from '@src/common/common';
 import { ApiPropertyOrderBy } from '@src/decorators/api-property-order-by.decorator';
 import {
   CsvToOrderBy,
@@ -26,7 +26,7 @@ export class PostListQueryDto extends PageDto implements Partial<Post> {
   })
   @IsOptional()
   @IsBoolean()
-  @Transform(stringBooleanTransform)
+  @Transform(transformStringBoolean)
   published?: boolean;
 
   @ApiPropertyOptional({
