@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import OrderBy from '@src/constants/enum';
+import { SortOrder } from '@src/constants/enum';
 
 @Injectable()
 export class QueryHelper {
@@ -25,11 +25,11 @@ export class QueryHelper {
   buildOrderByPropForFind<K extends string>(
     options: {
       sortBy?: K[];
-      orderBy?: OrderBy[];
+      orderBy?: SortOrder[];
     } = {},
-  ): { [x: string]: OrderBy }[] {
+  ): { [x: string]: SortOrder }[] {
     const { orderBy, sortBy } = options;
-    const order: { [x: string]: OrderBy }[] = [];
+    const order: { [x: string]: SortOrder }[] = [];
 
     if (!sortBy) return [];
     if (!orderBy) return [];

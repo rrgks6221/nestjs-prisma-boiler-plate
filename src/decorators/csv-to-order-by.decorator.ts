@@ -2,10 +2,12 @@ import { InternalServerErrorException, applyDecorators } from '@nestjs/common';
 import { SortOrder } from '@src/constants/enum';
 import { Transform } from 'class-transformer';
 
-export type OrderBy<T extends string[]> = Record<T[number], SortOrder>;
+export type OrderBy<T extends readonly string[]> = Partial<
+  Record<T[number], SortOrder>
+>;
 
-export const CsvToOrderBy = <T extends string[] = string[]>(
-  fields: T,
+export const CsvToOrderBy = <T extends readonly string[] = string[]>(
+  fields: T[number][],
   defaultOrderBy: Record<T[number], SortOrder> = {
     id: SortOrder.Desc,
   } as Record<T[number], SortOrder>,

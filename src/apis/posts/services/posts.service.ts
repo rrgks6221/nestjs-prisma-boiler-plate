@@ -51,24 +51,21 @@ export class PostsService {
   }
 
   findAll(query: PostListQueryDto) {
-    const { page, pageSize, orderBy, sortBy, ...filter } = query;
-
-    const where = this.queryHelper.buildWherePropForFind(
-      filter,
-      this.LIKE_SEARCH_FIELDS,
-    );
-
-    const order = this.queryHelper.buildOrderByPropForFind<PostField>({
-      orderBy: [orderBy],
-      sortBy: [sortBy],
-    });
-
-    return this.prismaService.post.findMany({
-      where,
-      orderBy: order,
-      skip: page * pageSize,
-      take: pageSize,
-    });
+    //   const { page, pageSize, orderBy, sortBy, ...filter } = query;
+    //   const where = this.queryHelper.buildWherePropForFind(
+    //     filter,
+    //     this.LIKE_SEARCH_FIELDS,
+    //   );
+    //   const order = this.queryHelper.buildOrderByPropForFind<PostField>({
+    //     orderBy: [orderBy],
+    //     sortBy: [sortBy],
+    //   });
+    //   return this.prismaService.post.findMany({
+    //     where,
+    //     orderBy: order,
+    //     skip: page * pageSize,
+    //     take: pageSize,
+    //   });
   }
 
   async putUpdate(

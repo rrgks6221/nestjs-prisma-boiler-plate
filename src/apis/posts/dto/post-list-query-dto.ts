@@ -1,55 +1,62 @@
 import { IntersectionType } from '@nestjs/mapped-types';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Post } from '@prisma/client';
+import { POST_ORDER_FIELD } from '@src/apis/posts/constants/post.constant';
 import { stringBooleanTransform } from '@src/common/common';
 import { BooleanString } from '@src/constants/enum';
+import { ApiPropertyOrderBy } from '@src/decorators/api-property-order-by.decorator';
+import {
+  CsvToOrderBy,
+  OrderBy,
+} from '@src/decorators/csv-to-order-by.decorator';
 import { PageDto } from '@src/dtos/page.dto';
-import { SortDto } from '@src/dtos/sort.dto';
 import { Transform, Type } from 'class-transformer';
 import { IsBoolean, IsInt, IsOptional, MaxLength } from 'class-validator';
 
-export class PostListQueryDto extends IntersectionType(PageDto, SortDto) {
-  @ApiProperty({
+export class PostListQueryDto
+  extends IntersectionType(PageDto)
+  implements Partial<Post>
+{
+  @ApiPropertyOptional({
     description: 'posts 고유 Id',
-    required: false,
   })
   @IsOptional()
   @IsInt()
   @Type(() => Number)
-  id?: number | null;
+  id?: number;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: '게시 여부',
-    required: false,
     enum: BooleanString,
   })
   @IsOptional()
   @IsBoolean()
   @Transform(stringBooleanTransform)
-  published?: boolean | null;
+  published?: boolean;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'title',
-    required: false,
   })
   @IsOptional()
   @MaxLength(30)
-  title?: string | null;
+  title?: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'description',
-    required: false,
-    default: null,
   })
   @IsOptional()
   @MaxLength(30)
-  description?: string | null;
+  description?: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: '게시한 유저 고유 id',
-    required: false,
   })
   @IsOptional()
   @IsInt()
   @Type(() => Number)
-  authorId?: number | null;
+  authorId?: number;
+
+  @ApiPropertyOrderBy(POST_ORDER_FIELD)
+  @CsvToOrderBy<typeof POST_ORDER_FIELD>(['authorId'])
+  orderBy: OrderBy<typeof POST_ORDER_FIELD>;
 }
