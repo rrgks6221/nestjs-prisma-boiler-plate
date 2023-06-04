@@ -57,7 +57,7 @@ export class PostsController {
     @SetDefaultPageSize(30)
     query: PostListQueryDto,
   ) {
-    return this.postService.findAll(query);
+    return this.postService.findAllAndCount(query);
   }
 
   @Get(':id')

@@ -56,22 +56,33 @@ export class PostsService {
     return this.buildDetailResponse(newPost.id);
   }
 
-  findAll(query: PostListQueryDto) {
-    // const { page, pageSize, orderBy, ...filter } = query;
-    // const where = this.queryHelper.buildWherePropForFind(
-    //   filter,
-    //   this.LIKE_SEARCH_FIELDS,
-    // );
-    // const order = this.queryHelper.buildOrderByPropForFind<PostField>({
-    //   orderBy: [orderBy],
-    //   sortBy: [sortBy],
-    // });
-    // return this.prismaService.post.findMany({
-    //   where,
-    //   orderBy,
-    //   skip: page * pageSize,
-    //   take: pageSize,
-    // });
+  async findAllAndCount(query: PostListQueryDto) {
+    const { page, pageSize, orderBy, ...filter } = query;
+    const where = this.queryHelper.buildWherePropForFind(
+      filter,
+      this.LIKE_SEARCH_FIELDS,
+    );
+
+    const postsQuery = this.prismaService.post.findMany({
+      where,
+      orderBy,
+      skip: page * pageSize,
+      take: pageSize,
+    });
+
+    const totalCountQuery = this.prismaService.post.count({
+      where,
+    });
+
+    const [posts, totalCount] = await this.prismaService.$transaction([
+      postsQuery,
+      totalCountQuery,
+    ]);
+
+    return {
+      posts,
+      totalCount,
+    };
   }
 
   async putUpdate(

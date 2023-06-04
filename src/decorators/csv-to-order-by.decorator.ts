@@ -8,12 +8,14 @@ export type OrderBy<T extends readonly string[]> = Partial<
 
 export const CsvToOrderBy = <T extends readonly string[] = string[]>(
   fields: T[number][],
-  defaultOrderBy: Record<T[number], SortOrder> = {
-    id: SortOrder.Desc,
-  } as Record<T[number], SortOrder>,
+  defaultOrderBy: Record<T[number], SortOrder>[] = [
+    {
+      id: SortOrder.Desc,
+    } as Record<T[number], SortOrder>,
+  ],
 ): PropertyDecorator => {
   return applyDecorators(
-    Transform(({ value }: { value: unknown }): OrderBy<T> => {
+    Transform(({ value }: { value: unknown }): OrderBy<T>[] => {
       const getField = (field: string): T[number] => {
         return field.startsWith('-') ? field.slice(1) : field;
       };
@@ -32,7 +34,7 @@ export const CsvToOrderBy = <T extends readonly string[] = string[]>(
       const requestOrders = value.split(',');
 
       if (requestOrders.length === 0) {
-        return defaultOrderBy;
+        return [defaultOrderBy] as OrderBy<T>[];
       }
 
       const allowFields = requestOrders.filter((requestOrder) => {
@@ -42,16 +44,17 @@ export const CsvToOrderBy = <T extends readonly string[] = string[]>(
       });
 
       if (allowFields.length === 0) {
-        return defaultOrderBy;
+        return [defaultOrderBy] as OrderBy<T>[];
       }
 
-      return allowFields.reduce((orderBy, cur) => {
-        const field = getField(cur);
+      return allowFields.map((allowField) => {
+        const field = getField(allowField);
+        const sortOrder = getSortOrder(allowField);
 
-        orderBy[field] = getSortOrder(cur);
-
-        return orderBy;
-      }, <Record<T[number], SortOrder>>{});
+        return {
+          [field]: sortOrder,
+        };
+      }) as Record<T[number], SortOrder>[];
     }),
   );
 };
