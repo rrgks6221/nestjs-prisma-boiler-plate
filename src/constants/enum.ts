@@ -3,9 +3,9 @@ export enum ModelName {
   Post = 'post',
 }
 
-export enum OrderBy {
-  Desc = 'desc',
-  Asc = 'asc',
+export enum SortOrder {
+  Desc = 'DESC',
+  Asc = 'ASC',
 }
 
 export enum BooleanString {

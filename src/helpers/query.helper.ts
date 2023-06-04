@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OrderBy } from '@src/constants/enum';
+import OrderBy from '@src/constants/enum';
 
 @Injectable()
 export class QueryHelper {
