@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { AuthService } from '@src/apis/auth/services/auth.service';
+import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { AccessTokenType } from '@src/apis/users/types/access-token.type';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import bcrypt from 'bcrypt';
@@ -33,7 +34,7 @@ export class UsersService {
     return user;
   }
 
-  async findOne(id: number): Promise<Omit<User, 'password'>> {
+  async findOne(id: number) {
     const existUser: User | null = await this.prismaService.user.findFirst({
       where: {
         id,
@@ -44,8 +45,6 @@ export class UsersService {
       throw new NotFoundException();
     }
 
-    const { password, ...user } = existUser;
-
-    return user;
+    return new UserEntity(existUser);
   }
 }
