@@ -20,51 +20,65 @@ describe('CsvToOrderBy', () => {
   it('empty string 이 들어온경우 기본값 안줌', () => {
     const test = plainToInstance(Test, { orderBy: '' });
 
-    expect(test.orderBy).toStrictEqual({ id: 'DESC' });
+    expect(test.orderBy).toStrictEqual([{ id: 'desc' }]);
   });
 
   it('허용하지 않은 필드만 들어온 경우 기본값 줌', () => {
     class Test {
-      @CsvToOrderBy(allowFields, { createdAt: SortOrder.Asc })
+      @CsvToOrderBy(allowFields, [{ createdAt: SortOrder.Asc }])
       orderBy: unknown;
     }
     const test = plainToInstance(Test, { orderBy: 'deletedAt,updatedAt' });
 
-    expect(test.orderBy).toStrictEqual({ createdAt: 'ASC' });
+    expect(test.orderBy).toStrictEqual([{ createdAt: 'asc' }]);
   });
 
   it('모두 오름차순', () => {
     const test = plainToInstance(Test, { orderBy: 'id,createdAt' });
 
-    expect(test.orderBy).toEqual({
-      id: 'DESC',
-      createdAt: 'DESC',
-    });
+    expect(test.orderBy).toStrictEqual([
+      {
+        id: 'desc',
+      },
+      {
+        createdAt: 'desc',
+      },
+    ]);
   });
 
   it('모두 내림차순', () => {
     const test = plainToInstance(Test, { orderBy: '-id,-createdAt' });
 
-    expect(test.orderBy).toEqual({
-      id: 'ASC',
-      createdAt: 'ASC',
-    });
+    expect(test.orderBy).toStrictEqual([
+      {
+        id: 'asc',
+      },
+      {
+        createdAt: 'asc',
+      },
+    ]);
   });
 
   it('오름차순 내림차순 조합', () => {
     const test = plainToInstance(Test, { orderBy: '-id,createdAt' });
 
-    expect(test.orderBy).toEqual({
-      id: 'ASC',
-      createdAt: 'DESC',
-    });
+    expect(test.orderBy).toStrictEqual([
+      {
+        id: 'asc',
+      },
+      {
+        createdAt: 'desc',
+      },
+    ]);
   });
 
   it('허용하지 않은 필드가 들어온 경우', () => {
     const test = plainToInstance(Test, { orderBy: 'id,deletedAt' });
 
-    expect(test.orderBy).toEqual({
-      id: 'DESC',
-    });
+    expect(test.orderBy).toStrictEqual([
+      {
+        id: 'desc',
+      },
+    ]);
   });
 });
