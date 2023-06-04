@@ -26,6 +26,10 @@ import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { ModelName } from '@src/constants/enum';
 import { SetDefaultPageSize } from '@src/decorators/set-default-page-size.decorator';
 import { SetModelNameToParam } from '@src/decorators/set-model-name-to-param.decorator';
+import {
+  ResponseType,
+  SetResponse,
+} from '@src/decorators/set-response.decorator';
 import { User } from '@src/decorators/user.decorator';
 import { IdRequestParamDto } from '@src/dtos/id-request-param.dto';
 import { JwtAuthGuard } from '@src/guards/jwt-auth.guard';
@@ -41,6 +45,7 @@ export class PostsController {
   @ApiOperation({ summary: 'posts 생성' })
   @ApiCreatedResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
+  @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Post()
   create(
     @User() user: UserEntity,
@@ -52,6 +57,7 @@ export class PostsController {
   @Get()
   @ApiOperation({ summary: 'posts 전체 조회' })
   @ApiOkResponse({ type: [PostEntity] })
+  @SetResponse({ key: 'posts', type: ResponseType.Pagination })
   findAll(
     @Query()
     @SetDefaultPageSize(30)
@@ -63,6 +69,7 @@ export class PostsController {
   @Get(':id')
   @ApiOperation({ summary: 'posts 상세 조회' })
   @ApiOkResponse({ type: PostEntity })
+  @SetResponse({ key: 'post', type: ResponseType.Detail })
   findOne(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
   ): Promise<PostModel> {
@@ -72,6 +79,7 @@ export class PostsController {
   @ApiOperation({ summary: 'posts 수정' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
+  @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Put(':id')
   putUpdate(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
@@ -84,6 +92,7 @@ export class PostsController {
   @ApiOperation({ summary: 'posts 일부 수정' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
+  @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Patch(':id')
   patchUpdate(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
@@ -96,6 +105,7 @@ export class PostsController {
   @ApiOperation({ summary: 'posts 삭제' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
+  @SetResponse({ type: ResponseType.Delete })
   @Delete(':id')
   remove(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,

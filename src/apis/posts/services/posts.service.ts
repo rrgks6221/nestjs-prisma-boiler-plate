@@ -74,15 +74,7 @@ export class PostsService {
       where,
     });
 
-    const [posts, totalCount] = await this.prismaService.$transaction([
-      postsQuery,
-      totalCountQuery,
-    ]);
-
-    return {
-      posts,
-      totalCount,
-    };
+    return this.prismaService.$transaction([postsQuery, totalCountQuery]);
   }
 
   async putUpdate(

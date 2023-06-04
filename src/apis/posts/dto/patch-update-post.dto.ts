@@ -6,6 +6,8 @@ import { IsOptional, Length } from 'class-validator';
 export class PatchUpdatePostDto implements Partial<CreatePostDto> {
   @ApiPropertyOptional({
     description: 'title',
+    minLength: 1,
+    maxLength: 255,
   })
   @Length(1, 255)
   @IsNotEmptyString()

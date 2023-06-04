@@ -1,25 +1,27 @@
-import { IsInt, IsOptional } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform, Type } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { pageTransform } from '@src/common/common';
+import { DEFAULT_PAGE_SIZE } from '@src/constants/constant';
+import { Transform, Type } from 'class-transformer';
+import { IsInt, IsOptional } from 'class-validator';
 
 export class PageDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: '페이지번호',
-    required: false,
     type: 'number',
+    format: 'integer',
   })
   @IsOptional()
   @IsInt()
   @Transform(pageTransform)
-  page: number = 0;
+  page = 0;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: '페이지당 아이템 수',
-    required: false,
+    type: 'number',
+    format: 'integer',
   })
   @IsOptional()
   @IsInt()
   @Type(() => Number)
-  pageSize: number = 20;
+  pageSize = DEFAULT_PAGE_SIZE;
 }

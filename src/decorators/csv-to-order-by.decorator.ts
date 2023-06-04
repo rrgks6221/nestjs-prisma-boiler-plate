@@ -6,7 +6,7 @@ export type OrderBy<T extends readonly string[]> = Partial<
   Record<T[number], SortOrder>
 >;
 
-export const CsvToOrderBy = <T extends readonly string[] = string[]>(
+export const CsvToOrderBy = <T extends readonly string[] = readonly string[]>(
   fields: T[number][],
   defaultOrderBy: Record<T[number], SortOrder>[] = [
     {
