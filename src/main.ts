@@ -32,8 +32,10 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-  app.useGlobalInterceptors(new SuccessInterceptor());
+  app.useGlobalInterceptors(
+    new ClassSerializerInterceptor(app.get(Reflector)),
+    new SuccessInterceptor(app.get(Reflector)),
+  );
 
   app.useGlobalFilters(
     app.get(HttpNodeInternalServerErrorExceptionFilter),
