@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Post } from '@prisma/client';
-import { PostField } from '@src/apis/posts/constants/post.enum';
 import { CreatePostDto } from '@src/apis/posts/dto/create-post.dto';
 import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
 import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
@@ -14,9 +13,9 @@ import { QueryHelper } from '@src/helpers/query.helper';
 
 @Injectable()
 export class PostsService {
-  private readonly LIKE_SEARCH_FIELDS = [
-    PostField.Title,
-    PostField.Description,
+  private readonly LIKE_SEARCH_FIELDS: (keyof Partial<Post>)[] = [
+    'title',
+    'description',
   ];
 
   constructor(

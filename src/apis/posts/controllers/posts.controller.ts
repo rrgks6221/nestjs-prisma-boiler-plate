@@ -18,6 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Post as PostModel } from '@prisma/client';
+import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
 import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
 import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
@@ -32,7 +33,6 @@ import {
 } from '@src/decorators/set-response.decorator';
 import { User } from '@src/decorators/user.decorator';
 import { IdRequestParamDto } from '@src/dtos/id-request-param.dto';
-import { JwtAuthGuard } from '@src/guards/jwt-auth.guard';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostsService } from '../services/posts.service';
 
