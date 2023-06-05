@@ -24,12 +24,13 @@ export class PostsService {
   ) {}
 
   async findOne(id: number) {
-    const existPost = await this.prismaService.post.findUnique({
+    const existPost = await this.prismaService.post.findFirst({
       select: {
         id: true,
       },
       where: {
         id,
+        deletedAt: null,
       },
     });
 
@@ -55,7 +56,7 @@ export class PostsService {
     return this.buildDetailResponse(newPost.id);
   }
 
-  async findAllAndCount(query: PostListQueryDto) {
+  findAllAndCount(query: PostListQueryDto) {
     const { page, pageSize, orderBy, ...filter } = query;
     const where = this.queryHelper.buildWherePropForFind(
       filter,
@@ -148,6 +149,7 @@ export class PostsService {
       },
       where: {
         id: postId,
+        deletedAt: null,
       },
     });
 

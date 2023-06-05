@@ -19,6 +19,8 @@ export class QueryHelper {
       }
     }
 
+    where.deletedAt = null;
+
     return where;
   }
 
