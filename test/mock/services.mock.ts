@@ -13,6 +13,12 @@ export class MockJwtService implements MockClass<JwtService> {
   decode = jest.fn();
 }
 
+export class MockHealthCheckService
+  implements MockClass<MockHealthCheckService>
+{
+  check = jest.fn();
+}
+
 export class MockUserService implements MockClass<UsersService> {
   create = jest.fn();
   findOne = jest.fn();

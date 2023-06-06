@@ -5,15 +5,15 @@ import { PrismaHealthIndicator } from '@src/apis/health/indicators/prisma-health
 @Controller('health')
 export class HealthController {
   constructor(
-    private readonly health: HealthCheckService,
+    private readonly healthCheckService: HealthCheckService,
     private readonly prismaHealthIndicator: PrismaHealthIndicator,
   ) {}
 
   @Get()
   @HealthCheck()
   check() {
-    return this.health.check([
-      () => this.prismaHealthIndicator.isHealthy('database'),
+    return this.healthCheckService.check([
+      () => this.prismaHealthIndicator.isHealthy('rdb'),
     ]);
   }
 }
