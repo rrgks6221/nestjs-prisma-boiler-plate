@@ -24,15 +24,12 @@ import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
-import { ModelName } from '@src/constants/enum';
-import { SetDefaultPageSize } from '@src/decorators/set-default-page-size.decorator';
-import { SetModelNameToParam } from '@src/decorators/set-model-name-to-param.decorator';
 import {
   ResponseType,
   SetResponse,
 } from '@src/decorators/set-response.decorator';
 import { User } from '@src/decorators/user.decorator';
-import { IdRequestParamDto } from '@src/dtos/id-request-param.dto';
+import { ParsePositiveIntPipe } from '@src/pipes/parse-positive-int.pipe';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { PostsService } from '../services/posts.service';
 
@@ -42,7 +39,28 @@ import { PostsService } from '../services/posts.service';
 export class PostsController {
   constructor(private readonly postService: PostsService) {}
 
-  @ApiOperation({ summary: 'posts 생성' })
+  @Get()
+  @ApiOperation({ summary: 'post 전체 조회' })
+  @ApiOkResponse({ type: [PostEntity] })
+  @SetResponse({ key: 'posts', type: ResponseType.Pagination })
+  findAllAndCount(
+    @Query()
+    query: PostListQueryDto,
+  ): Promise<[PostModel[], number]> {
+    return this.postService.findAllAndCount(query);
+  }
+
+  @Get(':postId')
+  @ApiOperation({ summary: 'post 상세 조회' })
+  @ApiOkResponse({ type: PostEntity })
+  @SetResponse({ key: 'post', type: ResponseType.Base })
+  findOne(
+    @Param('postId', ParsePositiveIntPipe) postId: number,
+  ): Promise<PostModel> {
+    return this.postService.findOne(postId);
+  }
+
+  @ApiOperation({ summary: 'post 생성' })
   @ApiCreatedResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
   @SetResponse({ key: 'post', type: ResponseType.Base })
@@ -54,63 +72,41 @@ export class PostsController {
     return this.postService.create(user.id, createPostDto);
   }
 
-  @Get()
-  @ApiOperation({ summary: 'posts 전체 조회' })
-  @ApiOkResponse({ type: [PostEntity] })
-  @SetResponse({ key: 'posts', type: ResponseType.Pagination })
-  findAll(
-    @Query()
-    @SetDefaultPageSize(30)
-    query: PostListQueryDto,
-  ) {
-    return this.postService.findAllAndCount(query);
-  }
-
-  @Get(':id')
-  @ApiOperation({ summary: 'posts 상세 조회' })
-  @ApiOkResponse({ type: PostEntity })
-  @SetResponse({ key: 'post', type: ResponseType.Base })
-  findOne(
-    @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
-  ): Promise<PostModel> {
-    return this.postService.findOne(param.id);
-  }
-
-  @ApiOperation({ summary: 'posts 수정' })
+  @ApiOperation({ summary: 'post 수정' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
   @SetResponse({ key: 'post', type: ResponseType.Base })
-  @Put(':id')
+  @Put(':postId')
   putUpdate(
-    @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
-    @User('id') authorId: number,
+    @Param('postId', ParsePositiveIntPipe) postId: number,
+    @User() user: UserEntity,
     @Body() putUpdatePostDto: PutUpdatePostDto,
   ): Promise<PostModel> {
-    return this.postService.putUpdate(param.id, authorId, putUpdatePostDto);
+    return this.postService.putUpdate(postId, user.id, putUpdatePostDto);
   }
 
-  @ApiOperation({ summary: 'posts 일부 수정' })
+  @ApiOperation({ summary: 'post 일부 수정' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
   @SetResponse({ key: 'post', type: ResponseType.Base })
-  @Patch(':id')
+  @Patch(':postId')
   patchUpdate(
-    @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
-    @User('id') authorId: number,
+    @Param('postId', ParsePositiveIntPipe) postId: number,
+    @User() user: UserEntity,
     @Body() patchUpdatePostDto: PatchUpdatePostDto,
   ): Promise<PostModel> {
-    return this.postService.patchUpdate(param.id, authorId, patchUpdatePostDto);
+    return this.postService.patchUpdate(postId, user.id, patchUpdatePostDto);
   }
 
-  @ApiOperation({ summary: 'posts 삭제' })
+  @ApiOperation({ summary: 'post 삭제' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
   @SetResponse({ type: ResponseType.Delete })
-  @Delete(':id')
+  @Delete(':postId')
   remove(
-    @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
-    @User('id') authorId: number,
+    @Param('postId', ParsePositiveIntPipe) postId: number,
+    @User() user: UserEntity,
   ): Promise<number> {
-    return this.postService.remove(param.id, authorId);
+    return this.postService.remove(postId, user.id);
   }
 }
