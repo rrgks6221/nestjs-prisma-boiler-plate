@@ -14,6 +14,7 @@ import Joi from 'joi';
         [ENV_KEY.NODE_ENV]: Joi.string().required(),
         [ENV_KEY.JWT_ACCESS_KEY]: Joi.string().required(),
         [ENV_KEY.DATABASE_URL]: Joi.string().required(),
+        [ENV_KEY.NOTIFICATION_SERVER_EXCEPTION]: Joi.string().required(),
       }),
       isGlobal: true,
     }),
