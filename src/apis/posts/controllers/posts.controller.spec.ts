@@ -2,8 +2,8 @@ import { faker } from '@faker-js/faker';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostsController } from '@src/apis/posts/controllers/posts.controller';
 import { CreatePostBodyDto } from '@src/apis/posts/dto/create-post-body.dto';
+import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
-import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { PostsService } from '@src/apis/posts/services/posts.service';
@@ -34,13 +34,13 @@ describe('PostsController', () => {
   });
 
   describe('findAllAndCount', () => {
-    let query: PostListQueryDto;
+    let query: FindPostListQueryDto;
 
     let posts: PostEntity[];
     let totalCount: number;
 
     beforeEach(() => {
-      query = new PostListQueryDto();
+      query = new FindPostListQueryDto();
 
       posts = [new PostEntity()];
       totalCount = faker.datatype.number();

@@ -10,7 +10,7 @@ import { IsPositiveInt } from '@src/decorators/is-positive-int.decorator';
 import { PageDto } from '@src/dtos/page.dto';
 import { IsOptional, MaxLength } from 'class-validator';
 
-export class PostListQueryDto extends PageDto implements Partial<Post> {
+export class FindPostListQueryDto extends PageDto implements Partial<Post> {
   @ApiPropertyOptional({
     description: 'posts 고유 Id',
     format: 'integer',

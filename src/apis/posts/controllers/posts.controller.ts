@@ -19,8 +19,8 @@ import {
 } from '@nestjs/swagger';
 import { Post as PostModel } from '@prisma/client';
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
+import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
-import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
@@ -45,7 +45,7 @@ export class PostsController {
   @SetResponse({ key: 'posts', type: ResponseType.Pagination })
   findAllAndCount(
     @Query()
-    query: PostListQueryDto,
+    query: FindPostListQueryDto,
   ): Promise<[PostModel[], number]> {
     return this.postService.findAllAndCount(query);
   }
