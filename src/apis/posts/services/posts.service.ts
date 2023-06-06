@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { Post } from '@prisma/client';
 import { CreatePostBodyDto } from '@src/apis/posts/dto/create-post-body.dto';
-import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
+import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
 import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
 import { PrismaService } from '@src/core/prisma/prisma.service';
@@ -106,7 +106,7 @@ export class PostsService {
   async patchUpdate(
     id: number,
     userId: number,
-    patchUpdatePostDto: PatchUpdatePostDto,
+    patchUpdatePostDto: PatchUpdatePostBodyDto,
   ): Promise<Post> {
     await this.checkPostOwner(id, userId);
 

@@ -19,7 +19,7 @@ import {
 } from '@nestjs/swagger';
 import { Post as PostModel } from '@prisma/client';
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
-import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
+import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
 import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
@@ -93,7 +93,7 @@ export class PostsController {
   patchUpdate(
     @Param('postId', ParsePositiveIntPipe) postId: number,
     @User() user: UserEntity,
-    @Body() patchUpdatePostDto: PatchUpdatePostDto,
+    @Body() patchUpdatePostDto: PatchUpdatePostBodyDto,
   ): Promise<PostModel> {
     return this.postService.patchUpdate(postId, user.id, patchUpdatePostDto);
   }

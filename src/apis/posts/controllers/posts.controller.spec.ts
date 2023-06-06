@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostsController } from '@src/apis/posts/controllers/posts.controller';
 import { CreatePostBodyDto } from '@src/apis/posts/dto/create-post-body.dto';
-import { PatchUpdatePostDto } from '@src/apis/posts/dto/patch-update-post.dto';
+import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
 import { PostListQueryDto } from '@src/apis/posts/dto/post-list-query-dto';
 import { PutUpdatePostDto } from '@src/apis/posts/dto/put-update-post-dto';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
@@ -129,14 +129,14 @@ describe('PostsController', () => {
   describe('patchUpdate', () => {
     let postId: number;
     let user: UserEntity;
-    let patchUpdatePostDto: PatchUpdatePostDto;
+    let patchUpdatePostDto: PatchUpdatePostBodyDto;
 
     let post: PostEntity;
 
     beforeEach(() => {
       postId = faker.datatype.number({ min: 1 });
       user = new UserEntity();
-      patchUpdatePostDto = new PatchUpdatePostDto();
+      patchUpdatePostDto = new PatchUpdatePostBodyDto();
 
       post = new PostEntity();
     });
