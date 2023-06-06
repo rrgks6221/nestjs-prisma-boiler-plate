@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MockPostService } from '@test/mock/servies.mock';
 import { PostsController } from '@src/apis/posts/controllers/posts.controller';
 import { PostsService } from '@src/apis/posts/services/posts.service';
+import { MockPostService } from '@test/mock/services.mock';
 
 describe('PostsController', () => {
   let controller: PostsController;

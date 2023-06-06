@@ -3,7 +3,7 @@ import { AuthService } from '@src/apis/auth/services/auth.service';
 import { UsersService } from '@src/apis/users/services/users.service';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { mockPrismaService } from '@test/mock/prisma-service.mock';
-import { MockAuthService } from '@test/mock/servies.mock';
+import { MockAuthService } from '@test/mock/services.mock';
 
 describe('UsersService', () => {
   let service: UsersService;

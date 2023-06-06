@@ -1,8 +1,17 @@
+import { JwtService } from '@nestjs/jwt';
 import { AuthService } from '@src/apis/auth/services/auth.service';
 import { PostsService } from '@src/apis/posts/services/posts.service';
 import { UsersService } from '@src/apis/users/services/users.service';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { MockClass } from '@test/mock/type';
+
+export class MockJwtService implements MockClass<JwtService> {
+  sign = jest.fn();
+  signAsync = jest.fn();
+  verify = jest.fn();
+  verifyAsync = jest.fn();
+  decode = jest.fn();
+}
 
 export class MockUserService implements MockClass<UsersService> {
   create = jest.fn();

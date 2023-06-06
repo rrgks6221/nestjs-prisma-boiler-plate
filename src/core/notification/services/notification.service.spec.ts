@@ -12,7 +12,7 @@ import {
   WarningExceptionFiled,
 } from '@src/core/notification/types/notification.type';
 import { MockEmbedBuilder, MockWebhookClient } from '@test/mock/libs.mock';
-import { MockAppConfigService } from '@test/mock/servies.mock';
+import { MockAppConfigService } from '@test/mock/services.mock';
 
 describe('NotificationService', () => {
   let service: NotificationService;
