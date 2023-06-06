@@ -1,7 +1,12 @@
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  ClassSerializerInterceptor,
+  ValidationPipe,
+} from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from '@src/app.module';
+import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { ENV_KEY } from '@src/core/app-config/constants/api-config.constant';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { HttpBadRequestExceptionFilter } from '@src/core/exception/filters/http-bad-request-exception.filter';
@@ -9,9 +14,10 @@ import { HttpNestInternalServerErrorExceptionFilter } from '@src/core/exception/
 import { HttpNodeInternalServerErrorExceptionFilter } from '@src/core/exception/filters/http-node-internal-server-error-exception.filter';
 import { HttpNotFoundExceptionFilter } from '@src/core/exception/filters/http-not-found-exception.filter';
 import { HttpRemainderExceptionFilter } from '@src/core/exception/filters/http-remainder-exception.filter';
+import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { SuccessInterceptor } from '@src/interceptors/success.interceptor';
-import { useContainer } from 'class-validator';
+import { ValidationError, useContainer } from 'class-validator';
 import helmet from 'helmet';
 
 declare const module: any;
@@ -30,6 +36,18 @@ async function bootstrap() {
       transform: true,
       stopAtFirstError: true,
       whitelist: true,
+      exceptionFactory: (errors: ValidationError[]) => {
+        const messages = errors.flatMap((error) => {
+          return Object.values(error.constraints || {});
+        });
+
+        throw new BadRequestException(
+          HttpExceptionHelper.createError({
+            code: ERROR_CODE.COMMON003,
+            messages,
+          }),
+        );
+      },
     }),
   );
   app.useGlobalInterceptors(

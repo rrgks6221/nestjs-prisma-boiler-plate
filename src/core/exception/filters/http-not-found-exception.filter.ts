@@ -2,14 +2,16 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
+  HttpStatus,
   NotFoundException,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
 import {
   ExceptionError,
   ResponseJson,
 } from '@src/core/exception/types/exception.type';
+import { Response } from 'express';
 
 /**
  * 404 번 에러를 잡는 exception filter
@@ -23,16 +25,30 @@ export class HttpNotFoundExceptionFilter
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
+    const method = ctx.getRequest().method;
+    const path = ctx.getRequest().path;
+    let exceptionError: ExceptionError;
 
-    const responseJson: ResponseJson = this.buildResponseJson(status);
+    const err = exception.getResponse() as {
+      statusCode: HttpStatus.NOT_FOUND;
+      message: string;
+      error: 'Not Found';
+    };
 
-    const err = exception.getResponse() as ExceptionError;
-
+    // path not found
     if (/^\bCannot (GET|POST|PATCH|PUT|DELETE)\b/.test(err.message)) {
-      responseJson.errors = [this.preProcessByClientError(err.message)];
+      exceptionError = HttpExceptionHelper.createError({
+        code: ERROR_CODE.COMMON002,
+        message: method + ' ' + path + ' ' + 'not found',
+      });
     } else {
-      responseJson.errors = [this.preProcessByClientError(err.message)];
+      exceptionError = exception.getResponse() as ExceptionError;
     }
+
+    const responseJson: ResponseJson = this.buildResponseJson(
+      status,
+      exceptionError,
+    );
 
     response.status(status).json(responseJson);
   }

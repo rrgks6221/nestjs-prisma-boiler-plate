@@ -1,16 +1,14 @@
-export type ExceptionError = {
-  error?: string;
+export interface ExceptionError {
+  code: string;
+  reason: string;
+  messages: string[];
+}
+
+export interface ResponseJson {
+  timestamp: Date;
   statusCode: number;
-  message: any;
-};
-
-export type ResponseJson = {
-  status: number;
-  timestamp: string;
-  errors: ResponseErrorItem[];
-};
-
-export type ResponseErrorItem = {
-  message: string;
-  errorStack?: any;
-};
+  code: string;
+  reason: string;
+  messages: string[];
+  stack?: any;
+}

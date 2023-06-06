@@ -6,7 +6,10 @@ import {
 } from '@nestjs/common';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
-import { ResponseJson } from '@src/core/exception/types/exception.type';
+import {
+  ExceptionError,
+  ResponseJson,
+} from '@src/core/exception/types/exception.type';
 import { Response } from 'express';
 
 /**
@@ -26,13 +29,15 @@ export class HttpNestInternalServerErrorExceptionFilter
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
+    const exceptionError = exception.getResponse() as ExceptionError;
+
     const isProduction = this.appConfigService.isProduction();
 
-    const responseJson: ResponseJson = this.buildResponseJson(status);
-
-    responseJson.errors = [
-      this.preProcessByServerError(isProduction ? undefined : exception.stack),
-    ];
+    const responseJson: ResponseJson = this.buildResponseJson(
+      status,
+      exceptionError,
+    );
+    responseJson.stack = isProduction ? undefined : exception.stack;
 
     response.status(status).json(responseJson);
   }

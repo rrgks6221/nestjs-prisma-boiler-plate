@@ -4,12 +4,12 @@ import {
   ExceptionFilter,
   HttpException,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
 import {
   ExceptionError,
   ResponseJson,
 } from '@src/core/exception/types/exception.type';
-import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
+import { Response } from 'express';
 
 /**
  * 다른 exception filter 가 잡지않는 exception 을 잡는 필터
@@ -24,11 +24,12 @@ export class HttpRemainderExceptionFilter
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
 
-    const responseJson: ResponseJson = this.buildResponseJson(status);
+    const exceptionError = exception.getResponse() as ExceptionError;
 
-    const err = exception.getResponse() as ExceptionError;
-
-    responseJson.errors = [this.preProcessByClientError(err.message)];
+    const responseJson: ResponseJson = this.buildResponseJson(
+      status,
+      exceptionError,
+    );
 
     response.status(status).json(responseJson);
   }

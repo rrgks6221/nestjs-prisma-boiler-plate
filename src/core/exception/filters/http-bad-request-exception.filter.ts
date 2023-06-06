@@ -4,12 +4,12 @@ import {
   Catch,
   ExceptionFilter,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
 import {
   ExceptionError,
   ResponseJson,
 } from '@src/core/exception/types/exception.type';
-import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
+import { Response } from 'express';
 
 /**
  * 400 번 에러를 잡는 exception filter
@@ -23,24 +23,12 @@ export class HttpBadRequestExceptionFilter
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
+    const exceptionError = exception.getResponse() as ExceptionError;
 
-    const responseJson: ResponseJson = this.buildResponseJson(status);
-
-    const err = exception.getResponse() as ExceptionError;
-
-    if (Array.isArray(err.message)) {
-      let errorMessages = err.message.map((errorMessage) => {
-        return errorMessage.split('.').at(-1);
-      });
-
-      errorMessages = [...new Set(errorMessages)];
-
-      responseJson.errors = errorMessages.map((errorMessage) => {
-        return this.preProcessByClientError(errorMessage);
-      });
-    } else {
-      responseJson.errors = [this.preProcessByClientError(err.message)];
-    }
+    const responseJson: ResponseJson = this.buildResponseJson(
+      status,
+      exceptionError,
+    );
 
     response.status(status).json(responseJson);
   }

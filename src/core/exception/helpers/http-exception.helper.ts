@@ -1,5 +1,7 @@
+import { ERROR_CODE } from '@src/constants/error-response-code.constant';
+import { ERROR_REASON } from '@src/constants/error-response-reason.constant';
 import {
-  ResponseErrorItem,
+  ExceptionError,
   ResponseJson,
 } from '@src/core/exception/types/exception.type';
 
@@ -8,30 +10,41 @@ import {
  * 각 exception filter 들은 이 클레스를 상속받아 사용함
  */
 export class HttpExceptionHelper {
-  buildResponseJson(status: number): ResponseJson {
+  buildResponseJson(
+    statusCode: number,
+    exception: ExceptionError,
+  ): ResponseJson {
+    const { code, reason, messages } = exception;
     return {
-      status,
-      timestamp: new Date().toISOString(),
-      errors: [],
+      timestamp: new Date(),
+      statusCode,
+      reason,
+      code,
+      messages,
     };
   }
 
-  /**
-   * 4xx 번 에러시에 내려줄 request body 의 에러
-   */
-  preProcessByClientError(message: string): ResponseErrorItem {
-    return {
-      message,
-    };
-  }
+  static createError(error: {
+    code: typeof ERROR_CODE[keyof typeof ERROR_CODE];
+    message: string;
+  }): ExceptionError;
 
-  /**
-   * 5xx 번 에러시에 내려줄 request body 의 에러
-   */
-  preProcessByServerError(errorStack: any): ResponseErrorItem {
+  static createError(error: {
+    code: typeof ERROR_CODE[keyof typeof ERROR_CODE];
+    messages: string[];
+  }): ExceptionError;
+
+  static createError(error: {
+    code: typeof ERROR_CODE[keyof typeof ERROR_CODE];
+    message: string;
+    messages: string[];
+  }): ExceptionError {
+    const { code, message, messages } = error;
+
     return {
-      message: '서버 에러',
-      errorStack,
+      code,
+      reason: ERROR_REASON[code],
+      messages: messages || [message],
     };
   }
 }
