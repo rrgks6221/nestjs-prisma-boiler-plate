@@ -33,8 +33,8 @@ export class SuccessInterceptor implements NestInterceptor {
         const { type, key } = args;
 
         // 단일 action api 에 대한 response
-        if (type === ResponseType.Detail) {
-          return this.buildDetailResponse(data, key);
+        if (type === ResponseType.Base) {
+          return this.buildBaseResponse(data, key);
         }
 
         // pagination api response
@@ -53,7 +53,7 @@ export class SuccessInterceptor implements NestInterceptor {
     );
   }
 
-  private buildDetailResponse(data: unknown, key?: string) {
+  private buildBaseResponse(data: unknown, key?: string) {
     if (!key) {
       throw new InternalServerErrorException();
     }

@@ -45,7 +45,7 @@ export class PostsController {
   @ApiOperation({ summary: 'posts 생성' })
   @ApiCreatedResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
-  @SetResponse({ key: 'post', type: ResponseType.Detail })
+  @SetResponse({ key: 'post', type: ResponseType.Base })
   @Post()
   create(
     @User() user: UserEntity,
@@ -69,7 +69,7 @@ export class PostsController {
   @Get(':id')
   @ApiOperation({ summary: 'posts 상세 조회' })
   @ApiOkResponse({ type: PostEntity })
-  @SetResponse({ key: 'post', type: ResponseType.Detail })
+  @SetResponse({ key: 'post', type: ResponseType.Base })
   findOne(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
   ): Promise<PostModel> {
@@ -79,7 +79,7 @@ export class PostsController {
   @ApiOperation({ summary: 'posts 수정' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
-  @SetResponse({ key: 'post', type: ResponseType.Detail })
+  @SetResponse({ key: 'post', type: ResponseType.Base })
   @Put(':id')
   putUpdate(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,
@@ -92,7 +92,7 @@ export class PostsController {
   @ApiOperation({ summary: 'posts 일부 수정' })
   @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
-  @SetResponse({ key: 'post', type: ResponseType.Detail })
+  @SetResponse({ key: 'post', type: ResponseType.Base })
   @Patch(':id')
   patchUpdate(
     @Param() @SetModelNameToParam(ModelName.Post) param: IdRequestParamDto,

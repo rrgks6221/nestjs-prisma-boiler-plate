@@ -3,7 +3,7 @@ import { SetMetadata } from '@nestjs/common';
 export const SET_RESPONSE = 'SET_RESPONSE';
 
 export enum ResponseType {
-  Detail = 'detail',
+  Base = 'base',
   Pagination = 'pagination',
   Delete = 'delete',
 }
