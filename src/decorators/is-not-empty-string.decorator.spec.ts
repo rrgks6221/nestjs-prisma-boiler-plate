@@ -1,5 +1,5 @@
-import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
 import { faker } from '@faker-js/faker';
+import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 
@@ -7,7 +7,7 @@ describe('IsNotEmptyString decorator', () => {
   let randomString;
 
   class TestClass {
-    @IsNotEmptyString('test')
+    @IsNotEmptyString()
     test: unknown;
   }
 
