@@ -17,7 +17,6 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { Post as PostModel } from '@prisma/client';
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
 import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
@@ -30,13 +29,14 @@ import {
 } from '@src/decorators/set-response.decorator';
 import { User } from '@src/decorators/user.decorator';
 import { ParsePositiveIntPipe } from '@src/pipes/parse-positive-int.pipe';
+import { BaseController } from '@src/types/type';
 import { CreatePostBodyDto } from '../dto/create-post-body.dto';
 import { PostsService } from '../services/posts.service';
 
 @ApiBearerAuth()
 @ApiTags('post')
 @Controller('api/posts')
-export class PostsController {
+export class PostsController implements BaseController<PostEntity> {
   constructor(private readonly postService: PostsService) {}
 
   @Get()
@@ -45,9 +45,9 @@ export class PostsController {
   @SetResponse({ key: 'posts', type: ResponseType.Pagination })
   findAllAndCount(
     @Query()
-    query: FindPostListQueryDto,
-  ): Promise<[PostModel[], number]> {
-    return this.postService.findAllAndCount(query);
+    findPostListQueryDto: FindPostListQueryDto,
+  ): Promise<[PostEntity[], number]> {
+    return this.postService.findAllAndCount(findPostListQueryDto);
   }
 
   @Get(':postId')
@@ -56,7 +56,7 @@ export class PostsController {
   @SetResponse({ key: 'post', type: ResponseType.Base })
   findOne(
     @Param('postId', ParsePositiveIntPipe) postId: number,
-  ): Promise<PostModel> {
+  ): Promise<PostEntity> {
     return this.postService.findOne(postId);
   }
 
@@ -67,9 +67,9 @@ export class PostsController {
   @Post()
   create(
     @User() user: UserEntity,
-    @Body() createPostDto: CreatePostBodyDto,
-  ): Promise<PostModel> {
-    return this.postService.create(user.id, createPostDto);
+    @Body() createPostBodyDto: CreatePostBodyDto,
+  ): Promise<PostEntity> {
+    return this.postService.create(user.id, createPostBodyDto);
   }
 
   @ApiOperation({ summary: 'post 수정' })
@@ -81,7 +81,7 @@ export class PostsController {
     @Param('postId', ParsePositiveIntPipe) postId: number,
     @User() user: UserEntity,
     @Body() putUpdatePostDto: PutUpdatePostBodyDto,
-  ): Promise<PostModel> {
+  ): Promise<PostEntity> {
     return this.postService.putUpdate(postId, user.id, putUpdatePostDto);
   }
 
@@ -94,7 +94,7 @@ export class PostsController {
     @Param('postId', ParsePositiveIntPipe) postId: number,
     @User() user: UserEntity,
     @Body() patchUpdatePostDto: PatchUpdatePostBodyDto,
-  ): Promise<PostModel> {
+  ): Promise<PostEntity> {
     return this.postService.patchUpdate(postId, user.id, patchUpdatePostDto);
   }
 

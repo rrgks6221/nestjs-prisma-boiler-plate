@@ -30,6 +30,11 @@ export class SuccessInterceptor implements NestInterceptor {
         // args 가 없으면 해당 인터셉터를 사용하지 않는다고 판별한다.
         if (!args) return data;
 
+        // delete 관련된 api response
+        if (args.type === ResponseType.Delete) {
+          return this.buildDeleteResponse(data);
+        }
+
         const { type, key } = args;
 
         // 단일 action api 에 대한 response
@@ -43,11 +48,6 @@ export class SuccessInterceptor implements NestInterceptor {
           const { query } = request;
 
           return this.buildPaginationResponse(data, query, key);
-        }
-
-        // delete 관련된 api response
-        if (type === ResponseType.Delete) {
-          return this.buildDeleteResponse(data);
         }
       }),
     );

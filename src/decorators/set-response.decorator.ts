@@ -8,10 +8,14 @@ export enum ResponseType {
   Delete = 'delete',
 }
 
-export interface Args {
-  type: ResponseType;
-  key?: string;
-}
+export type Args =
+  | {
+      type: Extract<ResponseType, ResponseType.Base | ResponseType.Pagination>;
+      key: string;
+    }
+  | {
+      type: Extract<ResponseType, ResponseType.Delete>;
+    };
 
 export const SetResponse = (args: Args) => {
   return SetMetadata(SET_RESPONSE, args);
