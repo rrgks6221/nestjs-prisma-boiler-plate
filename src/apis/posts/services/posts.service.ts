@@ -10,7 +10,7 @@ import { PostBaseResponseDto } from '@src/apis/posts/dto/post-base-response.dto'
 import { PutUpdatePostBodyDto } from '@src/apis/posts/dto/put-update-post-body-dto';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
+import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { QueryHelper } from '@src/helpers/query.helper';
 import { BaseService } from '@src/types/type';

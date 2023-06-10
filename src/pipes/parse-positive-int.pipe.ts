@@ -5,7 +5,7 @@ import {
   PipeTransform,
 } from '@nestjs/common';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
+import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 
 @Injectable()
 export class ParsePositiveIntPipe implements PipeTransform<string> {

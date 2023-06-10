@@ -3,7 +3,7 @@ import { ERROR_REASON } from '@src/constants/error-response-reason.constant';
 import {
   ExceptionError,
   ResponseJson,
-} from '@src/core/exception/types/exception.type';
+} from '@src/core/http-exception-filters/types/exception.type';
 
 /**
  * exception filter 들이 사용하는 메서드 및 멤버변수를 모아놓은 class
@@ -15,6 +15,7 @@ export class HttpExceptionHelper {
     exception: ExceptionError,
   ): ResponseJson {
     const { code, reason, messages } = exception;
+
     return {
       timestamp: new Date(),
       statusCode,

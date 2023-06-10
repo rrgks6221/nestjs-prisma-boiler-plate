@@ -5,11 +5,11 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
-import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
+import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import {
   ExceptionError,
   ResponseJson,
-} from '@src/core/exception/types/exception.type';
+} from '@src/core/http-exception-filters/types/exception.type';
 import { Response } from 'express';
 
 /**

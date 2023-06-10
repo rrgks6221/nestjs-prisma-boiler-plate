@@ -4,11 +4,11 @@ import {
   ExceptionFilter,
   HttpException,
 } from '@nestjs/common';
-import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
+import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import {
   ExceptionError,
   ResponseJson,
-} from '@src/core/exception/types/exception.type';
+} from '@src/core/http-exception-filters/types/exception.type';
 import { Response } from 'express';
 
 /**

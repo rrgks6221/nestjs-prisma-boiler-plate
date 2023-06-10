@@ -6,11 +6,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
+import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import {
   ExceptionError,
   ResponseJson,
-} from '@src/core/exception/types/exception.type';
+} from '@src/core/http-exception-filters/types/exception.type';
 import { Response } from 'express';
 
 /**

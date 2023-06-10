@@ -8,8 +8,8 @@ import { Response } from 'express';
 
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
-import { HttpExceptionHelper } from '@src/core/exception/helpers/http-exception.helper';
-import { ResponseJson } from '@src/core/exception/types/exception.type';
+import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
+import { ResponseJson } from '@src/core/http-exception-filters/types/exception.type';
 
 /**
  * 예상하지 못한 에러 발생 시 nodeJS 레벨에서 발생하는 에러
