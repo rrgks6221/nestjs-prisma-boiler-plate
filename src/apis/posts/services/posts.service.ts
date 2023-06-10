@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { Post } from '@prisma/client';
 import { CreatePostBodyDto } from '@src/apis/posts/dto/create-post-body.dto';
 import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
@@ -35,7 +36,7 @@ export class PostsService
   ): Promise<[PostEntity[], number]> {
     const { page, pageSize, orderBy, ...filter } = findPostListQueryDto;
 
-    const where = this.queryHelper.buildWherePropForFind(
+    const where = this.queryHelper.buildWherePropForFind<Post>(
       filter,
       this.LIKE_SEARCH_FIELDS,
     );
