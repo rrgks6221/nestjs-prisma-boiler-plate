@@ -20,6 +20,7 @@ import {
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
 import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
+import { PostBaseResponseDto } from '@src/apis/posts/dto/post-base-response.dto';
 import { PutUpdatePostBodyDto } from '@src/apis/posts/dto/put-update-post-body-dto';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
@@ -36,7 +37,9 @@ import { PostsService } from '../services/posts.service';
 @ApiBearerAuth()
 @ApiTags('post')
 @Controller('api/posts')
-export class PostsController implements BaseController<PostEntity> {
+export class PostsController
+  implements BaseController<PostEntity, PostBaseResponseDto>
+{
   constructor(private readonly postService: PostsService) {}
 
   @Get()
