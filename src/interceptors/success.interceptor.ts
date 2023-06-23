@@ -7,6 +7,8 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { DEFAULT_PAGE_SIZE } from '@src/constants/constant';
+import { ERROR_CODE } from '@src/constants/error-response-code.constant';
+import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import {
   Args,
   ResponseType,
@@ -49,15 +51,13 @@ export class SuccessInterceptor implements NestInterceptor {
 
           return this.buildPaginationResponse(data, query, key);
         }
+
+        return data;
       }),
     );
   }
 
-  private buildBaseResponse(data: unknown, key?: string) {
-    if (!key) {
-      throw new InternalServerErrorException();
-    }
-
+  private buildBaseResponse(data: unknown, key: string) {
     return {
       [key]: data,
     };
@@ -66,13 +66,15 @@ export class SuccessInterceptor implements NestInterceptor {
   private buildPaginationResponse(
     data: unknown,
     query: Record<string, string>,
-    key?: string,
+    key: string,
   ) {
     if (!Array.isArray(data)) {
-      throw new InternalServerErrorException();
-    }
-    if (!key) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(
+        HttpExceptionHelper.createError({
+          code: ERROR_CODE.CODE001,
+          message: '서버 에러',
+        }),
+      );
     }
 
     const page = Number(query.page) || 1;
@@ -81,19 +83,24 @@ export class SuccessInterceptor implements NestInterceptor {
     const [array, totalCount] = data;
 
     return {
-      [key]: array,
       totalCount,
+      pageSize,
       currentPage: page,
       nextPage: pageSize * page < totalCount ? page + 1 : null,
-      pageSize,
       hasNext: pageSize * page < totalCount,
       lastPage: Math.ceil(totalCount / pageSize),
+      [key]: array,
     };
   }
 
   private buildDeleteResponse(data: unknown) {
     if (!Number.isInteger(data)) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(
+        HttpExceptionHelper.createError({
+          code: ERROR_CODE.CODE001,
+          message: '서버 에러',
+        }),
+      );
     }
 
     return {
