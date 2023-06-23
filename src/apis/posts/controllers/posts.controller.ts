@@ -10,14 +10,16 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
+import {
+  ApiCreate,
+  ApiFindAllAndCount,
+  ApiFindOne,
+  ApiPatchUpdate,
+  ApiPutUpdate,
+  ApiRemove,
+} from '@src/apis/posts/controllers/posts.swagger';
 import { CreatePostBodyDto } from '@src/apis/posts/dto/create-post-body.dto';
 import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
@@ -35,7 +37,7 @@ import { ParsePositiveIntPipe } from '@src/pipes/parse-positive-int.pipe';
 import { BaseController } from '@src/types/type';
 
 @ApiBearerAuth()
-@ApiTags('post')
+@ApiTags('posts')
 @Controller('api/posts')
 export class PostsController
   implements BaseController<PostEntity, PostBaseResponseDto>
@@ -43,8 +45,7 @@ export class PostsController
   constructor(private readonly postService: PostsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'post 전체 조회' })
-  @ApiOkResponse({ type: [PostEntity] })
+  @ApiFindAllAndCount('post 전체 조회')
   @SetResponse({ key: 'posts', type: ResponseType.Pagination })
   findAllAndCount(
     @Query()
@@ -54,8 +55,7 @@ export class PostsController
   }
 
   @Get(':postId')
-  @ApiOperation({ summary: 'post 상세 조회' })
-  @ApiOkResponse({ type: PostEntity })
+  @ApiFindOne('post 상세 조회')
   @SetResponse({ key: 'post', type: ResponseType.Base })
   findOne(
     @Param('postId', ParsePositiveIntPipe) postId: number,
@@ -63,9 +63,8 @@ export class PostsController
     return this.postService.findOne(postId);
   }
 
-  @ApiOperation({ summary: 'post 생성' })
-  @ApiCreatedResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
+  @ApiCreate('post 생성')
   @SetResponse({ key: 'post', type: ResponseType.Base })
   @Post()
   create(
@@ -75,9 +74,8 @@ export class PostsController
     return this.postService.create(user.id, createPostBodyDto);
   }
 
-  @ApiOperation({ summary: 'post 수정' })
-  @ApiOkResponse({ type: PostEntity })
   @UseGuards(JwtAuthGuard)
+  @ApiPutUpdate('post 수정')
   @SetResponse({ key: 'post', type: ResponseType.Base })
   @Put(':postId')
   putUpdate(
@@ -88,8 +86,7 @@ export class PostsController
     return this.postService.putUpdate(postId, user.id, putUpdatePostDto);
   }
 
-  @ApiOperation({ summary: 'post 일부 수정' })
-  @ApiOkResponse({ type: PostEntity })
+  @ApiPatchUpdate('post 부분 수정')
   @UseGuards(JwtAuthGuard)
   @SetResponse({ key: 'post', type: ResponseType.Base })
   @Patch(':postId')
@@ -101,8 +98,7 @@ export class PostsController
     return this.postService.patchUpdate(postId, user.id, patchUpdatePostDto);
   }
 
-  @ApiOperation({ summary: 'post 삭제' })
-  @ApiOkResponse({ type: PostEntity })
+  @ApiRemove('post 삭제')
   @UseGuards(JwtAuthGuard)
   @SetResponse({ type: ResponseType.Delete })
   @Delete(':postId')

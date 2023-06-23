@@ -9,4 +9,6 @@ export const ERROR_CODE = {
   CODE004: 'CODE004',
   /** resource not found */
   CODE005: 'CODE005',
+  /** permission denied */
+  CODE006: 'CODE006',
 } as const;
