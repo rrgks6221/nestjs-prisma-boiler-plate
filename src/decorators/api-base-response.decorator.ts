@@ -1,4 +1,4 @@
-import { applyDecorators, HttpCode, HttpStatus, Type } from '@nestjs/common';
+import { applyDecorators, HttpStatus, Type } from '@nestjs/common';
 import { ErrorHttpStatusCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 
@@ -12,9 +12,9 @@ export const ApiBaseResponse = (
   const { key, type } = res;
 
   return applyDecorators(
-    HttpCode(status),
     ApiExtraModels(type),
     ApiResponse({
+      status,
       schema: {
         properties: {
           [key]: {

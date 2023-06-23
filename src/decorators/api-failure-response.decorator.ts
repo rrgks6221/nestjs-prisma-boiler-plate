@@ -6,7 +6,7 @@ import { ERROR_REASON } from '@src/constants/error-response-reason.constant';
 
 export const ApiFailureResponse = (
   status: ErrorHttpStatusCode,
-  code: typeof ERROR_CODE[keyof typeof ERROR_CODE],
+  codes: typeof ERROR_CODE[keyof typeof ERROR_CODE][],
 ) => {
   return applyDecorators(
     ApiResponse({
@@ -23,16 +23,19 @@ export const ApiFailureResponse = (
             format: 'integer',
             description: 'http status code',
             minimum: 400,
+            example: status,
           },
           reason: {
             type: 'string',
             description: '에러 사유',
-            example: ERROR_REASON[ERROR_CODE[code]],
+            example: ERROR_REASON[ERROR_CODE[codes[0]]],
+            examples: codes.map((code) => ERROR_REASON[ERROR_CODE[code]]),
           },
           code: {
             type: 'string',
             description: '에러 코드',
-            example: code,
+            example: codes[0],
+            examples: codes.map((code) => ERROR_CODE[code]),
           },
           messages: {
             type: 'array',
