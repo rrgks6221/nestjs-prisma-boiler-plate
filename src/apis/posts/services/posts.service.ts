@@ -185,7 +185,7 @@ export class PostsService
     if (existPost.userId !== userId) {
       throw new ForbiddenException(
         HttpExceptionHelper.createError({
-          code: ERROR_CODE.CODE005,
+          code: ERROR_CODE.CODE006,
           message: `post ${postId} is not owned by user ${userId}`,
         }),
       );
