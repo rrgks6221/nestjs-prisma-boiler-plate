@@ -1,13 +1,14 @@
-import { IsEmail, IsNumber, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { LoginType } from '@prisma/client';
 import { IsRecord } from '@src/decorators/is-record.decorator';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { LoginType, Role } from '@prisma/client';
+import { IsEmail, IsEnum, IsString } from 'class-validator';
 
 export class CreateUserRequestBodyDto {
   @ApiProperty({
     description: '로그인 타입',
     enum: LoginType,
   })
+  @IsEnum(LoginType)
   loginType: LoginType;
 
   @ApiProperty({
@@ -20,7 +21,7 @@ export class CreateUserRequestBodyDto {
 
   @ApiProperty({
     example: 'example@example.com',
-    description: 'users eamil',
+    description: 'users email',
     required: true,
     type: 'string',
   })
@@ -36,13 +37,4 @@ export class CreateUserRequestBodyDto {
   })
   @IsString()
   nickname: string;
-
-  @ApiProperty({
-    example: 1,
-    description: 'users 권한',
-    required: true,
-    enum: Role,
-  })
-  @IsNumber()
-  role: Role;
 }

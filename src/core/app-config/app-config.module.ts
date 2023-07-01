@@ -12,7 +12,10 @@ import Joi from 'joi';
       validationSchema: Joi.object({
         [ENV_KEY.PORT]: Joi.number().default(3000),
         [ENV_KEY.NODE_ENV]: Joi.string().required(),
-        [ENV_KEY.JWT_ACCESS_KEY]: Joi.string().required(),
+        [ENV_KEY.JWT_ACCESS_TOKEN_SECRET]: Joi.string().required(),
+        [ENV_KEY.JWT_ACCESS_TOKEN_EXPIRATION_MS]: Joi.number().required(),
+        [ENV_KEY.JWT_REFRESH_TOKEN_SECRET]: Joi.string().required(),
+        [ENV_KEY.JWT_REFRESH_TOKEN_EXPIRATION_MS]: Joi.number().required(),
         [ENV_KEY.DATABASE_URL]: Joi.string().required(),
         [ENV_KEY.NOTIFICATION_SERVER_EXCEPTION]: Joi.string().required(),
       }),

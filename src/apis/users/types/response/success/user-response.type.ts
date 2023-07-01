@@ -11,7 +11,7 @@ export class UserResponseType {
 
   @ApiProperty({
     example: 'example@example.com',
-    description: 'users eamil',
+    description: 'users email',
     required: true,
     type: 'string',
   })
@@ -24,14 +24,6 @@ export class UserResponseType {
     type: 'string',
   })
   name: string;
-
-  @ApiProperty({
-    example: 1,
-    description: 'users 권한',
-    required: true,
-    type: 'number',
-  })
-  role: number;
 
   @ApiProperty({
     example: '2022-10-03T09:54:50.563Z',

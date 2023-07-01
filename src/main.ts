@@ -18,6 +18,7 @@ import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/ht
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { SuccessInterceptor } from '@src/interceptors/success.interceptor';
 import { useContainer, ValidationError } from 'class-validator';
+import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
 declare const module: any;
@@ -31,6 +32,7 @@ async function bootstrap() {
   await prismaService.enableShutdownHooks(app);
 
   app.use(helmet());
+  app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

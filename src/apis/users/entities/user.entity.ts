@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { LoginType, Role, User } from '@prisma/client';
+import { LoginType, User } from '@prisma/client';
 import { BaseEntity } from '@src/entities/base.entity';
 import { Exclude } from 'class-transformer';
 
@@ -23,12 +23,6 @@ export class UserEntity extends BaseEntity implements User {
     description: 'nickname',
   })
   nickname: string;
-
-  @ApiProperty({
-    description: 'role',
-    enum: Role,
-  })
-  role: Role;
 
   constructor(userEntity: Partial<UserEntity> = {}) {
     super();

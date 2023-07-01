@@ -1,7 +1,7 @@
 // prisma/seed.ts
 
-import { LoginType, PrismaClient, Role } from '@prisma/client';
 import { faker } from '@faker-js/faker';
+import { LoginType, PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
 // initialize Prisma Client
@@ -14,7 +14,6 @@ async function main() {
     const email = faker.internet.email();
     const nickname = faker.name.fullName();
     const loginType = LoginType.EMAIL;
-    const role = Role.USER;
     const password = await bcrypt.hash(faker.internet.password(), SALT);
 
     const user = await prisma.user.upsert({
@@ -24,7 +23,6 @@ async function main() {
         loginType,
         email,
         nickname,
-        role,
         password,
       },
     });

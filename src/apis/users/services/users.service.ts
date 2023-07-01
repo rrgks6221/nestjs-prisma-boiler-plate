@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { AuthService } from '@src/apis/auth/services/auth.service';
 import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-request-body.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { AccessTokenType } from '@src/apis/users/types/access-token.type';
@@ -11,10 +10,7 @@ import bcrypt from 'bcrypt';
 export class UsersService {
   private readonly SALT = 10;
 
-  constructor(
-    private readonly prismaService: PrismaService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async create(
     createUserDto: CreateUserRequestBodyDto,
@@ -28,8 +24,6 @@ export class UsersService {
       await this.prismaService.user.create({
         data: createUserDto,
       });
-
-    user.accessToken = this.authService.login(user.id);
 
     return user;
   }
