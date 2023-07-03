@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreatePostBodyDto } from '@src/apis/posts/dto/create-post-body.dto';
+import { CreatePostRequestBodyDto } from '@src/apis/posts/dto/create-post-request-body.dto';
 import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
 import { PutUpdatePostBodyDto } from '@src/apis/posts/dto/put-update-post-body-dto';
@@ -118,7 +118,7 @@ describe('PostsService', () => {
 
   describe('create', () => {
     let userId: number;
-    let createPostBodyDto: CreatePostBodyDto;
+    let createPostBodyDto: CreatePostRequestBodyDto;
 
     let newPost: PostEntity;
 
@@ -126,7 +126,7 @@ describe('PostsService', () => {
 
     beforeEach(() => {
       userId = faker.datatype.number({ min: 1 });
-      createPostBodyDto = new CreatePostBodyDto();
+      createPostBodyDto = new CreatePostRequestBodyDto();
 
       newPost = new PostEntity();
 

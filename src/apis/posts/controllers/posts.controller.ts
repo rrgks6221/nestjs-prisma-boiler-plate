@@ -20,7 +20,7 @@ import {
   ApiPutUpdate,
   ApiRemove,
 } from '@src/apis/posts/controllers/posts.swagger';
-import { CreatePostBodyDto } from '@src/apis/posts/dto/create-post-body.dto';
+import { CreatePostRequestBodyDto } from '@src/apis/posts/dto/create-post-request-body.dto';
 import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
 import { PostBaseResponseDto } from '@src/apis/posts/dto/post-base-response.dto';
@@ -76,7 +76,7 @@ export class PostsController
   @Post()
   async create(
     @User() user: UserEntity,
-    @Body() createPostBodyDto: CreatePostBodyDto,
+    @Body() createPostBodyDto: CreatePostRequestBodyDto,
   ): Promise<PostBaseResponseDto> {
     const newPost = await this.postService.create(user.id, createPostBodyDto);
 

@@ -1,7 +1,7 @@
 import { PickType } from '@nestjs/swagger';
-import { CreatePostBodyDto } from '@src/apis/posts/dto/create-post-body.dto';
+import { CreatePostRequestBodyDto } from '@src/apis/posts/dto/create-post-request-body.dto';
 
-export class PutUpdatePostBodyDto extends PickType(CreatePostBodyDto, [
+export class PutUpdatePostBodyDto extends PickType(CreatePostRequestBodyDto, [
   'title',
   'description',
 ] as const) {}

@@ -1,9 +1,11 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { CreatePostBodyDto } from '@src/apis/posts/dto/create-post-body.dto';
+import { CreatePostRequestBodyDto } from '@src/apis/posts/dto/create-post-request-body.dto';
 import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
 import { IsOptional, Length } from 'class-validator';
 
-export class PatchUpdatePostBodyDto implements Partial<CreatePostBodyDto> {
+export class PatchUpdatePostBodyDto
+  implements Partial<CreatePostRequestBodyDto>
+{
   @ApiPropertyOptional({
     description: 'title',
     minLength: 1,

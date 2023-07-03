@@ -3,7 +3,7 @@ import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
 import { Length } from 'class-validator';
 
-export class CreatePostBodyDto
+export class CreatePostRequestBodyDto
   implements Pick<PostEntity, 'title' | 'description'>
 {
   @ApiProperty({
