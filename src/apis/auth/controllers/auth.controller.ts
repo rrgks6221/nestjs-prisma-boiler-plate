@@ -9,13 +9,26 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreateAccessTokenForDevelop,
+  ApiGetProfile,
+  ApiRefresh,
+  ApiSignIn,
+  ApiSignOut,
+  ApiSignUp,
+} from '@src/apis/auth/controllers/auth.swagger';
 import { SignInDto } from '@src/apis/auth/dtos/sign-in.dto';
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
 import { RefreshAuthGuard } from '@src/apis/auth/guards/refresh-auth-guard.guard';
 import { AuthService } from '@src/apis/auth/services/auth.service';
 import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-request-body.dto';
+import { UserBaseResponseDto } from '@src/apis/users/dto/user-base-response.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
+import {
+  ResponseType,
+  SetResponse,
+} from '@src/decorators/set-response.decorator';
 import { User } from '@src/decorators/user.decorator';
 import { ParsePositiveIntPipe } from '@src/pipes/parse-positive-int.pipe';
 import { Response } from 'express';
@@ -25,19 +38,21 @@ import { Response } from 'express';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: '로그인한 유저 프로필 조회' })
+  @ApiGetProfile('로그인한 유저 프로필')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
+  @SetResponse({ key: 'user', type: ResponseType.Base })
   @Get('profile')
   getProfile(@User() user: UserEntity) {
     return new UserEntity(user);
   }
 
+  @ApiSignUp('회원가입')
+  @SetResponse({ key: 'user', type: ResponseType.Base })
   @Post('sign-up')
   async signUp(
     @Res({ passthrough: true }) res: Response,
     @Body() createUserRequestBodyDto: CreateUserRequestBodyDto,
-  ): Promise<UserEntity> {
+  ): Promise<UserBaseResponseDto> {
     const user = await this.authService.signUp(createUserRequestBodyDto);
     const accessToken = await this.authService.generateAccessToken(user.id);
     const refreshToken = await this.authService.generateRefreshToken(user.id);
@@ -47,14 +62,16 @@ export class AuthController {
       refreshToken,
     });
 
-    return user;
+    return new UserBaseResponseDto(user);
   }
 
+  @ApiSignIn('로그인')
+  @SetResponse({ key: 'user', type: ResponseType.Base })
   @Post('sign-in')
   async signIn(
     @Res({ passthrough: true }) res: Response,
     @Body() signInDto: SignInDto,
-  ): Promise<UserEntity> {
+  ): Promise<UserBaseResponseDto> {
     const user = await this.authService.signIn(signInDto);
     const accessToken = await this.authService.generateAccessToken(user.id);
     const refreshToken = await this.authService.generateRefreshToken(user.id);
@@ -64,12 +81,13 @@ export class AuthController {
       refreshToken,
     });
 
-    return user;
+    return new UserBaseResponseDto(user);
   }
 
+  @ApiSignOut('로그아웃')
   @UseGuards(JwtAuthGuard)
-  @Post('sign-out')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('sign-out')
   async signOut(
     @Res({ passthrough: true }) res: Response,
     @User() user: UserEntity,
@@ -77,12 +95,13 @@ export class AuthController {
     await this.authService.clearAuthToken(res, user.id);
   }
 
+  @ApiRefresh('refresh token 을 이용한 access token 재발급')
   @UseGuards(RefreshAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('refresh')
   async refresh(
-    @User() user: UserEntity,
     @Res({ passthrough: true }) res: Response,
+    @User() user: UserEntity,
   ): Promise<void> {
     const accessToken = await this.authService.generateAccessToken(user.id);
     const refreshToken = await this.authService.generateRefreshToken(user.id);
@@ -93,7 +112,7 @@ export class AuthController {
     });
   }
 
-  @ApiOperation({ summary: '개발용으로 생성된 엑세스 토큰 생성 api' })
+  @ApiCreateAccessTokenForDevelop('개발용으로 생성된 access token 발급 api')
   @Post('access-token/:userId')
   createAccessTokenForDevelop(
     @Param('userId', ParsePositiveIntPipe) userId: number,

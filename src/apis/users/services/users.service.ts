@@ -59,7 +59,7 @@ export class UsersService implements BaseService<UserEntity> {
     return [users, count];
   }
 
-  async findOne(userId: number) {
+  async findOne(userId: number): Promise<UserEntity> {
     const existUser = await this.prismaService.user.findFirst({
       where: {
         id: userId,
@@ -84,14 +84,11 @@ export class UsersService implements BaseService<UserEntity> {
     });
   }
 
-  async create(
-    userId: number,
-    createUserDto: CreateUserRequestBodyDto,
-  ): Promise<UserEntity> {
+  async create(createUserDto: CreateUserRequestBodyDto): Promise<UserEntity> {
     const { email, nickname } = createUserDto;
 
-    await this.checkUniqueEmail(userId, email);
-    await this.checkUniqueNickname(userId, nickname);
+    await this.checkUniqueEmail(email);
+    await this.checkUniqueNickname(nickname);
 
     createUserDto.password = await bcrypt.hash(
       createUserDto.password,
@@ -115,11 +112,11 @@ export class UsersService implements BaseService<UserEntity> {
     const { email, nickname } = patchUpdateUserBodyDto;
 
     if (email) {
-      await this.checkUniqueEmail(userId, email);
+      await this.checkUniqueEmail(email, userId);
     }
 
     if (nickname) {
-      await this.checkUniqueNickname(userId, nickname);
+      await this.checkUniqueNickname(nickname, userId);
     }
 
     return this.prismaService.user.update({
@@ -141,8 +138,8 @@ export class UsersService implements BaseService<UserEntity> {
 
     const { email, nickname } = putUpdateUserBodyDto;
 
-    await this.checkUniqueEmail(userId, email);
-    await this.checkUniqueNickname(userId, nickname);
+    await this.checkUniqueEmail(email, userId);
+    await this.checkUniqueNickname(nickname, userId);
 
     return this.prismaService.user.update({
       where: {
@@ -191,7 +188,10 @@ export class UsersService implements BaseService<UserEntity> {
     );
   }
 
-  private async checkUniqueEmail(userId: number, email: string): Promise<void> {
+  private async checkUniqueEmail(
+    email: string,
+    userId?: number,
+  ): Promise<void> {
     const existUser = await this.prismaService.user.findUnique({
       select: {
         id: true,
@@ -214,8 +214,8 @@ export class UsersService implements BaseService<UserEntity> {
   }
 
   private async checkUniqueNickname(
-    userId: number,
     nickname: string,
+    userId?: number,
   ): Promise<void> {
     const existUser = await this.prismaService.user.findUnique({
       select: {

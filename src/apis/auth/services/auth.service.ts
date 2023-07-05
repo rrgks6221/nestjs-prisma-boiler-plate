@@ -43,11 +43,9 @@ export class AuthService {
       createUserRequestBodyDto.password,
       10,
     );
-    const newUser = await this.prismaService.user.create({
-      data: createUserRequestBodyDto,
-    });
+    const newUser = await this.usersService.create(createUserRequestBodyDto);
 
-    return new UserEntity(newUser);
+    return newUser;
   }
 
   async signIn(signInDto: SignInDto): Promise<UserEntity> {
