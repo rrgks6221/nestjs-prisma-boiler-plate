@@ -3,12 +3,13 @@ import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtStrategy } from '@src/apis/auth/jwt/jwt.strategy';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
+import { UsersService } from '@src/apis/users/services/users.service';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
-import { PrismaService } from '@src/core/prisma/prisma.service';
-import { mockPrismaService } from '@test/mock/prisma-service.mock';
+import { MockUserService } from '@test/mock/services.mock';
 
 describe('JwtStrategy', () => {
   let jwtStrategy: JwtStrategy;
+  let mockUserService: MockUserService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,13 +24,18 @@ describe('JwtStrategy', () => {
           },
         },
         {
-          provide: PrismaService,
-          useValue: mockPrismaService,
+          provide: UsersService,
+          useClass: MockUserService,
         },
       ],
     }).compile();
 
     jwtStrategy = module.get<JwtStrategy>(JwtStrategy);
+    mockUserService = module.get(UsersService);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -48,7 +54,7 @@ describe('JwtStrategy', () => {
     });
 
     it('user 가 존재하는 경우', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue(new UserEntity());
+      mockUserService.findOneBy.mockResolvedValue(new UserEntity());
 
       await expect(jwtStrategy.validate(payload)).resolves.toBeInstanceOf(
         UserEntity,
@@ -56,15 +62,11 @@ describe('JwtStrategy', () => {
     });
 
     it('user 가 존재하지 않는 경우', async () => {
-      mockPrismaService.user.findUnique.mockResolvedValue(null);
+      mockUserService.findOneBy.mockResolvedValue(null);
 
       await expect(jwtStrategy.validate(payload)).rejects.toThrowError(
         UnauthorizedException,
       );
     });
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
   });
 });
