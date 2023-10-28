@@ -3,11 +3,11 @@ import { PassportStrategy } from '@nestjs/passport';
 import { JWT_TOKEN_TYPE } from '@src/apis/auth/constants/auth.constant';
 import { Payload } from '@src/apis/auth/types/auth.type';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
+import { UsersService } from '@src/apis/users/services/users.service';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { ENV_KEY } from '@src/core/app-config/constants/api-config.constant';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
-import { PrismaService } from '@src/core/prisma/prisma.service';
 import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
@@ -18,7 +18,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
 ) {
   constructor(
     appConfigService: AppConfigService,
-    private readonly prismaService: PrismaService,
+    private readonly usersService: UsersService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
@@ -32,12 +32,9 @@ export class JwtRefreshStrategy extends PassportStrategy(
   }
 
   async validate(payload: Payload) {
-    const existUser: UserEntity | null =
-      await this.prismaService.user.findUnique({
-        where: {
-          id: payload.id,
-        },
-      });
+    const existUser: UserEntity | null = await this.usersService.findOneBy({
+      id: payload.id,
+    });
 
     if (!existUser) {
       throw new UnauthorizedException(
