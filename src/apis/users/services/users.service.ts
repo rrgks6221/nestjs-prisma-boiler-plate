@@ -41,14 +41,20 @@ export class UsersService implements BaseService<UserEntity> {
     );
 
     const usersQuery = this.prismaService.user.findMany({
-      where,
+      where: {
+        ...where,
+        deletedAt: null,
+      },
       orderBy,
       skip: page * pageSize,
       take: pageSize,
     });
 
     const totalCountQuery = this.prismaService.user.count({
-      where,
+      where: {
+        ...where,
+        deletedAt: null,
+      },
     });
 
     const [users, count] = await this.prismaService.$transaction([
@@ -63,6 +69,7 @@ export class UsersService implements BaseService<UserEntity> {
     const existUser = await this.prismaService.user.findFirst({
       where: {
         id: userId,
+        deletedAt: null,
       },
     });
 
@@ -80,7 +87,10 @@ export class UsersService implements BaseService<UserEntity> {
 
   findOneBy(where: Prisma.UserWhereInput) {
     return this.prismaService.user.findFirst({
-      where,
+      where: {
+        ...where,
+        deletedAt: null,
+      },
     });
   }
 
@@ -170,9 +180,10 @@ export class UsersService implements BaseService<UserEntity> {
   }
 
   async buildBaseResponse(userId: number): Promise<UserEntity> {
-    return this.prismaService.user.findUniqueOrThrow({
+    return this.prismaService.user.findFirstOrThrow({
       where: {
         id: userId,
+        deletedAt: null,
       },
     });
   }
@@ -192,12 +203,13 @@ export class UsersService implements BaseService<UserEntity> {
     email: string,
     userId?: number,
   ): Promise<void> {
-    const existUser = await this.prismaService.user.findUnique({
+    const existUser = await this.prismaService.user.findFirst({
       select: {
         id: true,
       },
       where: {
         email,
+        deletedAt: null,
       },
     });
 
@@ -217,12 +229,13 @@ export class UsersService implements BaseService<UserEntity> {
     nickname: string,
     userId?: number,
   ): Promise<void> {
-    const existUser = await this.prismaService.user.findUnique({
+    const existUser = await this.prismaService.user.findFirst({
       select: {
         id: true,
       },
       where: {
         nickname,
+        deletedAt: null,
       },
     });
 
