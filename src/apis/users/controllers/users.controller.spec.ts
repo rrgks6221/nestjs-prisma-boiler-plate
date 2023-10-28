@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '@src/apis/users/controllers/users.controller';
-import { FindUserListQueryDto } from '@src/apis/users/dto/find-user-list-query.dto';
-import { PatchUpdateUserBodyDto } from '@src/apis/users/dto/patch-update-user.dto';
-import { PutUpdateUserBodyDto } from '@src/apis/users/dto/put-update-user.dto';
+import { FindUserListRequestQueryDto } from '@src/apis/users/dto/find-user-list-request-query.dto';
+import { PatchUpdateUserRequestBodyDto } from '@src/apis/users/dto/patch-update-user-request-body.dto';
+import { PutUpdateUserRequestBodyDto } from '@src/apis/users/dto/put-update-user-request-body.dto';
 import { UserBaseResponseDto } from '@src/apis/users/dto/user-base-response.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { UsersService } from '@src/apis/users/services/users.service';
@@ -37,13 +37,13 @@ describe('UsersController', () => {
   });
 
   describe('findAllAndCount', () => {
-    let findUserListQueryDto: FindUserListQueryDto;
+    let findUserListQueryDto: FindUserListRequestQueryDto;
 
     let users: UserEntity[];
     let count: number;
 
     beforeEach(() => {
-      findUserListQueryDto = new FindUserListQueryDto();
+      findUserListQueryDto = new FindUserListRequestQueryDto();
 
       users = [];
       count = NaN;
@@ -84,14 +84,14 @@ describe('UsersController', () => {
 
   describe('patchUpdate', () => {
     let userId: number;
-    let patchUpdateUserBodyDto: PatchUpdateUserBodyDto;
+    let patchUpdateUserBodyDto: PatchUpdateUserRequestBodyDto;
     let user: UserEntity;
 
     let userEntity: UserEntity;
 
     beforeEach(() => {
       userId = NaN;
-      patchUpdateUserBodyDto = new PatchUpdateUserBodyDto();
+      patchUpdateUserBodyDto = new PatchUpdateUserRequestBodyDto();
       user = new UserEntity();
 
       userEntity = new UserEntity();
@@ -109,14 +109,14 @@ describe('UsersController', () => {
 
   describe('putUpdate', () => {
     let userId: number;
-    let putUpdateUserBodyDto: PutUpdateUserBodyDto;
+    let putUpdateUserBodyDto: PutUpdateUserRequestBodyDto;
     let user: UserEntity;
 
     let userEntity: UserEntity;
 
     beforeEach(() => {
       userId = NaN;
-      putUpdateUserBodyDto = new PutUpdateUserBodyDto();
+      putUpdateUserBodyDto = new PutUpdateUserRequestBodyDto();
       user = new UserEntity();
 
       userEntity = new UserEntity();

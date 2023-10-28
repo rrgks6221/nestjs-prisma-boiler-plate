@@ -19,9 +19,9 @@ import {
   ApiPutUpdate,
   ApiRemove,
 } from '@src/apis/users/controllers/users.swagger';
-import { FindUserListQueryDto } from '@src/apis/users/dto/find-user-list-query.dto';
-import { PatchUpdateUserBodyDto } from '@src/apis/users/dto/patch-update-user.dto';
-import { PutUpdateUserBodyDto } from '@src/apis/users/dto/put-update-user.dto';
+import { FindUserListRequestQueryDto } from '@src/apis/users/dto/find-user-list-request-query.dto';
+import { PatchUpdateUserRequestBodyDto } from '@src/apis/users/dto/patch-update-user-request-body.dto';
+import { PutUpdateUserRequestBodyDto } from '@src/apis/users/dto/put-update-user-request-body.dto';
 import { UserBaseResponseDto } from '@src/apis/users/dto/user-base-response.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { UsersService } from '@src/apis/users/services/users.service';
@@ -45,7 +45,7 @@ export class UsersController
   @ApiFindAllAndCount('유저 리스트 조회')
   @Get()
   async findAllAndCount(
-    @Query() findUserListQueryDto: FindUserListQueryDto,
+    @Query() findUserListQueryDto: FindUserListRequestQueryDto,
   ): Promise<[UserModel[], number]> {
     const [users, count] = await this.userService.findAllAndCount(
       findUserListQueryDto,
@@ -73,7 +73,7 @@ export class UsersController
   @Patch(':userId')
   async patchUpdate(
     @Param('userId', ParsePositiveIntPipe) userId: number,
-    @Body() patchUpdateUserBodyDto: PatchUpdateUserBodyDto,
+    @Body() patchUpdateUserBodyDto: PatchUpdateUserRequestBodyDto,
     @User() user: UserEntity,
   ): Promise<UserBaseResponseDto> {
     const newUser = await this.userService.patchUpdate(
@@ -93,7 +93,7 @@ export class UsersController
   @Put(':userId')
   async putUpdate(
     @Param('userId', ParsePositiveIntPipe) userId: number,
-    @Body() putUpdateUserBodyDto: PutUpdateUserBodyDto,
+    @Body() putUpdateUserBodyDto: PutUpdateUserRequestBodyDto,
     @User() user: UserEntity,
   ): Promise<UserBaseResponseDto> {
     const newUser = await this.userService.putUpdate(

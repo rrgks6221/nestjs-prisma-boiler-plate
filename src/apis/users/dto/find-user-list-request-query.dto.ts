@@ -10,7 +10,10 @@ import { IsPositiveInt } from '@src/decorators/is-positive-int.decorator';
 import { PageDto } from '@src/dtos/page.dto';
 import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
 
-export class FindUserListQueryDto extends PageDto implements Partial<User> {
+export class FindUserListRequestQueryDto
+  extends PageDto
+  implements Partial<User>
+{
   @ApiPropertyOptional({
     description: 'user 고유 Id',
     format: 'integer',

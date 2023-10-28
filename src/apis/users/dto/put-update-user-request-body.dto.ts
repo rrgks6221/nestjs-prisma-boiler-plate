@@ -3,7 +3,9 @@ import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-reques
 import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
 import { IsEmail } from 'class-validator';
 
-export class PutUpdateUserBodyDto implements Partial<CreateUserRequestBodyDto> {
+export class PutUpdateUserRequestBodyDto
+  implements Partial<CreateUserRequestBodyDto>
+{
   @ApiProperty({
     example: 'example@example.com',
     description: 'user email',

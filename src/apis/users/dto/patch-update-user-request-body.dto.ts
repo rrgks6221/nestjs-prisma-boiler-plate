@@ -3,7 +3,7 @@ import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-reques
 import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
 import { IsEmail, IsOptional } from 'class-validator';
 
-export class PatchUpdateUserBodyDto
+export class PatchUpdateUserRequestBodyDto
   implements Partial<CreateUserRequestBodyDto>
 {
   @ApiPropertyOptional({

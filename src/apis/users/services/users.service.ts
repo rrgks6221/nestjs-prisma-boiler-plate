@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-request-body.dto';
-import { FindUserListQueryDto } from '@src/apis/users/dto/find-user-list-query.dto';
-import { PatchUpdateUserBodyDto } from '@src/apis/users/dto/patch-update-user.dto';
-import { PutUpdateUserBodyDto } from '@src/apis/users/dto/put-update-user.dto';
+import { FindUserListRequestQueryDto } from '@src/apis/users/dto/find-user-list-request-query.dto';
+import { PatchUpdateUserRequestBodyDto } from '@src/apis/users/dto/patch-update-user-request-body.dto';
+import { PutUpdateUserRequestBodyDto } from '@src/apis/users/dto/put-update-user-request-body.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
@@ -31,7 +31,7 @@ export class UsersService implements BaseService<UserEntity> {
   ) {}
 
   async findAllAndCount(
-    findUserListQueryDto: FindUserListQueryDto,
+    findUserListQueryDto: FindUserListRequestQueryDto,
   ): Promise<[UserEntity[], number]> {
     const { page, pageSize, orderBy, ...filter } = findUserListQueryDto;
 
@@ -113,7 +113,7 @@ export class UsersService implements BaseService<UserEntity> {
   async patchUpdate(
     userId: number,
     loggedInUserId: number,
-    patchUpdateUserBodyDto: PatchUpdateUserBodyDto,
+    patchUpdateUserBodyDto: PatchUpdateUserRequestBodyDto,
   ): Promise<UserEntity> {
     await this.findOneOrNotFound(userId);
 
@@ -140,7 +140,7 @@ export class UsersService implements BaseService<UserEntity> {
   async putUpdate(
     userId: number,
     loggedInUserId: number,
-    putUpdateUserBodyDto: PutUpdateUserBodyDto,
+    putUpdateUserBodyDto: PutUpdateUserRequestBodyDto,
   ): Promise<UserEntity> {
     await this.findOneOrNotFound(userId);
 
