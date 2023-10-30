@@ -1,1 +1,1 @@
-export const BCRYPT_TOKEN = 'BCRYPT_TOKEN';
+export const BCRYPT_TOKEN = Symbol('BCRYPT_TOKEN');
