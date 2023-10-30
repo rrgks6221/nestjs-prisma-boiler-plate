@@ -7,7 +7,7 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from '@src/app.module';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { ENV_KEY } from '@src/core/app-config/constants/api-config.constant';
+import { ENV_KEY } from '@src/core/app-config/constants/app-config.constant';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { HttpBadRequestExceptionFilter } from '@src/core/http-exception-filters/filters/http-bad-request-exception.filter';
 import { HttpNestInternalServerErrorExceptionFilter } from '@src/core/http-exception-filters/filters/http-nest-Internal-server-error-exception.filter';

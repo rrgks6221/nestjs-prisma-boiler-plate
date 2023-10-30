@@ -2,6 +2,11 @@ const DATABASE = {
   DATABASE_URL: 'DATABASE_URL',
 } as const;
 
+const CACHE = {
+  CACHE_HOST: 'CACHE_HOST',
+  CACHE_PORT: 'CACHE_PORT',
+} as const;
+
 // JWT
 const JWT = {
   JWT_ACCESS_TOKEN_SECRET: 'JWT_ACCESS_TOKEN_SECRET',
@@ -17,7 +22,8 @@ const NOTIFICATION = {
 export const ENV_KEY = {
   PORT: 'PORT',
   NODE_ENV: 'NODE_ENV',
-  ...JWT,
   ...DATABASE,
+  ...CACHE,
+  ...JWT,
   ...NOTIFICATION,
 } as const;

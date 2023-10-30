@@ -5,7 +5,7 @@ import { Payload } from '@src/apis/auth/types/auth.type';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { UsersService } from '@src/apis/users/services/users.service';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { ENV_KEY } from '@src/core/app-config/constants/api-config.constant';
+import { ENV_KEY } from '@src/core/app-config/constants/app-config.constant';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import { Request } from 'express';

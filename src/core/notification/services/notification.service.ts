@@ -1,5 +1,5 @@
 import { Inject, Type } from '@nestjs/common';
-import { ENV_KEY } from '@src/core/app-config/constants/api-config.constant';
+import { ENV_KEY } from '@src/core/app-config/constants/app-config.constant';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import {
   EMBED_BUILDER_TOKEN,
