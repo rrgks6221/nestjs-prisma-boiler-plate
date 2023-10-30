@@ -97,7 +97,6 @@ describe('AuthService', () => {
     });
 
     it('signUp 성공', async () => {
-      mockEncryption.hash.mockResolvedValue('sortedPassword');
       mockUsersService.create.mockResolvedValue(newUser);
 
       await expect(service.signUp(signUpRequestBodyDto)).resolves.toEqual(

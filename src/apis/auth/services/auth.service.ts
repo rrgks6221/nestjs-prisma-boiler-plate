@@ -42,10 +42,6 @@ export class AuthService {
   async signUp(
     signUpRequestBodyDto: SignUpRequestBodyDto,
   ): Promise<UserEntity> {
-    signUpRequestBodyDto.password = await this.encryption.hash(
-      signUpRequestBodyDto.password,
-      10,
-    );
     const newUser = await this.usersService.create(signUpRequestBodyDto);
 
     return newUser;
