@@ -17,7 +17,6 @@ import { UsersModule } from '@src/apis/users/users.module';
 import { BCRYPT_TOKEN } from '@src/constants/token.constant';
 import { ENV_KEY } from '@src/core/app-config/constants/api-config.constant';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
-import { PrismaService } from '@src/core/prisma/prisma.service';
 import { UseDevelopmentMiddleware } from '@src/middlewares/use-development.middleware';
 import bcrypt from 'bcrypt';
 import redisStore from 'cache-manager-redis-store';
@@ -45,7 +44,6 @@ import { RedisClientOptions } from 'redis';
     AuthService,
     JwtStrategy,
     JwtRefreshStrategy,
-    PrismaService,
     AuthHelper,
     {
       provide: BCRYPT_TOKEN,

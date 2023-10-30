@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ForbiddenException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -11,6 +12,7 @@ import { PatchUpdateUserRequestBodyDto } from '@src/apis/users/dto/patch-update-
 import { PutUpdateUserRequestBodyDto } from '@src/apis/users/dto/put-update-user-request-body.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
+import { BCRYPT_TOKEN } from '@src/constants/token.constant';
 import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { QueryHelper } from '@src/helpers/query.helper';
@@ -27,6 +29,8 @@ export class UsersService implements BaseService<UserEntity> {
 
   constructor(
     private readonly prismaService: PrismaService,
+    @Inject(BCRYPT_TOKEN)
+    private readonly encryption: typeof bcrypt,
     private readonly queryHelper: QueryHelper,
   ) {}
 
@@ -94,32 +98,34 @@ export class UsersService implements BaseService<UserEntity> {
     });
   }
 
-  async create(createUserDto: CreateUserRequestBodyDto): Promise<UserEntity> {
-    const { email, nickname } = createUserDto;
+  async create(
+    createUserRequestBodyDto: CreateUserRequestBodyDto,
+  ): Promise<UserEntity> {
+    const { email, nickname } = createUserRequestBodyDto;
 
     await this.checkUniqueEmail(email);
     await this.checkUniqueNickname(nickname);
 
-    createUserDto.password = await bcrypt.hash(
-      createUserDto.password,
+    createUserRequestBodyDto.password = await this.encryption.hash(
+      createUserRequestBodyDto.password,
       this.SALT,
     );
 
     return this.prismaService.user.create({
-      data: createUserDto,
+      data: createUserRequestBodyDto,
     });
   }
 
   async patchUpdate(
     userId: number,
     loggedInUserId: number,
-    patchUpdateUserBodyDto: PatchUpdateUserRequestBodyDto,
+    patchUpdateUserRequestBodyDto: PatchUpdateUserRequestBodyDto,
   ): Promise<UserEntity> {
     await this.findOneOrNotFound(userId);
 
     this.checkOwn(userId, loggedInUserId);
 
-    const { email, nickname } = patchUpdateUserBodyDto;
+    const { email, nickname } = patchUpdateUserRequestBodyDto;
 
     if (email) {
       await this.checkUniqueEmail(email, userId);
@@ -133,20 +139,20 @@ export class UsersService implements BaseService<UserEntity> {
       where: {
         id: userId,
       },
-      data: patchUpdateUserBodyDto,
+      data: patchUpdateUserRequestBodyDto,
     });
   }
 
   async putUpdate(
     userId: number,
     loggedInUserId: number,
-    putUpdateUserBodyDto: PutUpdateUserRequestBodyDto,
+    putUpdateUserRequestBodyDto: PutUpdateUserRequestBodyDto,
   ): Promise<UserEntity> {
     await this.findOneOrNotFound(userId);
 
     this.checkOwn(userId, loggedInUserId);
 
-    const { email, nickname } = putUpdateUserBodyDto;
+    const { email, nickname } = putUpdateUserRequestBodyDto;
 
     await this.checkUniqueEmail(email, userId);
     await this.checkUniqueNickname(nickname, userId);
@@ -155,7 +161,7 @@ export class UsersService implements BaseService<UserEntity> {
       where: {
         id: userId,
       },
-      data: putUpdateUserBodyDto,
+      data: putUpdateUserRequestBodyDto,
     });
   }
 

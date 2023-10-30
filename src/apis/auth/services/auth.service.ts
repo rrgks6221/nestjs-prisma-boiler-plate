@@ -23,7 +23,6 @@ import { BCRYPT_TOKEN } from '@src/constants/token.constant';
 import { ENV_KEY } from '@src/core/app-config/constants/api-config.constant';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
-import { PrismaService } from '@src/core/prisma/prisma.service';
 import bcrypt from 'bcrypt';
 import { Cache } from 'cache-manager';
 import { Response } from 'express';
@@ -34,7 +33,6 @@ export class AuthService {
     private readonly appConfigService: AppConfigService,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly prismaService: PrismaService,
     private readonly authHelper: AuthHelper,
     @Inject(BCRYPT_TOKEN)
     private readonly encryption: typeof bcrypt,
