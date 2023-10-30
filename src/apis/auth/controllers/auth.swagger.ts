@@ -6,8 +6,8 @@ import {
 } from '@nestjs/swagger';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { ApiBaseResponse } from '@src/decorators/api-base-response.decorator';
-import { ApiFailureResponse } from '@src/decorators/api-failure-response.decorator';
+import { ApiBaseResponse } from '@src/decorators/swagger/api-base-response.decorator';
+import { ApiFailureResponse } from '@src/decorators/swagger/api-failure-response.decorator';
 
 export const ApiGetProfile = (summary: string) => {
   return applyDecorators(

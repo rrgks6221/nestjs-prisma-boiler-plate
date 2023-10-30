@@ -3,10 +3,10 @@ import { ApiOperation } from '@nestjs/swagger';
 import { UserBaseResponseDto } from '@src/apis/users/dto/user-base-response.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { ApiBaseResponse } from '@src/decorators/api-base-response.decorator';
-import { ApiDeleteResponse } from '@src/decorators/api-delete-response.decorator';
-import { ApiFailureResponse } from '@src/decorators/api-failure-response.decorator';
-import { ApiPaginationResponse } from '@src/decorators/api-pagination-response.decorator';
+import { ApiBaseResponse } from '@src/decorators/swagger/api-base-response.decorator';
+import { ApiDeleteResponse } from '@src/decorators/swagger/api-delete-response.decorator';
+import { ApiFailureResponse } from '@src/decorators/swagger/api-failure-response.decorator';
+import { ApiPaginationResponse } from '@src/decorators/swagger/api-pagination-response.decorator';
 
 export const ApiFindAllAndCount = (summary: string) => {
   return applyDecorators(

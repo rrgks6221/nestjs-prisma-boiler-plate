@@ -1,6 +1,6 @@
 import { InternalServerErrorException } from '@nestjs/common';
 import { SortOrder } from '@src/constants/enum';
-import { CsvToOrderBy } from '@src/decorators/csv-to-order-by.decorator';
+import { CsvToOrderBy } from '@src/decorators/transformer/csv-to-order-by.decorator';
 import { plainToInstance } from 'class-transformer';
 
 describe('CsvToOrderBy', () => {

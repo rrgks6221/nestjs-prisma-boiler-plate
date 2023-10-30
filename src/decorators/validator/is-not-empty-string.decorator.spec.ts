@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
+import { IsNotEmptyString } from '@src/decorators/validator/is-not-empty-string.decorator';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 

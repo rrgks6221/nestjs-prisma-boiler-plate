@@ -1,4 +1,4 @@
-import { IsPositiveInt } from '@src/decorators/is-positive-int.decorator';
+import { IsPositiveInt } from '@src/decorators/validator/is-positive-int.decorator';
 import { plainToInstance } from 'class-transformer';
 import { validate, ValidationOptions } from 'class-validator';
 

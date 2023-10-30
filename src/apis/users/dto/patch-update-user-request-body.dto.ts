@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { USER_NICKNAME_LENGTH } from '@src/apis/users/constants/user.constant';
 import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-request-body.dto';
-import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
+import { IsNotEmptyString } from '@src/decorators/validator/is-not-empty-string.decorator';
 import { IsEmail, IsOptional, Length } from 'class-validator';
 
 export class PatchUpdateUserRequestBodyDto

@@ -1,3 +1,6 @@
+import { ConflictException, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '@src/core/prisma/prisma.service';
+import { Target } from '@src/types/type';
 import {
   registerDecorator,
   ValidationArguments,
@@ -5,9 +8,6 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { PrismaService } from '@src/core/prisma/prisma.service';
-import { Target } from '@src/types/type';
-import { ConflictException, NotFoundException } from '@nestjs/common';
 
 @ValidatorConstraint({ async: true })
 export class IsRecordConstraint implements ValidatorConstraintInterface {

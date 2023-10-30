@@ -1,5 +1,5 @@
-import { IsEssential } from '@src/decorators/is-essential.decorator';
 import { faker } from '@faker-js/faker';
+import { IsEssential } from '@src/decorators/validator/is-essential.decorator';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 

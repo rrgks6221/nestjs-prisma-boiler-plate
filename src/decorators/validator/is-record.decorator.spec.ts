@@ -1,6 +1,6 @@
-import { IsRecordConstraint } from '@src/decorators/is-record.decorator';
-import { PrismaService } from '@src/core/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaService } from '@src/core/prisma/prisma.service';
+import { IsRecordConstraint } from '@src/decorators/validator/is-record.decorator';
 import { mockPrismaService } from '@test/mock/prisma-service.mock';
 
 describe('IsRecord decorator validate 메서드', () => {

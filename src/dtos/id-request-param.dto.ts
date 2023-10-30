@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsRecord } from '@src/decorators/is-record.decorator';
+import { IsRecord } from '@src/decorators/validator/is-record.decorator';
 import { Type } from 'class-transformer';
 import { IsOptional, Min } from 'class-validator';
 

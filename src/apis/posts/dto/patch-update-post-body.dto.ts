@@ -1,7 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { POST_TITLE_LENGTH } from '@src/apis/posts/constants/post.constant';
 import { CreatePostRequestBodyDto } from '@src/apis/posts/dto/create-post-request-body.dto';
-import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
+import { IsNotEmptyString } from '@src/decorators/validator/is-not-empty-string.decorator';
 import { IsOptional, Length } from 'class-validator';
 
 export class PatchUpdatePostBodyDto

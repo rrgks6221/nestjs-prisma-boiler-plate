@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { LoginType } from '@prisma/client';
 import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-request-body.dto';
-import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
-import { IsEnum, IsString, IsEmail } from 'class-validator';
+import { IsNotEmptyString } from '@src/decorators/validator/is-not-empty-string.decorator';
+import { IsEmail, IsEnum, IsString } from 'class-validator';
 
 export class SignUpRequestBodyDto implements CreateUserRequestBodyDto {
   @ApiProperty({

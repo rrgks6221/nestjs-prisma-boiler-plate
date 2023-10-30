@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { LoginType } from '@prisma/client';
 import { USER_NICKNAME_LENGTH } from '@src/apis/users/constants/user.constant';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
-import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
+import { IsNotEmptyString } from '@src/decorators/validator/is-not-empty-string.decorator';
 import { IsEmail, IsEnum, IsString, Length } from 'class-validator';
 
 export class CreateUserRequestBodyDto

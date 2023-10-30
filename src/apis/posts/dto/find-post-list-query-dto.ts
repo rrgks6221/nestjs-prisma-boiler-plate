@@ -5,12 +5,12 @@ import {
   POST_TITLE_LENGTH,
 } from '@src/apis/posts/constants/post.constant';
 import { SortOrder } from '@src/constants/enum';
-import { ApiPropertyOrderBy } from '@src/decorators/api-property-order-by.decorator';
+import { ApiPropertyOrderBy } from '@src/decorators/swagger/api-property-order-by.decorator';
 import {
   CsvToOrderBy,
   OrderBy,
-} from '@src/decorators/csv-to-order-by.decorator';
-import { IsPositiveInt } from '@src/decorators/is-positive-int.decorator';
+} from '@src/decorators/transformer/csv-to-order-by.decorator';
+import { IsPositiveInt } from '@src/decorators/validator/is-positive-int.decorator';
 import { PageDto } from '@src/dtos/page.dto';
 import { IsOptional, MaxLength } from 'class-validator';
 

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { POST_TITLE_LENGTH } from '@src/apis/posts/constants/post.constant';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
-import { IsNotEmptyString } from '@src/decorators/is-not-empty-string.decorator';
+import { IsNotEmptyString } from '@src/decorators/validator/is-not-empty-string.decorator';
 import { Length } from 'class-validator';
 
 export class CreatePostRequestBodyDto
