@@ -1,14 +1,25 @@
 import { BooleanString } from '@src/constants/enum';
-import { TransformFnParams } from 'class-transformer';
 
-export const transformPage = ({ value }: Partial<TransformFnParams>) => {
-  return Number(value) ? Number(value) - 1 : value;
+export const transformPage = ({ value }: { value: unknown }): number => {
+  const page = Number(value);
+
+  if (Number.isNaN(page)) {
+    return page;
+  }
+  if (page <= 0) {
+    return page;
+  }
+  return page - 1;
 };
 
-export const transformStringBoolean = ({
-  value,
-}: Partial<TransformFnParams>) => {
-  if (value === BooleanString.True) return true;
-  if (value === BooleanString.False) return false;
+export const transformStringBoolean = ({ value }: { value: unknown }) => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  const lowerStr = value.toLowerCase();
+
+  if (lowerStr === BooleanString.True) return true;
+  if (lowerStr === BooleanString.False) return false;
   return value;
 };

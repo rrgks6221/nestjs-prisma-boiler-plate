@@ -1,50 +1,85 @@
-import { faker } from '@faker-js/faker';
 import { transformPage, transformStringBoolean } from '@src/common/common';
 
 describe('common.ts 단위 테스트', () => {
   describe('transformPage', () => {
-    it('들어는 value 가 string number 일 경우', () => {
-      const randomNumber = faker.datatype.number();
-      const randomStringNumber = String(randomNumber);
-      const transformValue = transformPage({ value: randomStringNumber });
+    let obj: { value: any };
 
-      expect(typeof randomNumber).toBe('number');
-      expect(typeof randomStringNumber).toBe('string');
-      expect(transformValue).toBe(randomNumber - 1);
-      expect(typeof transformValue).toBe('number');
+    beforeEach(() => {
+      obj = {} as any;
     });
 
-    it('들어온 value 가 string 일 경우', () => {
-      const randomString = faker.datatype.string();
-      const randomStringNumber = Number(randomString);
-      const transformValue = transformPage({ value: randomString });
+    it('number 타입으로 변환되지 않는 문자열인 경우', () => {
+      obj.value = 'str';
 
-      expect(randomStringNumber).toBeNaN();
-      expect(typeof randomString).toBe('string');
-      expect(transformValue).toBe(transformValue);
-      expect(typeof transformValue).toBe('string');
+      expect(transformPage(obj)).toBeNaN();
+    });
+
+    it('number 타입으로 변환, 0보다 작은 경우', () => {
+      obj.value = 0;
+
+      expect(transformPage(obj)).toBe(0);
+    });
+
+    it('number 타입으로 변환, 0보다 큰 경우', () => {
+      obj.value = 1;
+
+      expect(transformPage(obj)).toBe(0);
     });
   });
 
   describe('transformStringBoolean', () => {
-    it('들어온 value 가 string boolean 일 경우', () => {
-      const boolean = faker.datatype.boolean();
-      const stringBoolean = String(boolean);
-      const transformValue = transformStringBoolean({ value: stringBoolean });
+    let obj: { value: unknown };
 
-      expect(typeof boolean).toBe('boolean');
-      expect(typeof stringBoolean).toBe('string');
-      expect(transformValue).toBe(boolean);
+    beforeEach(() => {
+      obj = {} as any;
     });
 
-    it('들어온 value 가 string boolean 이 아닐 경우 경우', () => {
-      const randomString = faker.datatype.string();
-      const transformValue = transformStringBoolean({ value: randomString });
+    it('string type 이 아닌 경우', () => {
+      obj.value = 1;
 
-      expect(typeof randomString).toBe('string');
-      expect(randomString).not.toBe('true');
-      expect(randomString).not.toBe('false');
-      expect(transformValue).toBe(randomString);
+      expect(transformStringBoolean(obj)).toBe(1);
+    });
+
+    it('string true', () => {
+      obj.value = 'true';
+
+      expect(transformStringBoolean(obj)).toBe(true);
+    });
+
+    it('string True', () => {
+      obj.value = 'True';
+
+      expect(transformStringBoolean(obj)).toBe(true);
+    });
+
+    it('string TRUE', () => {
+      obj.value = 'TRUE';
+
+      expect(transformStringBoolean(obj)).toBe(true);
+    });
+
+    it('string false', () => {
+      obj.value = 'false';
+
+      expect(transformStringBoolean(obj)).toBe(false);
+    });
+
+    it('string False', () => {
+      obj.value = 'False';
+
+      expect(transformStringBoolean(obj)).toBe(false);
+    });
+
+    it('string FALSE', () => {
+      obj.value = 'FALSE';
+
+      expect(transformStringBoolean(obj)).toBe(false);
+    });
+
+    it('일반 문자열인 경우', () => {
+      obj.value = 'string';
+
+      expect(transformStringBoolean(obj)).toBe(obj.value);
     });
   });
 });
