@@ -4,7 +4,7 @@ import { UsersController } from '@src/apis/users/controllers/users.controller';
 import { FindUserListRequestQueryDto } from '@src/apis/users/dto/find-user-list-request-query.dto';
 import { PatchUpdateUserRequestBodyDto } from '@src/apis/users/dto/patch-update-user-request-body.dto';
 import { PutUpdateUserRequestBodyDto } from '@src/apis/users/dto/put-update-user-request-body.dto';
-import { UserBaseResponseDto } from '@src/apis/users/dto/user-base-response.dto';
+import { UserResponseDto } from '@src/apis/users/dto/user-response.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { UsersService } from '@src/apis/users/services/users.service';
 import { MockUserService } from '@test/mock/services.mock';
@@ -77,7 +77,7 @@ describe('UsersController', () => {
       mockUserService.buildBaseResponse.mockResolvedValue(userEntity);
 
       await expect(controller.findOne(userId)).resolves.toBeInstanceOf(
-        UserBaseResponseDto,
+        UserResponseDto,
       );
     });
   });
@@ -103,7 +103,7 @@ describe('UsersController', () => {
 
       await expect(
         controller.patchUpdate(userId, patchUpdateUserBodyDto, user),
-      ).resolves.toBeInstanceOf(UserBaseResponseDto);
+      ).resolves.toBeInstanceOf(UserResponseDto);
     });
   });
 
@@ -128,7 +128,7 @@ describe('UsersController', () => {
 
       await expect(
         controller.putUpdate(userId, putUpdateUserBodyDto, user),
-      ).resolves.toBeInstanceOf(UserBaseResponseDto);
+      ).resolves.toBeInstanceOf(UserResponseDto);
     });
   });
 

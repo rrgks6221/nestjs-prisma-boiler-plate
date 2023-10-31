@@ -5,7 +5,7 @@ import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { BaseEntity } from '@src/entities/base.entity';
 import { Exclude } from 'class-transformer';
 
-export class UserBaseResponseDto extends BaseEntity implements UserEntity {
+export class UserResponseDto extends BaseEntity implements UserEntity {
   @Exclude()
   password: string | null;
 
@@ -28,7 +28,7 @@ export class UserBaseResponseDto extends BaseEntity implements UserEntity {
   })
   nickname: string;
 
-  constructor(user: Partial<UserBaseResponseDto> = {}) {
+  constructor(user: Partial<UserResponseDto> = {}) {
     super();
 
     Object.assign(this, user);

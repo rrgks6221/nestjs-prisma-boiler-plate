@@ -4,7 +4,7 @@ import { AuthController } from '@src/apis/auth/controllers/auth.controller';
 import { SignInDtoRequestBody } from '@src/apis/auth/dtos/sign-in-request-body.dto';
 import { SignUpRequestBodyDto } from '@src/apis/auth/dtos/sign-up-request-body.dto';
 import { AuthService } from '@src/apis/auth/services/auth.service';
-import { UserBaseResponseDto } from '@src/apis/users/dto/user-base-response.dto';
+import { UserResponseDto } from '@src/apis/users/dto/user-response.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { MockAuthService } from '@test/mock/services.mock';
 
@@ -54,7 +54,7 @@ describe('AuthController', () => {
 
       await expect(
         controller.signUp(mockResponse, signUpRequestBodyDto),
-      ).resolves.toBeInstanceOf(UserBaseResponseDto);
+      ).resolves.toBeInstanceOf(UserResponseDto);
     });
   });
 
@@ -81,7 +81,7 @@ describe('AuthController', () => {
 
       await expect(
         controller.signIn(mockResponse, signInDtoRequestBody),
-      ).resolves.toBeInstanceOf(UserBaseResponseDto);
+      ).resolves.toBeInstanceOf(UserResponseDto);
     });
   });
 

@@ -3,7 +3,7 @@ import { POST_TITLE_LENGTH } from '@src/apis/posts/constants/post.constant';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { BaseEntity } from '@src/entities/base.entity';
 
-export class PostBaseResponseDto extends BaseEntity implements PostEntity {
+export class PostResponseDto extends BaseEntity implements PostEntity {
   @ApiProperty({
     description: 'user 고유 ID',
     type: 'integer',
@@ -23,7 +23,7 @@ export class PostBaseResponseDto extends BaseEntity implements PostEntity {
   })
   description: string;
 
-  constructor(post: Partial<PostBaseResponseDto> = {}) {
+  constructor(post: Partial<PostResponseDto> = {}) {
     super();
 
     Object.assign(this, post);

@@ -4,15 +4,15 @@ import {
   ApiNoContentResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { UserEntity } from '@src/apis/users/entities/user.entity';
+import { UserResponseDto } from '@src/apis/users/dto/user-response.dto';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { ApiBaseResponse } from '@src/decorators/swagger/api-base-response.decorator';
 import { ApiFailureResponse } from '@src/decorators/swagger/api-failure-response.decorator';
+import { BaseResponseDto } from '@src/interceptors/success-interceptor/dto/base-response.dto';
 
 export const ApiGetProfile = (summary: string) => {
   return applyDecorators(
     ApiOperation({ summary }),
-    ApiBaseResponse(HttpStatus.OK, { key: 'user', type: UserEntity }),
+    BaseResponseDto.swaggerBuilder(HttpStatus.OK, 'user', UserResponseDto),
     ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
     ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
   );
@@ -21,7 +21,7 @@ export const ApiGetProfile = (summary: string) => {
 export const ApiSignUp = (summary: string) => {
   return applyDecorators(
     ApiOperation({ summary }),
-    ApiBaseResponse(HttpStatus.CREATED, { key: 'user', type: UserEntity }),
+    BaseResponseDto.swaggerBuilder(HttpStatus.CREATED, 'user', UserResponseDto),
     ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
     ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
   );
@@ -30,7 +30,7 @@ export const ApiSignUp = (summary: string) => {
 export const ApiSignIn = (summary: string) => {
   return applyDecorators(
     ApiOperation({ summary }),
-    ApiBaseResponse(HttpStatus.CREATED, { key: 'user', type: UserEntity }),
+    BaseResponseDto.swaggerBuilder(HttpStatus.CREATED, 'user', UserResponseDto),
     ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
     ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
     ApiFailureResponse(HttpStatus.FORBIDDEN, [ERROR_CODE.CODE006]),

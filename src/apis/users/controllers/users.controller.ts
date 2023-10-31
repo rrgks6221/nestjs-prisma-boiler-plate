@@ -22,7 +22,7 @@ import {
 import { FindUserListRequestQueryDto } from '@src/apis/users/dto/find-user-list-request-query.dto';
 import { PatchUpdateUserRequestBodyDto } from '@src/apis/users/dto/patch-update-user-request-body.dto';
 import { PutUpdateUserRequestBodyDto } from '@src/apis/users/dto/put-update-user-request-body.dto';
-import { UserBaseResponseDto } from '@src/apis/users/dto/user-base-response.dto';
+import { UserResponseDto } from '@src/apis/users/dto/user-response.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { UsersService } from '@src/apis/users/services/users.service';
 import {
@@ -37,7 +37,7 @@ import { plainToInstance } from 'class-transformer';
 @ApiTags('users')
 @Controller('api/users')
 export class UsersController
-  implements Omit<BaseController<UserModel, UserBaseResponseDto>, 'create'>
+  implements Omit<BaseController<UserModel, UserResponseDto>, 'create'>
 {
   constructor(private readonly userService: UsersService) {}
 
@@ -59,12 +59,12 @@ export class UsersController
   @Get(':userId')
   async findOne(
     @Param('userId', ParsePositiveIntPipe) userId: number,
-  ): Promise<UserBaseResponseDto> {
+  ): Promise<UserResponseDto> {
     const existUser = await this.userService.findOneOrNotFound(userId);
 
     const response = await this.userService.buildBaseResponse(existUser.id);
 
-    return new UserBaseResponseDto(response);
+    return new UserResponseDto(response);
   }
 
   @ApiPatchUpdate('유저 부분 수정')
@@ -75,7 +75,7 @@ export class UsersController
     @Param('userId', ParsePositiveIntPipe) userId: number,
     @Body() patchUpdateUserBodyDto: PatchUpdateUserRequestBodyDto,
     @User() user: UserEntity,
-  ): Promise<UserBaseResponseDto> {
+  ): Promise<UserResponseDto> {
     const newUser = await this.userService.patchUpdate(
       userId,
       user.id,
@@ -84,7 +84,7 @@ export class UsersController
 
     const response = await this.userService.buildBaseResponse(newUser.id);
 
-    return new UserBaseResponseDto(response);
+    return new UserResponseDto(response);
   }
 
   @ApiPutUpdate('유저 수정')
@@ -95,7 +95,7 @@ export class UsersController
     @Param('userId', ParsePositiveIntPipe) userId: number,
     @Body() putUpdateUserBodyDto: PutUpdateUserRequestBodyDto,
     @User() user: UserEntity,
-  ): Promise<UserBaseResponseDto> {
+  ): Promise<UserResponseDto> {
     const newUser = await this.userService.putUpdate(
       userId,
       user.id,
@@ -104,7 +104,7 @@ export class UsersController
 
     const response = await this.userService.buildBaseResponse(newUser.id);
 
-    return new UserBaseResponseDto(response);
+    return new UserResponseDto(response);
   }
 
   @ApiRemove('유저 삭제')

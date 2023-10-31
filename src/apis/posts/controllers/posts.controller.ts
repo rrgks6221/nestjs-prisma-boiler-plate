@@ -23,7 +23,7 @@ import {
 import { CreatePostRequestBodyDto } from '@src/apis/posts/dto/create-post-request-body.dto';
 import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
-import { PostBaseResponseDto } from '@src/apis/posts/dto/post-base-response.dto';
+import { PostResponseDto } from '@src/apis/posts/dto/post-response.dto';
 import { PutUpdatePostBodyDto } from '@src/apis/posts/dto/put-update-post-body-dto';
 import { PostEntity } from '@src/apis/posts/entities/post.entity';
 import { PostsService } from '@src/apis/posts/services/posts.service';
@@ -41,7 +41,7 @@ import { plainToInstance } from 'class-transformer';
 @ApiTags('posts')
 @Controller('api/posts')
 export class PostsController
-  implements BaseController<PostEntity, PostBaseResponseDto>
+  implements BaseController<PostEntity, PostResponseDto>
 {
   constructor(private readonly postService: PostsService) {}
 
@@ -64,12 +64,12 @@ export class PostsController
   @SetResponse({ key: 'post', type: ResponseType.Base })
   async findOne(
     @Param('postId', ParsePositiveIntPipe) postId: number,
-  ): Promise<PostBaseResponseDto> {
+  ): Promise<PostResponseDto> {
     const post = await this.postService.findOneOrNotFound(postId);
 
     const response = await this.postService.buildBaseResponse(post.id);
 
-    return new PostBaseResponseDto(response);
+    return new PostResponseDto(response);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -79,12 +79,12 @@ export class PostsController
   async create(
     @User() user: UserEntity,
     @Body() createPostBodyDto: CreatePostRequestBodyDto,
-  ): Promise<PostBaseResponseDto> {
+  ): Promise<PostResponseDto> {
     const newPost = await this.postService.create(user.id, createPostBodyDto);
 
     const response = await this.postService.buildBaseResponse(newPost.id);
 
-    return new PostBaseResponseDto(response);
+    return new PostResponseDto(response);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -95,7 +95,7 @@ export class PostsController
     @Param('postId', ParsePositiveIntPipe) postId: number,
     @User() user: UserEntity,
     @Body() putUpdatePostDto: PutUpdatePostBodyDto,
-  ): Promise<PostBaseResponseDto> {
+  ): Promise<PostResponseDto> {
     const updatedPost = await this.postService.putUpdate(
       postId,
       user.id,
@@ -104,7 +104,7 @@ export class PostsController
 
     const response = await this.postService.buildBaseResponse(updatedPost.id);
 
-    return new PostBaseResponseDto(response);
+    return new PostResponseDto(response);
   }
 
   @ApiPatchUpdate('post 부분 수정')
@@ -115,7 +115,7 @@ export class PostsController
     @Param('postId', ParsePositiveIntPipe) postId: number,
     @User() user: UserEntity,
     @Body() patchUpdatePostDto: PatchUpdatePostBodyDto,
-  ): Promise<PostBaseResponseDto> {
+  ): Promise<PostResponseDto> {
     const updatedPost = await this.postService.patchUpdate(
       postId,
       user.id,
@@ -124,7 +124,7 @@ export class PostsController
 
     const response = await this.postService.buildBaseResponse(updatedPost.id);
 
-    return new PostBaseResponseDto(response);
+    return new PostResponseDto(response);
   }
 
   @ApiRemove('post 삭제')

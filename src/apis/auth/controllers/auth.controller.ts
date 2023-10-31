@@ -23,8 +23,7 @@ import { SignUpRequestBodyDto } from '@src/apis/auth/dtos/sign-up-request-body.d
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
 import { RefreshAuthGuard } from '@src/apis/auth/guards/refresh-auth-guard.guard';
 import { AuthService } from '@src/apis/auth/services/auth.service';
-import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-request-body.dto';
-import { UserBaseResponseDto } from '@src/apis/users/dto/user-base-response.dto';
+import { UserResponseDto } from '@src/apis/users/dto/user-response.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import {
   ResponseType,
@@ -53,7 +52,7 @@ export class AuthController {
   async signUp(
     @Res({ passthrough: true }) res: Response,
     @Body() signUpRequestBodyDto: SignUpRequestBodyDto,
-  ): Promise<UserBaseResponseDto> {
+  ): Promise<UserResponseDto> {
     const newUser = await this.authService.signUp(signUpRequestBodyDto);
     const accessToken = await this.authService.generateAccessToken(newUser.id);
     const refreshToken = await this.authService.generateRefreshToken(
@@ -65,7 +64,7 @@ export class AuthController {
       refreshToken,
     });
 
-    return new UserBaseResponseDto(newUser);
+    return new UserResponseDto(newUser);
   }
 
   @ApiSignIn('로그인')
@@ -74,7 +73,7 @@ export class AuthController {
   async signIn(
     @Res({ passthrough: true }) res: Response,
     @Body() signInDtoRequestBody: SignInDtoRequestBody,
-  ): Promise<UserBaseResponseDto> {
+  ): Promise<UserResponseDto> {
     const user = await this.authService.signIn(signInDtoRequestBody);
     const accessToken = await this.authService.generateAccessToken(user.id);
     const refreshToken = await this.authService.generateRefreshToken(user.id);
@@ -84,7 +83,7 @@ export class AuthController {
       refreshToken,
     });
 
-    return new UserBaseResponseDto(user);
+    return new UserResponseDto(user);
   }
 
   @ApiSignOut('로그아웃')
