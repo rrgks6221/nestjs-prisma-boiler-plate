@@ -30,13 +30,13 @@ import {
 } from '@src/decorators/set-response.decorator';
 import { User } from '@src/decorators/user.decorator';
 import { ParsePositiveIntPipe } from '@src/pipes/parse-positive-int.pipe';
-import { BaseController } from '@src/types/type';
+import { RestController } from '@src/types/type';
 import { plainToInstance } from 'class-transformer';
 
 @ApiTags('users')
 @Controller('api/users')
 export class UsersController
-  implements Omit<BaseController<UserResponseDto>, 'create'>
+  implements Omit<RestController<UserResponseDto>, 'create'>
 {
   constructor(private readonly userService: UsersService) {}
 
@@ -54,21 +54,21 @@ export class UsersController
   }
 
   @ApiFindOne('유저 단일 조회')
-  @SetResponse({ key: 'user', type: ResponseType.Base })
+  @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Get(':userId')
   async findOne(
     @Param('userId', ParsePositiveIntPipe) userId: number,
   ): Promise<UserResponseDto> {
     const existUser = await this.userService.findOneOrNotFound(userId);
 
-    const response = await this.userService.buildBaseResponse(existUser.id);
+    const response = await this.userService.buildDetailResponse(existUser.id);
 
     return new UserResponseDto(response);
   }
 
   @ApiPatchUpdate('유저 부분 수정')
   @UseGuards(JwtAuthGuard)
-  @SetResponse({ key: 'user', type: ResponseType.Base })
+  @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Patch(':userId')
   async patchUpdate(
     @Param('userId', ParsePositiveIntPipe) userId: number,
@@ -81,14 +81,14 @@ export class UsersController
       patchUpdateUserBodyDto,
     );
 
-    const response = await this.userService.buildBaseResponse(newUser.id);
+    const response = await this.userService.buildDetailResponse(newUser.id);
 
     return new UserResponseDto(response);
   }
 
   @ApiPutUpdate('유저 수정')
   @UseGuards(JwtAuthGuard)
-  @SetResponse({ key: 'user', type: ResponseType.Base })
+  @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Put(':userId')
   async putUpdate(
     @Param('userId', ParsePositiveIntPipe) userId: number,
@@ -101,7 +101,7 @@ export class UsersController
       putUpdateUserBodyDto,
     );
 
-    const response = await this.userService.buildBaseResponse(newUser.id);
+    const response = await this.userService.buildDetailResponse(newUser.id);
 
     return new UserResponseDto(response);
   }

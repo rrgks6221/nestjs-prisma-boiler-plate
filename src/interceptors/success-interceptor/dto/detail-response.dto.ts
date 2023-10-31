@@ -2,7 +2,7 @@ import { HttpStatus, Type } from '@nestjs/common';
 import { ErrorHttpStatusCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { ApiProperty, ApiPropertyOptions, ApiResponse } from '@nestjs/swagger';
 
-export class BaseResponseDto {
+export class DetailResponseDto {
   [key: string]: unknown;
 
   static swaggerBuilder(

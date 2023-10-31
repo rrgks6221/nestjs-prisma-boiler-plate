@@ -8,7 +8,7 @@ import { MockClass } from '@test/mock/type';
 import { lastValueFrom, of } from 'rxjs';
 
 class MockResponseBuilder implements MockClass<ResponseBuilder> {
-  base = jest.fn();
+  detail = jest.fn();
   delete = jest.fn();
   pagination = jest.fn();
 }
@@ -83,16 +83,16 @@ describe('SuccessInterceptor', () => {
       };
 
       args = {
-        type: ResponseType.Base,
+        type: ResponseType.Detail,
         key: 'key',
       };
       mockReflector.get.mockReturnValue(args);
-      mockResponseBuilder.base.mockReturnValue({ key: data });
+      mockResponseBuilder.detail.mockReturnValue({ key: data });
 
       await expect(
         lastValueFrom(interceptor.intercept(mockContext, next)),
       ).resolves.toEqual({ key: {} });
-      expect(mockResponseBuilder.base).toBeCalled();
+      expect(mockResponseBuilder.detail).toBeCalled();
     });
 
     it('pagination api type interceptor', async () => {

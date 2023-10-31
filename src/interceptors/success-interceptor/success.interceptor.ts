@@ -41,8 +41,8 @@ export class SuccessInterceptor implements NestInterceptor {
         const { type, key } = args;
 
         // 단일 action api 에 대한 response
-        if (type === ResponseType.Base) {
-          return this.responseBuilder.base({ data, key });
+        if (type === ResponseType.Detail) {
+          return this.responseBuilder.detail({ data, key });
         }
 
         // pagination api response

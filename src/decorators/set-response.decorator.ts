@@ -3,14 +3,17 @@ import { SetMetadata } from '@nestjs/common';
 export const SET_RESPONSE = 'SET_RESPONSE';
 
 export enum ResponseType {
-  Base = 'base',
+  Detail = 'detail',
   Pagination = 'pagination',
   Delete = 'delete',
 }
 
 export type Args =
   | {
-      type: Extract<ResponseType, ResponseType.Base | ResponseType.Pagination>;
+      type: Extract<
+        ResponseType,
+        ResponseType.Detail | ResponseType.Pagination
+      >;
       key: string;
     }
   | {

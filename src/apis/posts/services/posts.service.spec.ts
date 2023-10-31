@@ -255,7 +255,7 @@ describe('PostsService', () => {
     it('return post', async () => {
       mockPrismaService.post.findFirstOrThrow.mockResolvedValue(postEntity);
 
-      await expect(service.buildBaseResponse(postId)).resolves.toEqual(
+      await expect(service.buildDetailResponse(postId)).resolves.toEqual(
         postEntity,
       );
     });

@@ -461,7 +461,7 @@ describe('UsersService', () => {
 
       mockPrismaService.user.findFirstOrThrow.mockResolvedValueOnce(user);
 
-      await expect(service.buildBaseResponse(userId)).resolves.toEqual(user);
+      await expect(service.buildDetailResponse(userId)).resolves.toEqual(user);
     });
   });
 });

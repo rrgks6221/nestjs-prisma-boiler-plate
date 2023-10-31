@@ -33,13 +33,13 @@ import {
 } from '@src/decorators/set-response.decorator';
 import { User } from '@src/decorators/user.decorator';
 import { ParsePositiveIntPipe } from '@src/pipes/parse-positive-int.pipe';
-import { BaseController } from '@src/types/type';
+import { RestController } from '@src/types/type';
 import { plainToInstance } from 'class-transformer';
 
 @ApiBearerAuth()
 @ApiTags('posts')
 @Controller('api/posts')
-export class PostsController implements BaseController<PostResponseDto> {
+export class PostsController implements RestController<PostResponseDto> {
   constructor(private readonly postService: PostsService) {}
 
   @Get()
@@ -58,20 +58,20 @@ export class PostsController implements BaseController<PostResponseDto> {
 
   @Get(':postId')
   @ApiFindOne('post 상세 조회')
-  @SetResponse({ key: 'post', type: ResponseType.Base })
+  @SetResponse({ key: 'post', type: ResponseType.Detail })
   async findOne(
     @Param('postId', ParsePositiveIntPipe) postId: number,
   ): Promise<PostResponseDto> {
     const post = await this.postService.findOneOrNotFound(postId);
 
-    const response = await this.postService.buildBaseResponse(post.id);
+    const response = await this.postService.buildDetailResponse(post.id);
 
     return new PostResponseDto(response);
   }
 
   @UseGuards(JwtAuthGuard)
   @ApiCreate('post 생성')
-  @SetResponse({ key: 'post', type: ResponseType.Base })
+  @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Post()
   async create(
     @User() user: UserEntity,
@@ -79,14 +79,14 @@ export class PostsController implements BaseController<PostResponseDto> {
   ): Promise<PostResponseDto> {
     const newPost = await this.postService.create(user.id, createPostBodyDto);
 
-    const response = await this.postService.buildBaseResponse(newPost.id);
+    const response = await this.postService.buildDetailResponse(newPost.id);
 
     return new PostResponseDto(response);
   }
 
   @UseGuards(JwtAuthGuard)
   @ApiPutUpdate('post 수정')
-  @SetResponse({ key: 'post', type: ResponseType.Base })
+  @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Put(':postId')
   async putUpdate(
     @Param('postId', ParsePositiveIntPipe) postId: number,
@@ -99,14 +99,14 @@ export class PostsController implements BaseController<PostResponseDto> {
       putUpdatePostDto,
     );
 
-    const response = await this.postService.buildBaseResponse(updatedPost.id);
+    const response = await this.postService.buildDetailResponse(updatedPost.id);
 
     return new PostResponseDto(response);
   }
 
   @ApiPatchUpdate('post 부분 수정')
   @UseGuards(JwtAuthGuard)
-  @SetResponse({ key: 'post', type: ResponseType.Base })
+  @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Patch(':postId')
   async patchUpdate(
     @Param('postId', ParsePositiveIntPipe) postId: number,
@@ -119,7 +119,7 @@ export class PostsController implements BaseController<PostResponseDto> {
       patchUpdatePostDto,
     );
 
-    const response = await this.postService.buildBaseResponse(updatedPost.id);
+    const response = await this.postService.buildDetailResponse(updatedPost.id);
 
     return new PostResponseDto(response);
   }

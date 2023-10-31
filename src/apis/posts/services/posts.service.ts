@@ -13,10 +13,10 @@ import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { QueryHelper } from '@src/helpers/query.helper';
-import { BaseService } from '@src/types/type';
+import { RestService } from '@src/types/type';
 
 @Injectable()
-export class PostsService implements BaseService<PostEntity> {
+export class PostsService implements RestService<PostEntity> {
   private readonly LIKE_SEARCH_FIELDS: (keyof Partial<PostEntity>)[] = [
     'title',
     'description',
@@ -143,15 +143,13 @@ export class PostsService implements BaseService<PostEntity> {
     return Number(!!removedPost);
   }
 
-  async buildBaseResponse(postId: number): Promise<PostEntity> {
-    const existPost = await this.prismaService.post.findFirstOrThrow({
+  buildDetailResponse(postId: number): Promise<PostEntity> {
+    return this.prismaService.post.findFirstOrThrow({
       where: {
         id: postId,
         deletedAt: null,
       },
     });
-
-    return new PostEntity(existPost);
   }
 
   private async checkOwner(postId: number, userId: number) {

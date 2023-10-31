@@ -16,11 +16,11 @@ import { BCRYPT_TOKEN } from '@src/constants/token.constant';
 import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { QueryHelper } from '@src/helpers/query.helper';
-import { BaseService } from '@src/types/type';
+import { RestService } from '@src/types/type';
 import bcrypt from 'bcrypt';
 
 @Injectable()
-export class UsersService implements BaseService<UserEntity> {
+export class UsersService implements RestService<UserEntity> {
   private readonly SALT = 10;
   private readonly LIKE_SEARCH_FIELDS: (keyof Partial<UserEntity>)[] = [
     'email',
@@ -185,7 +185,7 @@ export class UsersService implements BaseService<UserEntity> {
     return Number(!!removedUser);
   }
 
-  async buildBaseResponse(userId: number): Promise<UserEntity> {
+  async buildDetailResponse(userId: number): Promise<UserEntity> {
     return this.prismaService.user.findFirstOrThrow({
       where: {
         id: userId,

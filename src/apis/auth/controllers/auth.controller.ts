@@ -40,14 +40,14 @@ export class AuthController {
 
   @ApiGetProfile('로그인한 유저 프로필')
   @UseGuards(JwtAuthGuard)
-  @SetResponse({ key: 'user', type: ResponseType.Base })
+  @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Get('profile')
   getProfile(@User() user: UserEntity) {
     return new UserResponseDto(user);
   }
 
   @ApiSignUp('회원가입')
-  @SetResponse({ key: 'user', type: ResponseType.Base })
+  @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Post('sign-up')
   async signUp(
     @Res({ passthrough: true }) res: Response,
@@ -68,7 +68,7 @@ export class AuthController {
   }
 
   @ApiSignIn('로그인')
-  @SetResponse({ key: 'user', type: ResponseType.Base })
+  @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Post('sign-in')
   async signIn(
     @Res({ passthrough: true }) res: Response,

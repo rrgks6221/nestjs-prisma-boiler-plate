@@ -5,7 +5,7 @@ export type Target = {
   field?: string;
 };
 
-export interface BaseController<BaseResponse> {
+export interface RestController<BaseResponse> {
   findAllAndCount(...args: unknown[]): Promise<[BaseResponse[], number]>;
   findOne(...args: unknown[]): Promise<BaseResponse>;
   create(...args: unknown[]): Promise<BaseResponse>;
@@ -14,7 +14,7 @@ export interface BaseController<BaseResponse> {
   remove(...args: unknown[]): Promise<number>;
 }
 
-export interface BaseService<M> {
+export interface RestService<M> {
   findAllAndCount(...args: unknown[]): Promise<[M[], number]>;
   findOneOrNotFound(...args: unknown[]): Promise<M>;
   create(...args: unknown[]): Promise<M>;

@@ -3,8 +3,8 @@ import { DEFAULT_PAGE_SIZE } from '@src/constants/constant';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { HttpExceptionHelper } from '@src/core/http-exception-filters/helpers/http-exception.helper';
 import { PageDto } from '@src/dtos/page.dto';
-import { BaseResponseDto } from '@src/interceptors/success-interceptor/dto/base-response.dto';
 import { DeleteResponseDto } from '@src/interceptors/success-interceptor/dto/delete-response.dto';
+import { DetailResponseDto } from '@src/interceptors/success-interceptor/dto/detail-response.dto';
 import { PaginationResponseDto } from '@src/interceptors/success-interceptor/dto/pagination-response.dto';
 
 interface Res {
@@ -14,10 +14,10 @@ interface Res {
 
 @Injectable()
 export class ResponseBuilder {
-  base(res: Res) {
+  detail(res: Res) {
     const { key, data } = res;
 
-    return new BaseResponseDto({
+    return new DetailResponseDto({
       [key]: data,
     });
   }

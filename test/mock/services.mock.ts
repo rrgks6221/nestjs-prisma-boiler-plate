@@ -26,7 +26,7 @@ export class MockUserService implements MockClass<UsersService> {
   patchUpdate = jest.fn();
   putUpdate = jest.fn();
   remove = jest.fn();
-  buildBaseResponse = jest.fn();
+  buildDetailResponse = jest.fn();
   create = jest.fn();
   findOneOrNotFound = jest.fn();
 }
@@ -38,7 +38,7 @@ export class MockPostsService implements MockClass<PostsService> {
   putUpdate = jest.fn();
   patchUpdate = jest.fn();
   remove = jest.fn();
-  buildBaseResponse = jest.fn();
+  buildDetailResponse = jest.fn();
 }
 
 export class MockAuthService implements MockClass<AuthService> {

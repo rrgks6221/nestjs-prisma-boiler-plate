@@ -74,7 +74,7 @@ describe('UsersController', () => {
 
     it('findOne', async () => {
       mockUserService.findOneOrNotFound.mockResolvedValue({ id: 1 });
-      mockUserService.buildBaseResponse.mockResolvedValue(userEntity);
+      mockUserService.buildDetailResponse.mockResolvedValue(userEntity);
 
       await expect(controller.findOne(userId)).resolves.toBeInstanceOf(
         UserResponseDto,
@@ -99,7 +99,7 @@ describe('UsersController', () => {
 
     it('patch update', async () => {
       mockUserService.patchUpdate.mockResolvedValue({ id: 1 });
-      mockUserService.buildBaseResponse.mockResolvedValue(userEntity);
+      mockUserService.buildDetailResponse.mockResolvedValue(userEntity);
 
       await expect(
         controller.patchUpdate(userId, patchUpdateUserBodyDto, user),
@@ -124,7 +124,7 @@ describe('UsersController', () => {
 
     it('patch update', async () => {
       mockUserService.putUpdate.mockResolvedValue({ id: 1 });
-      mockUserService.buildBaseResponse.mockResolvedValue(userEntity);
+      mockUserService.buildDetailResponse.mockResolvedValue(userEntity);
 
       await expect(
         controller.putUpdate(userId, putUpdateUserBodyDto, user),
