@@ -1,7 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { SwaggerBuilder } from '@src/interceptors/builder/swagger.builder';
+import { HttpStatus, Type } from '@nestjs/common';
+import { ErrorHttpStatusCode } from '@nestjs/common/utils/http-error-by-code.util';
+import { ApiProperty, ApiPropertyOptions, ApiResponse } from '@nestjs/swagger';
 
-export class PaginationResponseDto extends SwaggerBuilder {
+export class PaginationResponseDto {
   @ApiProperty({
     description: '총 페이지 수',
     minimum: 1,
@@ -24,6 +25,7 @@ export class PaginationResponseDto extends SwaggerBuilder {
   currentPage: number;
 
   @ApiProperty({
+    type: Number,
     description: '다음 페이지 번호, 다음 페이지가 없다면 null 반환',
     minimum: 2,
     format: 'integer',
@@ -47,6 +49,29 @@ export class PaginationResponseDto extends SwaggerBuilder {
   // 타입지정 불가
   // [key: string]: unknown[];
 
+  static swaggerBuilder(
+    status: Exclude<HttpStatus, ErrorHttpStatusCode>,
+    key: string,
+    type: Type,
+    options: Omit<ApiPropertyOptions, 'name' | 'type' | 'isArray'> = {},
+  ) {
+    class Temp extends this {
+      @ApiProperty({
+        type,
+        name: key,
+        isArray: true,
+        ...options,
+      })
+      private readonly temp: string;
+    }
+
+    Object.defineProperty(Temp, 'name', {
+      value: `${key[0].toUpperCase()}${key.slice(1)}${this.name}`,
+    });
+
+    return ApiResponse({ status, type: Temp });
+  }
+
   constructor(
     res: { [key: string]: unknown[] },
     pageInfo: {
@@ -58,8 +83,6 @@ export class PaginationResponseDto extends SwaggerBuilder {
       lastPage: number;
     },
   ) {
-    super();
-
     Object.assign(this, Object.assign(res, pageInfo));
   }
 }

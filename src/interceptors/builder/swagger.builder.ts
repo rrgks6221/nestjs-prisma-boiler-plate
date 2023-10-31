@@ -2,7 +2,7 @@ import { Type } from '@nestjs/common';
 import { ApiProperty, ApiPropertyOptions } from '@nestjs/swagger';
 
 export class SwaggerBuilder {
-  protected static swaggerBuilder(
+  static swaggerBuilder(
     options: Required<Pick<ApiPropertyOptions, 'name' | 'type'>> &
       ApiPropertyOptions,
   ): Type {

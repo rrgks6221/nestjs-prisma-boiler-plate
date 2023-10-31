@@ -1,5 +1,6 @@
-import { Type } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
+import { HttpStatus } from '@nestjs/common';
+import { ErrorHttpStatusCode } from '@nestjs/common/utils/http-error-by-code.util';
+import { ApiProperty, ApiResponse } from '@nestjs/swagger';
 import { SwaggerBuilder } from '@src/interceptors/builder/swagger.builder';
 
 export class DeleteResponseDto implements SwaggerBuilder {
@@ -13,7 +14,16 @@ export class DeleteResponseDto implements SwaggerBuilder {
     Object.assign(this, { count });
   }
 
-  static swaggerBuilder(): Type<any> {
-    return this;
+  static swaggerBuilder(
+    status: Exclude<HttpStatus, ErrorHttpStatusCode>,
+    key: string,
+  ) {
+    class Temp extends this {}
+
+    Object.defineProperty(Temp, 'name', {
+      value: `${key[0].toUpperCase()}${key.slice(1)}${this.name}`,
+    });
+
+    return ApiResponse({ status, type: Temp });
   }
 }
