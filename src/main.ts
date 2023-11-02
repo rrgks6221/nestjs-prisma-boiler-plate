@@ -11,9 +11,10 @@ import { ENV_KEY } from '@src/core/app-config/constants/app-config.constant';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { HttpBadRequestExceptionFilter } from '@src/http-exceptions/filters/http-bad-request-exception.filter';
-import { HttpNestInternalServerErrorExceptionFilter } from '@src/http-exceptions/filters/http-nest-Internal-server-error-exception.filter';
-import { HttpNodeInternalServerErrorExceptionFilter } from '@src/http-exceptions/filters/http-node-internal-server-error-exception.filter';
+import { HttpNestInternalServerErrorExceptionFilter } from '@src/http-exceptions/filters/http-internal-server-error-exception.filter';
 import { HttpNotFoundExceptionFilter } from '@src/http-exceptions/filters/http-not-found-exception.filter';
+import { HttpPathNotFoundExceptionFilter } from '@src/http-exceptions/filters/http-path-not-found-exception.filter';
+import { HttpProcessErrorExceptionFilter } from '@src/http-exceptions/filters/http-process-error-exception.filter';
 import { HttpRemainderExceptionFilter } from '@src/http-exceptions/filters/http-remainder-exception.filter';
 import { HttpExceptionService } from '@src/http-exceptions/services/http-exception.service';
 import { SuccessInterceptor } from '@src/interceptors/success-interceptor/success.interceptor';
@@ -58,10 +59,11 @@ async function bootstrap() {
   );
 
   app.useGlobalFilters(
-    app.get(HttpNodeInternalServerErrorExceptionFilter),
+    app.get(HttpProcessErrorExceptionFilter),
     app.get(HttpRemainderExceptionFilter),
     app.get(HttpNestInternalServerErrorExceptionFilter),
     app.get(HttpNotFoundExceptionFilter),
+    app.get(HttpPathNotFoundExceptionFilter),
     app.get(HttpBadRequestExceptionFilter),
   );
 
