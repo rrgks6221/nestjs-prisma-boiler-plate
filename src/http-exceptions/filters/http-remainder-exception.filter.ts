@@ -27,7 +27,7 @@ export class HttpRemainderExceptionFilter
     const status = HttpStatus.INTERNAL_SERVER_ERROR;
     const exceptionError = new HttpInternalServerErrorException({
       errorCode: ERROR_CODE.CODE001,
-      message: 'server error',
+      log: 'server error',
     });
 
     const exceptionResponseDto = new ExceptionResponseDto({

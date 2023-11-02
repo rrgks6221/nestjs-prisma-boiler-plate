@@ -7,16 +7,17 @@ interface Log {
 }
 
 /**
- * @todo log parameter 추가
  * customize status code 500 error exception
  */
 export class HttpInternalServerErrorException extends HttpException {
-  constructor(error: HttpError<HttpInternalServerErrorException>) {
-    const { errorCode, message } = error;
+  constructor(
+    error: Omit<HttpError<HttpInternalServerErrorException>, 'message'> & Log,
+  ) {
+    const { errorCode } = error;
 
     super({
       errorCode,
-      message,
+      message: 'server error',
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
     });
   }

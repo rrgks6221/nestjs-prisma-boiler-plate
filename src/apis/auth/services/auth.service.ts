@@ -60,7 +60,7 @@ export class AuthService {
     if (!existUser.password) {
       throw new HttpInternalServerErrorException({
         errorCode: ERROR_CODE.CODE001,
-        message: 'server error',
+        log: '로그인 중 내부 DB 에 password 존재하지 않음',
       });
     }
 

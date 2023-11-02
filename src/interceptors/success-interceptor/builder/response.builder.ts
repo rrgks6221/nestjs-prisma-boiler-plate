@@ -25,10 +25,17 @@ export class ResponseBuilder {
   delete(res: Pick<Res, 'data'>) {
     const { data } = res;
 
-    if (typeof data !== 'number' || !Number.isInteger(data)) {
+    if (typeof data !== 'number') {
       throw new HttpInternalServerErrorException({
         errorCode: ERROR_CODE.CODE001,
-        message: 'server error',
+        log: 'delete response build 중 number type 이 아님',
+      });
+    }
+
+    if (!Number.isInteger(data)) {
+      throw new HttpInternalServerErrorException({
+        errorCode: ERROR_CODE.CODE001,
+        log: 'delete response build 중 integer format 이 아님',
       });
     }
 
@@ -41,16 +48,30 @@ export class ResponseBuilder {
     if (!Array.isArray(data)) {
       throw new HttpInternalServerErrorException({
         errorCode: ERROR_CODE.CODE001,
-        message: 'server error',
+        log: 'pagination response build 중 data 가 array type 이 아님',
       });
     }
 
     const [array, totalCount] = data;
 
-    if (!Array.isArray(array) || typeof totalCount !== 'number') {
+    if (!Array.isArray(array)) {
       throw new HttpInternalServerErrorException({
         errorCode: ERROR_CODE.CODE001,
-        message: 'server error',
+        log: 'pagination response build 중 조회된 객체가 array type 이 아님',
+      });
+    }
+
+    if (typeof totalCount !== 'number') {
+      throw new HttpInternalServerErrorException({
+        errorCode: ERROR_CODE.CODE001,
+        log: 'pagination response build 중 totalCount 가 number type 이 아님',
+      });
+    }
+
+    if (Number.isInteger(totalCount)) {
+      throw new HttpInternalServerErrorException({
+        errorCode: ERROR_CODE.CODE001,
+        log: 'pagination response build 중 totalCount 가 integer format 이 아님',
       });
     }
 

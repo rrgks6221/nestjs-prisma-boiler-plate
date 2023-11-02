@@ -32,7 +32,7 @@ export const CsvToOrderBy = <T extends readonly string[] = readonly string[]>(
       if (typeof value !== 'string') {
         throw new HttpInternalServerErrorException({
           errorCode: ERROR_CODE.CODE001,
-          message: 'server error',
+          log: 'CsvToOrderBy 중 value 가 string type 이 아님',
         });
       }
 
