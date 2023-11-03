@@ -15,4 +15,8 @@ export class HttpUnauthorizedException extends HttpException {
       statusCode: HttpStatus.UNAUTHORIZED,
     });
   }
+
+  getResponse(): HttpUnauthorizedException {
+    return super.getResponse() as HttpUnauthorizedException;
+  }
 }

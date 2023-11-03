@@ -15,4 +15,8 @@ export class HttpForbiddenException extends HttpException {
       statusCode: HttpStatus.FORBIDDEN,
     });
   }
+
+  getResponse(): HttpForbiddenException {
+    return super.getResponse() as HttpForbiddenException;
+  }
 }

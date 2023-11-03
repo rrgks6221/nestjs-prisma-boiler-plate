@@ -1,5 +1,4 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { ExceptionResponseDto } from '@src/http-exceptions/dto/exception-response.dto';
 import { HttpInternalServerErrorException } from '@src/http-exceptions/exceptions/http-internal-server-error.exception';
 import { HttpExceptionService } from '@src/http-exceptions/services/http-exception.service';
 import { Response } from 'express';
@@ -20,17 +19,15 @@ export class HttpNestInternalServerErrorExceptionFilter
   ): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const status = exception.getStatus();
-    const exceptionError =
-      exception.getResponse() as HttpInternalServerErrorException;
 
-    const exceptionResponseDto = new ExceptionResponseDto({
-      statusCode: status,
-      errorCode: exceptionError.errorCode,
-      message: exceptionError.message,
-      stack: this.httpExceptionService.getErrorStack(exception),
-    });
+    const statusCode = exception.getStatus();
+    const exceptionError = exception.getResponse();
 
-    response.status(status).json(exceptionResponseDto);
+    const responseJson = this.httpExceptionService.buildResponseJson(
+      statusCode,
+      exceptionError,
+    );
+
+    response.status(statusCode).json(responseJson);
   }
 }

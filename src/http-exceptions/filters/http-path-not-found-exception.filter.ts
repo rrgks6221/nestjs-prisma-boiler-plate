@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { ExceptionResponseDto } from '@src/http-exceptions/dto/exception-response.dto';
+import { HttpExceptionService } from '@src/http-exceptions/services/http-exception.service';
 import { Response } from 'express';
 
 /**
@@ -15,23 +15,25 @@ import { Response } from 'express';
 export class HttpPathNotFoundExceptionFilter
   implements ExceptionFilter<NotFoundException>
 {
+  constructor(private readonly httpExceptionService: HttpExceptionService) {}
+
   catch(exception: NotFoundException, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const status = exception.getStatus();
     const method = ctx.getRequest().method;
     const path = ctx.getRequest().path;
+
+    const statusCode = exception.getStatus();
     const exceptionError = {
       errorCode: ERROR_CODE.CODE002,
       message: method + ' ' + path + ' ' + 'not found',
     };
 
-    const exceptionResponseDto = new ExceptionResponseDto({
-      statusCode: status,
-      errorCode: exceptionError.errorCode,
-      message: exception.message,
-    });
+    const responseJson = this.httpExceptionService.buildResponseJson(
+      statusCode,
+      exceptionError,
+    );
 
-    response.status(status).json(exceptionResponseDto);
+    response.status(statusCode).json(responseJson);
   }
 }

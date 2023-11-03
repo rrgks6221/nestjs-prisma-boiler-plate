@@ -15,4 +15,8 @@ export class HttpNotFoundException extends HttpException {
       statusCode: HttpStatus.NOT_FOUND,
     });
   }
+
+  getResponse(): HttpNotFoundException {
+    return super.getResponse() as HttpNotFoundException;
+  }
 }

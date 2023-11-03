@@ -21,4 +21,8 @@ export class HttpInternalServerErrorException extends HttpException {
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
     });
   }
+
+  getResponse(): HttpInternalServerErrorException {
+    return super.getResponse() as HttpInternalServerErrorException;
+  }
 }

@@ -6,7 +6,6 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
-import { ExceptionResponseDto } from '@src/http-exceptions/dto/exception-response.dto';
 import { HttpInternalServerErrorException } from '@src/http-exceptions/exceptions/http-internal-server-error.exception';
 import { HttpExceptionService } from '@src/http-exceptions/services/http-exception.service';
 import { Response } from 'express';
@@ -24,19 +23,18 @@ export class HttpRemainderExceptionFilter
   catch(exception: HttpException, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+    const statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     const exceptionError = new HttpInternalServerErrorException({
       errorCode: ERROR_CODE.CODE001,
       log: 'server error',
     });
 
-    const exceptionResponseDto = new ExceptionResponseDto({
-      statusCode: exceptionError.statusCode,
-      errorCode: exceptionError.errorCode,
-      message: exceptionError.message,
-      stack: this.httpExceptionService.getErrorStack(exception),
-    });
+    const responseJson = this.httpExceptionService.buildResponseJson(
+      statusCode,
+      exceptionError,
+    );
 
-    response.status(status).json(exceptionResponseDto);
+    response.status(statusCode).json(responseJson);
   }
 }

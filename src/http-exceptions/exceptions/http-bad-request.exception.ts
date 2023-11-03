@@ -15,4 +15,8 @@ export class HttpBadRequestException extends HttpException {
       statusCode: HttpStatus.BAD_REQUEST,
     });
   }
+
+  getResponse(): HttpBadRequestException {
+    return super.getResponse() as HttpBadRequestException;
+  }
 }

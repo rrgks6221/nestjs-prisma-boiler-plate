@@ -1,20 +1,34 @@
 import { HttpStatus } from '@nestjs/common';
-import { HttpException } from '@src/http-exceptions/exceptions/http.exception';
-import { HttpError } from '@src/http-exceptions/types/exception.type';
+import { ErrorHttpStatusCode } from '@nestjs/common/utils/http-error-by-code.util';
+import { ERROR_CODE } from '@src/constants/error-response-code.constant';
+
+interface Error {
+  errorCode: typeof ERROR_CODE[keyof typeof ERROR_CODE];
+
+  message: string;
+}
 
 /**
  * node  process error exception
  * ex) ReferenceError, TypeError etc
  * {@link https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Error}
  */
-export class HttpProcessErrorException extends HttpException {
-  constructor(error: HttpError<HttpProcessErrorException>) {
+export class HttpProcessErrorException {
+  public readonly errorCode: typeof ERROR_CODE[keyof typeof ERROR_CODE];
+
+  public readonly message: string;
+
+  public readonly statusCode: ErrorHttpStatusCode;
+
+  constructor(error: Error) {
     const { errorCode, message } = error;
 
-    super({
-      errorCode,
-      message,
-      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-    });
+    this.errorCode = errorCode;
+    this.message = message;
+    this.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+  }
+
+  getResponse(): HttpProcessErrorException {
+    return this;
   }
 }
