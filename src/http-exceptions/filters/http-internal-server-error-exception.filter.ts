@@ -8,7 +8,7 @@ import { Response } from 'express';
  * ex) throw new InternalServerErrorException()
  */
 @Catch(HttpInternalServerErrorException)
-export class HttpNestInternalServerErrorExceptionFilter
+export class HttpInternalServerErrorExceptionFilter
   implements ExceptionFilter<HttpInternalServerErrorException>
 {
   constructor(private readonly httpExceptionService: HttpExceptionService) {}

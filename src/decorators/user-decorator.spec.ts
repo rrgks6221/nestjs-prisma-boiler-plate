@@ -1,6 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { User } from '@src/decorators/user.decorator';
-import { getParamDecoratorFactory, mock, mockRequest } from '@test/mock/mock';
+import {
+  getParamDecoratorFactory,
+  mockHttpArgumentHost,
+  mockRequest,
+} from '@test/mock/mock';
 
 describe(User.name, () => {
   let factory: any;
@@ -9,7 +13,7 @@ describe(User.name, () => {
 
   beforeEach(() => {
     factory = getParamDecoratorFactory(User);
-    ctx = mock;
+    ctx = mockHttpArgumentHost;
     request = mockRequest;
   });
 

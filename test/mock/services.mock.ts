@@ -3,6 +3,7 @@ import { AuthService } from '@src/apis/auth/services/auth.service';
 import { PostsService } from '@src/apis/posts/services/posts.service';
 import { UsersService } from '@src/apis/users/services/users.service';
 import { AppConfigService } from '@src/core/app-config/services/app-config.service';
+import { HttpExceptionService } from '@src/http-exceptions/services/http-exception.service';
 import { MockClass } from '@test/mock/type';
 
 export class MockJwtService implements MockClass<JwtService> {
@@ -60,4 +61,10 @@ export class MockAppConfigService implements MockClass<AppConfigService> {
   isLocal = jest.fn();
   isDevelopment = jest.fn();
   isProduction = jest.fn();
+}
+
+export class MockHttpExceptionService
+  implements MockClass<HttpExceptionService>
+{
+  buildResponseJson = jest.fn();
 }
