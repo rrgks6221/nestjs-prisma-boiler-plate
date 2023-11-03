@@ -4,8 +4,6 @@ import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 
 interface Error {
   errorCode: typeof ERROR_CODE[keyof typeof ERROR_CODE];
-
-  message: string;
 }
 
 /**
@@ -21,10 +19,10 @@ export class HttpProcessErrorException {
   public readonly statusCode: ErrorHttpStatusCode;
 
   constructor(error: Error) {
-    const { errorCode, message } = error;
+    const { errorCode } = error;
 
     this.errorCode = errorCode;
-    this.message = message;
+    this.message = 'server error';
     this.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
   }
 

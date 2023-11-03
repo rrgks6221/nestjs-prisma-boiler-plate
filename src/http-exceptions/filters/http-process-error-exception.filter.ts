@@ -24,7 +24,6 @@ export class HttpProcessErrorExceptionFilter implements ExceptionFilter {
     const statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
     const nodeException = new HttpProcessErrorException({
       errorCode: ERROR_CODE.CODE001,
-      message: 'server error',
     });
     const exceptionError = nodeException.getResponse();
 
