@@ -6,9 +6,6 @@ import {
 } from '@nestjs/terminus';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 
-/**
- * @todo exception filter
- */
 @Injectable()
 export class PrismaHealthIndicator extends HealthIndicator {
   constructor(private readonly prismaService: PrismaService) {
@@ -17,7 +14,7 @@ export class PrismaHealthIndicator extends HealthIndicator {
 
   async isHealthy(key: string): Promise<HealthIndicatorResult> {
     try {
-      await this.prismaService.$queryRaw`SELECT asd`;
+      await this.prismaService.$queryRaw`SELECT 1`;
 
       return this.getStatus(key, true);
     } catch (e) {
