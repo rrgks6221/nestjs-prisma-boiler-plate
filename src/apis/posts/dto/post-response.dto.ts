@@ -23,6 +23,12 @@ export class PostResponseDto extends BaseResponseDto implements PostEntity {
   })
   description: string;
 
+  @ApiProperty({
+    description: '조회수',
+    format: 'integer',
+  })
+  hit: number;
+
   constructor(post: Partial<PostResponseDto> = {}) {
     super();
 

@@ -8,6 +8,8 @@ export class PostEntity extends BaseEntity implements Post {
 
   description: string;
 
+  hit: number;
+
   constructor(post: Partial<PostEntity> = {}) {
     super();
 

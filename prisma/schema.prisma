@@ -50,6 +50,8 @@ model Post {
   title       String    @db.VarChar(255)
   // 본문
   description String
+  // 조회수
+  hit         Int       @default(0)
   /// 생성일자
   createdAt   DateTime  @default(now()) @db.Timestamp(6)
   /// 수정일자
