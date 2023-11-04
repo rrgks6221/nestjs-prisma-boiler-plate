@@ -5,10 +5,12 @@ import { HttpBadRequestException } from '@src/http-exceptions/exceptions/http-ba
 @Injectable()
 export class ParsePositiveIntPipe implements PipeTransform<string> {
   transform(value: string, metadata: ArgumentMetadata): number {
+    const { type, data } = metadata;
+
     if (!this.isPositiveNumeric(value)) {
       throw new HttpBadRequestException({
         errorCode: ERROR_CODE.CODE003,
-        message: 'Validation failed (positive numeric string is expected)',
+        message: `${type} internal the ${data} must be a numeric string`,
       });
     }
 
