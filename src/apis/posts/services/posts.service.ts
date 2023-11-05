@@ -138,6 +138,26 @@ export class PostsService implements RestService<PostEntity> {
     return Number(!!removedPost);
   }
 
+  async increaseHit(postId: number): Promise<void> {
+    const batchPayload = await this.prismaService.post.updateMany({
+      data: {
+        hit: {
+          increment: 1,
+        },
+      },
+      where: {
+        id: postId,
+      },
+    });
+
+    if (batchPayload.count === 0) {
+      throw new HttpNotFoundException({
+        errorCode: ERROR_CODE.CODE005,
+        message: `postId ${postId} doesn't exist`,
+      });
+    }
+  }
+
   buildDetailResponse(postId: number): Promise<PostEntity> {
     return this.prismaService.post.findFirstOrThrow({
       where: {

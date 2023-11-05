@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -17,6 +19,7 @@ import {
   ApiCreate,
   ApiFindAllAndCount,
   ApiFindOne,
+  ApiIncreaseHit,
   ApiPatchUpdate,
   ApiPutUpdate,
   ApiRemove,
@@ -141,5 +144,15 @@ export class PostsController implements RestController<PostResponseDto> {
     @User() user: UserEntity,
   ): Promise<number> {
     return this.postService.remove(postId, user.id);
+  }
+
+  @Version(ApiVersion.One)
+  @ApiIncreaseHit('조회수 증가')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Put(':postId/hit')
+  increaseHit(
+    @Param('postId', ParsePositiveIntPipe) postId: number,
+  ): Promise<void> {
+    return this.postService.increaseHit(postId);
   }
 }

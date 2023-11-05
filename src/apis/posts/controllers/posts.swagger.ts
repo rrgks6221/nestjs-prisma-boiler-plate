@@ -1,5 +1,5 @@
 import { applyDecorators, HttpStatus } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiNoContentResponse, ApiOperation } from '@nestjs/swagger';
 import { PostResponseDto } from '@src/apis/posts/dto/post-response.dto';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { ApiFailureResponse } from '@src/decorators/swagger/api-failure-response.decorator';
@@ -75,6 +75,16 @@ export const ApiRemove = (summary: string) => {
     ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
     ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
     ApiFailureResponse(HttpStatus.FORBIDDEN, [ERROR_CODE.CODE006]),
+    ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
+    ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
+  );
+};
+
+export const ApiIncreaseHit = (summary: string) => {
+  return applyDecorators(
+    ApiOperation({ summary }),
+    ApiNoContentResponse(),
+    ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
     ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
     ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
   );
