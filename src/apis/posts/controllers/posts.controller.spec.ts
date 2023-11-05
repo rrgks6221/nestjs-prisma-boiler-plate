@@ -177,4 +177,20 @@ describe(PostsController.name, () => {
       expect(mockPostsService.remove).toBeCalledWith(postId, user.id);
     });
   });
+
+  describe(PostsController.prototype.increaseHit.name, () => {
+    let postId: number;
+
+    beforeEach(() => {
+      postId = NaN;
+    });
+
+    it('only routing and service method called', async () => {
+      postId = faker.datatype.number();
+
+      mockPostsService.increaseHit.mockResolvedValue(undefined);
+
+      await expect(controller.increaseHit(postId)).resolves.toBeUndefined();
+    });
+  });
 });

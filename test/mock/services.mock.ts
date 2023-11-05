@@ -39,6 +39,7 @@ export class MockPostsService implements MockClass<PostsService> {
   putUpdate = jest.fn();
   patchUpdate = jest.fn();
   remove = jest.fn();
+  increaseHit = jest.fn();
   buildDetailResponse = jest.fn();
 }
 

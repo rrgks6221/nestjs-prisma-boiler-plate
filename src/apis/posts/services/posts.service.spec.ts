@@ -266,6 +266,45 @@ describe(PostsService.name, () => {
     });
   });
 
+  describe(PostsService.prototype.increaseHit.name, () => {
+    let postId: number;
+
+    beforeEach(() => {
+      postId = NaN;
+    });
+
+    it('when not exist post throw not found error', async () => {
+      postId = faker.datatype.number();
+
+      mockPrismaService.post.updateMany.mockResolvedValue({
+        count: 0,
+      });
+
+      await expect(service.increaseHit(postId)).rejects.toThrowError(
+        HttpNotFoundException,
+      );
+    });
+
+    it('post hit increase 1', async () => {
+      postId = faker.datatype.number();
+
+      mockPrismaService.post.updateMany.mockResolvedValue({
+        count: 1,
+      });
+
+      await expect(service.increaseHit(postId)).resolves.toBeUndefined();
+      expect(mockPrismaService.post.updateMany).toBeCalledWith(
+        expect.objectContaining({
+          data: {
+            hit: {
+              increment: 1,
+            },
+          },
+        }),
+      );
+    });
+  });
+
   describe('private method test with public method', () => {
     describe('checkOwner with remove', () => {
       let postId: number;
