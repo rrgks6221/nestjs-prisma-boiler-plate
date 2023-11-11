@@ -21,6 +21,11 @@ declare global {
        * Used to check that a variable type is boolean.
        */
       toBeBoolean: () => R;
+
+      /**
+       * Used to check that a variable type is number and integer format.
+       */
+      toBeInteger: (options?: { nullable: boolean }) => R;
     }
   }
 }
