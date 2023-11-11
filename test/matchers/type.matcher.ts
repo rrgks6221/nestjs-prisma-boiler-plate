@@ -23,4 +23,23 @@ export class TypeMatcher extends EntryMatcher {
       message: () => `expected ${receive}${pass ? ' ' : ' not '}number type`,
     };
   }
+
+  toBeString(
+    receive: unknown,
+    options: Options = { nullable: false },
+  ): jest.CustomMatcherResult {
+    const { nullable } = options;
+    let pass = false;
+
+    if (receive === null) {
+      pass = nullable;
+    } else {
+      pass = typeof receive === 'string';
+    }
+
+    return {
+      pass,
+      message: () => `expected ${receive}${pass ? ' ' : ' not '}string type`,
+    };
+  }
 }
