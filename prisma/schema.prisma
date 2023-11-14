@@ -27,9 +27,9 @@ model User {
   // 패스워드
   password  String?   @db.VarChar(255)
   // email
-  email     String    @unique @db.VarChar(255)
+  email     String    @db.VarChar(255)
   // nickname
-  nickname  String    @unique @db.VarChar(255)
+  nickname  String    @db.VarChar(255)
   /// 생성일자
   createdAt DateTime  @default(now()) @db.Timestamp(6)
   /// 수정일자

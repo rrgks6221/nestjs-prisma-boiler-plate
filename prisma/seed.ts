@@ -16,10 +16,8 @@ async function main() {
     const loginType = LoginType.EMAIL;
     const password = await bcrypt.hash(faker.internet.password(), SALT);
 
-    const user = await prisma.user.upsert({
-      where: { email },
-      update: {},
-      create: {
+    const user = await prisma.user.create({
+      data: {
         loginType,
         email,
         nickname,
