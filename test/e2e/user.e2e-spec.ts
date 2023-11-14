@@ -1,4 +1,5 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
+import { LoginType } from '@prisma/client';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { UsersModule } from '@src/apis/users/users.module';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
@@ -95,6 +96,28 @@ describe('UsersController (e2e)', () => {
       const { id, loginType, email, nickname } = user;
 
       expect(statusCode).toBe(HttpStatus.OK);
+
+      expect(id).toBeInteger();
+      expect(loginType).toBeString();
+      expect(email).toBeString();
+      expect(nickname).toBeString();
+    });
+  });
+
+  describe('/api/v1/users (POST)', () => {
+    it('create user', async () => {
+      const result = await request(app.getHttpServer()).post(basePath).send({
+        loginType: LoginType.EMAIL,
+        password: 'password',
+        email: 'usere2etestcreate@test.com',
+        nickname: 'usere2etestcreate',
+      });
+
+      const { statusCode, body } = result;
+      const { user } = body;
+      const { id, loginType, email, nickname } = user;
+
+      expect(statusCode).toBe(HttpStatus.CREATED);
 
       expect(id).toBeInteger();
       expect(loginType).toBeString();

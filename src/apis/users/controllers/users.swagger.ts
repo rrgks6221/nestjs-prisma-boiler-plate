@@ -30,6 +30,19 @@ export const ApiFindOne = (summary: string) => {
   );
 };
 
+export const ApiCreate = (summary: string) => {
+  return applyDecorators(
+    ApiOperation({ summary }),
+    DetailResponseDto.swaggerBuilder(
+      HttpStatus.CREATED,
+      'user',
+      UserResponseDto,
+    ),
+    ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
+    ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
+  );
+};
+
 export const ApiPatchUpdate = (summary: string) => {
   return applyDecorators(
     ApiOperation({ summary }),

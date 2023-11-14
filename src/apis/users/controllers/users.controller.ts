@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   Put,
   Query,
   UseGuards,
@@ -13,12 +14,14 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
 import {
+  ApiCreate,
   ApiFindAllAndCount,
   ApiFindOne,
   ApiPatchUpdate,
   ApiPutUpdate,
   ApiRemove,
 } from '@src/apis/users/controllers/users.swagger';
+import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-request-body.dto';
 import { FindUserListRequestQueryDto } from '@src/apis/users/dto/find-user-list-request-query.dto';
 import { PatchUpdateUserRequestBodyDto } from '@src/apis/users/dto/patch-update-user-request-body.dto';
 import { PutUpdateUserRequestBodyDto } from '@src/apis/users/dto/put-update-user-request-body.dto';
@@ -66,6 +69,20 @@ export class UsersController
     const existUser = await this.userService.findOneOrNotFound(userId);
 
     const response = await this.userService.buildDetailResponse(existUser.id);
+
+    return new UserResponseDto(response);
+  }
+
+  @Version(ApiVersion.One)
+  @ApiCreate('유저 생성(회원가입)')
+  @SetResponse({ key: 'user', type: ResponseType.Detail })
+  @Post()
+  async create(
+    @Body() createUserRequestBodyDto: CreateUserRequestBodyDto,
+  ): Promise<UserResponseDto> {
+    const newUser = await this.userService.create(createUserRequestBodyDto);
+
+    const response = await this.userService.buildDetailResponse(newUser.id);
 
     return new UserResponseDto(response);
   }

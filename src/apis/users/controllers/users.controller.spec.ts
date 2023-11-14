@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersController } from '@src/apis/users/controllers/users.controller';
+import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-request-body.dto';
 import { FindUserListRequestQueryDto } from '@src/apis/users/dto/find-user-list-request-query.dto';
 import { PatchUpdateUserRequestBodyDto } from '@src/apis/users/dto/patch-update-user-request-body.dto';
 import { PutUpdateUserRequestBodyDto } from '@src/apis/users/dto/put-update-user-request-body.dto';
@@ -79,6 +80,23 @@ describe(UsersController.name, () => {
       await expect(controller.findOne(userId)).resolves.toBeInstanceOf(
         UserResponseDto,
       );
+    });
+  });
+
+  describe(UsersController.prototype.create.name, () => {
+    let createUserRequestBodyDto: CreateUserRequestBodyDto;
+
+    beforeEach(() => {
+      createUserRequestBodyDto = new CreateUserRequestBodyDto();
+    });
+
+    it('create user', async () => {
+      mockUserService.create.mockResolvedValue({ id: 1 });
+      mockUserService.buildDetailResponse({ id: 1 });
+
+      await expect(
+        controller.create(createUserRequestBodyDto),
+      ).resolves.toBeInstanceOf(UserResponseDto);
     });
   });
 
