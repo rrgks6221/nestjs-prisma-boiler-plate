@@ -199,8 +199,32 @@ describe('UsersController (e2e)', () => {
     });
   });
 
-  /**
-   * move to auth domain
-   */
-  describe.skip('/api/v1/users/:userId (DELETE)', () => {});
+  describe('/api/v1/users/:userId (DELETE)', () => {
+    it('not found user response 404', async () => {
+      basePath += '/' + testingUser.id + 1;
+
+      const result = await request(app.getHttpServer())
+        .delete(basePath)
+        .set('Cookie', testingCookies);
+
+      const { statusCode, body } = result;
+      const { errorCode } = body;
+
+      expect(statusCode).toBe(HttpStatus.NOT_FOUND);
+      expect(errorCode).toBe(ERROR_CODE.CODE005);
+    });
+
+    it('delete user', async () => {
+      basePath += '/' + testingUser.id;
+
+      const result = await request(app.getHttpServer())
+        .delete(basePath)
+        .set('Cookie', testingCookies);
+
+      const { statusCode, body } = result;
+
+      expect(statusCode).toBe(HttpStatus.OK);
+      expect(body).toMatchObject({ count: 1 });
+    });
+  });
 });

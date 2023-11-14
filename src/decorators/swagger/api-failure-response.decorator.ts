@@ -4,9 +4,6 @@ import { ApiResponse } from '@nestjs/swagger';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { ERROR_REASON } from '@src/constants/error-response-reason.constant';
 
-/**
- * @todo swagger 랑 실제랑 다름
- */
 export const ApiFailureResponse = (
   status: ErrorHttpStatusCode,
   errorCodes: typeof ERROR_CODE[keyof typeof ERROR_CODE][],
