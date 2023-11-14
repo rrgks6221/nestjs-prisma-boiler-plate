@@ -1,12 +1,13 @@
 import { Type } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { AuthModule } from '@src/apis/auth/auth.module';
 import { AppService } from '@src/app.service';
 import { CoreModule } from '@src/core/core.module';
 import { SuccessInterceptorModule } from '@src/interceptors/success-interceptor/success-interceptor.module';
 
 export const createTestingApp = async (ApiModule: Type) => {
   const moduleFixture: TestingModule = await Test.createTestingModule({
-    imports: [ApiModule, CoreModule, SuccessInterceptorModule],
+    imports: [ApiModule, AuthModule, CoreModule, SuccessInterceptorModule],
     providers: [AppService],
   }).compile();
 
