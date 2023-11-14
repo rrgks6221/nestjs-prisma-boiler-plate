@@ -142,7 +142,65 @@ describe('UsersController (e2e)', () => {
     });
   });
 
-  describe('/api/v1/users/:userId (PUT)', () => {});
+  describe('/api/v1/users/:userId (PUT)', () => {
+    it('partial update response 400', async () => {
+      basePath += '/' + testingUser.id;
 
-  describe('/api/v1/users/:userId (DELETE)', () => {});
+      const result = await request(app.getHttpServer())
+        .put(basePath)
+        .send({
+          nickname: 'edite2etesting',
+        })
+        .set('Cookie', testingCookies);
+      const { statusCode, body } = result;
+      const { errorCode } = body;
+
+      expect(statusCode).toBe(HttpStatus.BAD_REQUEST);
+      expect(errorCode).toBe(ERROR_CODE.CODE003);
+    });
+
+    it('not found user response 404', async () => {
+      basePath += '/' + testingUser.id + 1;
+
+      const result = await request(app.getHttpServer())
+        .put(basePath)
+        .send({
+          nickname: 'edite2etesting',
+          email: 'edite2etesting@email.com',
+        })
+        .set('Cookie', testingCookies);
+      const { statusCode, body } = result;
+      const { errorCode } = body;
+
+      expect(statusCode).toBe(HttpStatus.NOT_FOUND);
+      expect(errorCode).toBe(ERROR_CODE.CODE005);
+    });
+
+    it('update userInfo', async () => {
+      basePath += '/' + testingUser.id;
+
+      const result = await request(app.getHttpServer())
+        .put(basePath)
+        .send({
+          email: 'edite2etesting@email.com',
+          nickname: 'edite2etesting',
+        })
+        .set('Cookie', testingCookies);
+      const { statusCode, body } = result;
+      const { user } = body;
+      const { id, loginType, email, nickname } = user;
+
+      expect(statusCode).toBe(HttpStatus.OK);
+
+      expect(id).toBeInteger();
+      expect(loginType).toBeString();
+      expect(email).toBeString();
+      expect(nickname).toBeString();
+    });
+  });
+
+  /**
+   * move to auth domain
+   */
+  describe.skip('/api/v1/users/:userId (DELETE)', () => {});
 });
