@@ -35,7 +35,6 @@ describe('UsersController (e2e)', () => {
   });
 
   afterAll(async () => {
-    console.log(testingUser);
     await prismaService.user.delete({
       where: {
         id: testingUser.id,
