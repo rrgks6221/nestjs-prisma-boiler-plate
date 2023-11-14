@@ -6,7 +6,6 @@ import {
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@src/apis/auth/constants/auth.constant';
 import { SignInDtoRequestBody } from '@src/apis/auth/dtos/sign-in-request-body.dto';
-import { SignUpRequestBodyDto } from '@src/apis/auth/dtos/sign-up-request-body.dto';
 import { AuthHelper } from '@src/apis/auth/helpers/auth.helper';
 import { AuthToken } from '@src/apis/auth/types/auth.type';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
@@ -33,14 +32,6 @@ export class AuthService {
     private readonly encryption: typeof bcrypt,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
-
-  async signUp(
-    signUpRequestBodyDto: SignUpRequestBodyDto,
-  ): Promise<UserEntity> {
-    const newUser = await this.usersService.create(signUpRequestBodyDto);
-
-    return newUser;
-  }
 
   async signIn(
     signInDtoRequestBody: SignInDtoRequestBody,

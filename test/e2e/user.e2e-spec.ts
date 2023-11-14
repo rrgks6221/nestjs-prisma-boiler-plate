@@ -5,11 +5,12 @@ import { UsersModule } from '@src/apis/users/users.module';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { createTestingApp } from '@test/util/create-testing-app';
-import { testingLogin } from '@test/util/get-cookie';
+import { testingLogin } from '@test/util/testing-login';
 import request from 'supertest';
 
 describe('UsersController (e2e)', () => {
   let app: INestApplication;
+  let prismaService: PrismaService;
   let basePath: string;
 
   let testingUser: UserEntity;
@@ -20,6 +21,8 @@ describe('UsersController (e2e)', () => {
     app = await createTestingApp(UsersModule);
 
     await app.init();
+
+    prismaService = app.get(PrismaService);
 
     const { user, cookies } = await testingLogin(app);
 
@@ -32,8 +35,7 @@ describe('UsersController (e2e)', () => {
   });
 
   afterAll(async () => {
-    const prismaService = app.get(PrismaService);
-
+    console.log(testingUser);
     await prismaService.user.delete({
       where: {
         id: testingUser.id,
@@ -123,6 +125,8 @@ describe('UsersController (e2e)', () => {
       expect(loginType).toBeString();
       expect(email).toBeString();
       expect(nickname).toBeString();
+
+      await prismaService.user.delete({ where: { id } });
     });
   });
 

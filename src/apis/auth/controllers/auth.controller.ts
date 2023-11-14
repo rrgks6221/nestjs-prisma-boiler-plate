@@ -17,10 +17,8 @@ import {
   ApiRefresh,
   ApiSignIn,
   ApiSignOut,
-  ApiSignUp,
 } from '@src/apis/auth/controllers/auth.swagger';
 import { SignInDtoRequestBody } from '@src/apis/auth/dtos/sign-in-request-body.dto';
-import { SignUpRequestBodyDto } from '@src/apis/auth/dtos/sign-up-request-body.dto';
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
 import { RefreshAuthGuard } from '@src/apis/auth/guards/refresh-auth-guard.guard';
 import { AuthService } from '@src/apis/auth/services/auth.service';
@@ -47,28 +45,6 @@ export class AuthController {
   @Get('profile')
   getProfile(@User() user: UserEntity) {
     return new UserResponseDto(user);
-  }
-
-  @Version(ApiVersion.One)
-  @ApiSignUp('회원가입')
-  @SetResponse({ key: 'user', type: ResponseType.Detail })
-  @Post('sign-up')
-  async signUp(
-    @Res({ passthrough: true }) res: Response,
-    @Body() signUpRequestBodyDto: SignUpRequestBodyDto,
-  ): Promise<UserResponseDto> {
-    const newUser = await this.authService.signUp(signUpRequestBodyDto);
-    const accessToken = await this.authService.generateAccessToken(newUser.id);
-    const refreshToken = await this.authService.generateRefreshToken(
-      newUser.id,
-    );
-
-    await this.authService.setAuthToken(res, newUser.id, {
-      accessToken,
-      refreshToken,
-    });
-
-    return new UserResponseDto(newUser);
   }
 
   @Version(ApiVersion.One)

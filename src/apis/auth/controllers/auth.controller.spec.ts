@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '@src/apis/auth/controllers/auth.controller';
 import { SignInDtoRequestBody } from '@src/apis/auth/dtos/sign-in-request-body.dto';
-import { SignUpRequestBodyDto } from '@src/apis/auth/dtos/sign-up-request-body.dto';
 import { AuthService } from '@src/apis/auth/services/auth.service';
 import { UserResponseDto } from '@src/apis/users/dto/user-response.dto';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
@@ -29,33 +28,6 @@ describe(AuthController.name, () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
-  });
-
-  describe(AuthController.prototype.signUp.name, () => {
-    let newUser: UserEntity;
-    let signUpRequestBodyDto: SignUpRequestBodyDto;
-    let mockResponse: any;
-
-    beforeEach(() => {
-      newUser = new UserEntity({ id: 1 });
-      signUpRequestBodyDto = new SignUpRequestBodyDto();
-      mockResponse = {};
-    });
-
-    it('회원가입 성공', async () => {
-      mockAuthService.signUp.mockResolvedValue(newUser);
-      mockAuthService.generateAccessToken.mockResolvedValue(
-        faker.datatype.string(),
-      );
-      mockAuthService.generateRefreshToken.mockResolvedValue(
-        faker.datatype.string(),
-      );
-      mockAuthService.setAuthToken.mockResolvedValue(undefined);
-
-      await expect(
-        controller.signUp(mockResponse, signUpRequestBodyDto),
-      ).resolves.toBeInstanceOf(UserResponseDto);
-    });
   });
 
   describe(AuthController.prototype.signIn.name, () => {

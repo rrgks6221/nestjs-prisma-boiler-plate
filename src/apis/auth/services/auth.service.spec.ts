@@ -2,7 +2,6 @@ import { CACHE_MANAGER } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignInDtoRequestBody } from '@src/apis/auth/dtos/sign-in-request-body.dto';
-import { SignUpRequestBodyDto } from '@src/apis/auth/dtos/sign-up-request-body.dto';
 import { AuthHelper } from '@src/apis/auth/helpers/auth.helper';
 import { AuthService } from '@src/apis/auth/services/auth.service';
 import { UserEntity } from '@src/apis/users/entities/user.entity';
@@ -81,26 +80,6 @@ describe(AuthService.name, () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-  });
-
-  describe(AuthService.prototype.signUp.name, () => {
-    let signUpRequestBodyDto: SignUpRequestBodyDto;
-
-    let newUser: UserEntity;
-
-    beforeEach(() => {
-      signUpRequestBodyDto = new SignUpRequestBodyDto();
-
-      newUser = new UserEntity();
-    });
-
-    it('signUp 성공', async () => {
-      mockUsersService.create.mockResolvedValue(newUser);
-
-      await expect(service.signUp(signUpRequestBodyDto)).resolves.toEqual(
-        newUser,
-      );
-    });
   });
 
   describe(AuthService.prototype.signIn.name, () => {

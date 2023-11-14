@@ -5,7 +5,7 @@ import { UserEntity } from '@src/apis/users/entities/user.entity';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { PrismaService } from '@src/core/prisma/prisma.service';
 import { createTestingApp } from '@test/util/create-testing-app';
-import { testingLogin } from '@test/util/get-cookie';
+import { testingLogin } from '@test/util/testing-login';
 import request from 'supertest';
 
 describe('AuthController (e2e)', () => {
@@ -55,41 +55,6 @@ describe('AuthController (e2e)', () => {
     });
   });
 
-  describe('/api/v1/auth/sign-up (POST)', () => {
-    it('sign up', async () => {
-      const path = basePath + '/' + 'sign-up';
-
-      const result = await request(app.getHttpServer()).post(path).send({
-        loginType: LoginType.EMAIL,
-        password: 'password',
-        email: 'authee2esignup@test.com',
-        nickname: 'authe2esignuptest',
-      });
-
-      const { statusCode, body, headers } = result;
-      const { user } = body;
-      const { id, loginType, email, nickname } = user;
-
-      expect(statusCode).toBe(HttpStatus.CREATED);
-
-      expect(id).toBeInteger();
-      expect(loginType).toBeString();
-      expect(email).toBeString();
-      expect(nickname).toBeString();
-
-      const [accessToken, refreshToken] = headers['set-cookie'];
-
-      expect(accessToken).toContain('access_token');
-      expect(refreshToken).toContain('refresh_token');
-
-      await prismaService.user.delete({
-        where: {
-          id,
-        },
-      });
-    });
-  });
-
   describe('/api/v1/auth/sign-in (POST)', () => {
     it('not exist email', async () => {
       const path = basePath + '/' + 'sign-in';
@@ -108,14 +73,16 @@ describe('AuthController (e2e)', () => {
     });
 
     it('not matching password', async () => {
-      await request(app.getHttpServer())
-        .post(basePath + '/' + 'sign-up')
+      const createUserResponse = await request(app.getHttpServer())
+        .post('/api/v1/users')
         .send({
           loginType: LoginType.EMAIL,
           password: 'password',
           email: 'authee2esignin@test.com',
           nickname: 'authe2esignintest',
         });
+
+      const newUser = createUserResponse.body.user;
 
       const path = basePath + '/' + 'sign-in';
 
@@ -130,19 +97,23 @@ describe('AuthController (e2e)', () => {
 
       expect(statusCode).toBe(HttpStatus.FORBIDDEN);
       expect(errorCode).toBe(ERROR_CODE.CODE006);
+
+      await prismaService.user.delete({
+        where: {
+          id: newUser.id,
+        },
+      });
     });
 
     it('login', async () => {
       const path = basePath + '/' + 'sign-in';
 
-      await request(app.getHttpServer())
-        .post(basePath + '/' + 'sign-up')
-        .send({
-          loginType: LoginType.EMAIL,
-          password: 'password',
-          email: 'authee2esignin@test.com',
-          nickname: 'authe2esignintest',
-        });
+      await request(app.getHttpServer()).post('/api/v1/users').send({
+        loginType: LoginType.EMAIL,
+        password: 'password',
+        email: 'authee2esignin@test.com',
+        nickname: 'authe2esignintest',
+      });
 
       const result = await request(app.getHttpServer()).post(path).send({
         password: 'password',
@@ -187,7 +158,7 @@ describe('AuthController (e2e)', () => {
     });
 
     it('sign out', async () => {
-      const { cookies } = await testingLogin(app);
+      const { user, cookies } = await testingLogin(app);
 
       const path = basePath + '/' + 'sign-out';
 
@@ -198,12 +169,20 @@ describe('AuthController (e2e)', () => {
       const { statusCode } = result;
 
       expect(statusCode).toBe(HttpStatus.NO_CONTENT);
+
+      await prismaService.user.delete({
+        where: {
+          id: user.id,
+        },
+      });
     });
   });
 
   describe('/api/v1/auth/refresh (POST)', () => {
     it('generate new access token', async () => {
-      const oldCookies = (await testingLogin(app)).cookies;
+      const loginInfo = await testingLogin(app);
+      const user = loginInfo.user;
+      const oldCookies = loginInfo.cookies;
       const oldAccessToken = oldCookies.find((el) => {
         return el.startsWith('access_token');
       });
@@ -224,6 +203,12 @@ describe('AuthController (e2e)', () => {
 
       expect(statusCode).toBe(HttpStatus.NO_CONTENT);
       expect(oldAccessToken).not.toBe(newAccessToken);
+
+      await prismaService.user.delete({
+        where: {
+          id: user.id,
+        },
+      });
     });
   });
 });
