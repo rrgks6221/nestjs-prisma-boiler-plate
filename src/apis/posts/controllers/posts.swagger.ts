@@ -1,91 +1,113 @@
 import { applyDecorators, HttpStatus } from '@nestjs/common';
-import { ApiNoContentResponse, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiNoContentResponse,
+  ApiOperation,
+  ApiOperationOptions,
+} from '@nestjs/swagger';
+import { PostsController } from '@src/apis/posts/controllers/posts.controller';
 import { PostResponseDto } from '@src/apis/posts/dto/post-response.dto';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { ApiFailureResponse } from '@src/decorators/swagger/api-failure-response.decorator';
 import { DeleteResponseDto } from '@src/interceptors/success-interceptor/dto/delete-response.dto';
 import { DetailResponseDto } from '@src/interceptors/success-interceptor/dto/detail-response.dto';
 import { PaginationResponseDto } from '@src/interceptors/success-interceptor/dto/pagination-response.dto';
+import { ApiOperator } from '@src/types/type';
 
-export const ApiFindAllAndCount = (summary: string) => {
-  return applyDecorators(
-    ApiOperation({ summary }),
-    PaginationResponseDto.swaggerBuilder(
-      HttpStatus.OK,
-      'posts',
-      PostResponseDto,
-    ),
-    ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
-    ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
-  );
-};
+export const ApiPosts: ApiOperator<keyof PostsController> = {
+  FindAllAndCount: (apiOperationOptions: ApiOperationOptions) => {
+    return applyDecorators(
+      ApiOperation(apiOperationOptions),
+      PaginationResponseDto.swaggerBuilder(
+        HttpStatus.OK,
+        'posts',
+        PostResponseDto,
+      ),
+      ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
+      ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [
+        ERROR_CODE.CODE001,
+      ]),
+    );
+  },
 
-export const ApiFindOne = (summary: string) => {
-  return applyDecorators(
-    ApiOperation({ summary }),
-    DetailResponseDto.swaggerBuilder(HttpStatus.OK, 'post', PostResponseDto),
-    ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
-    ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
-    ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
-  );
-};
+  FindOne: (apiOperationOptions: ApiOperationOptions) => {
+    return applyDecorators(
+      ApiOperation(apiOperationOptions),
+      DetailResponseDto.swaggerBuilder(HttpStatus.OK, 'post', PostResponseDto),
+      ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
+      ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
+      ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [
+        ERROR_CODE.CODE001,
+      ]),
+    );
+  },
 
-export const ApiCreate = (summary: string) => {
-  return applyDecorators(
-    ApiOperation({ summary }),
-    DetailResponseDto.swaggerBuilder(
-      HttpStatus.CREATED,
-      'post',
-      PostResponseDto,
-    ),
-    ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
-    ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
-    ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
-  );
-};
+  Create: (apiOperationOptions: ApiOperationOptions) => {
+    return applyDecorators(
+      ApiOperation(apiOperationOptions),
+      DetailResponseDto.swaggerBuilder(
+        HttpStatus.CREATED,
+        'post',
+        PostResponseDto,
+      ),
+      ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
+      ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
+      ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [
+        ERROR_CODE.CODE001,
+      ]),
+    );
+  },
 
-export const ApiPutUpdate = (summary: string) => {
-  return applyDecorators(
-    ApiOperation({ summary }),
-    DetailResponseDto.swaggerBuilder(HttpStatus.OK, 'post', PostResponseDto),
-    ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
-    ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
-    ApiFailureResponse(HttpStatus.FORBIDDEN, [ERROR_CODE.CODE006]),
-    ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
-    ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
-  );
-};
+  PutUpdate: (apiOperationOptions: ApiOperationOptions) => {
+    return applyDecorators(
+      ApiOperation(apiOperationOptions),
+      DetailResponseDto.swaggerBuilder(HttpStatus.OK, 'post', PostResponseDto),
+      ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
+      ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
+      ApiFailureResponse(HttpStatus.FORBIDDEN, [ERROR_CODE.CODE006]),
+      ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
+      ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [
+        ERROR_CODE.CODE001,
+      ]),
+    );
+  },
 
-export const ApiPatchUpdate = (summary: string) => {
-  return applyDecorators(
-    ApiOperation({ summary }),
-    DetailResponseDto.swaggerBuilder(HttpStatus.OK, 'post', PostResponseDto),
-    ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
-    ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
-    ApiFailureResponse(HttpStatus.FORBIDDEN, [ERROR_CODE.CODE006]),
-    ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
-    ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
-  );
-};
+  PatchUpdate: (apiOperationOptions: ApiOperationOptions) => {
+    return applyDecorators(
+      ApiOperation(apiOperationOptions),
+      DetailResponseDto.swaggerBuilder(HttpStatus.OK, 'post', PostResponseDto),
+      ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
+      ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
+      ApiFailureResponse(HttpStatus.FORBIDDEN, [ERROR_CODE.CODE006]),
+      ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
+      ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [
+        ERROR_CODE.CODE001,
+      ]),
+    );
+  },
 
-export const ApiRemove = (summary: string) => {
-  return applyDecorators(
-    ApiOperation({ summary }),
-    DeleteResponseDto.swaggerBuilder(HttpStatus.OK, 'post'),
-    ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
-    ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
-    ApiFailureResponse(HttpStatus.FORBIDDEN, [ERROR_CODE.CODE006]),
-    ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
-    ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
-  );
-};
+  Remove: (apiOperationOptions: ApiOperationOptions) => {
+    return applyDecorators(
+      ApiOperation(apiOperationOptions),
+      DeleteResponseDto.swaggerBuilder(HttpStatus.OK, 'post'),
+      ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
+      ApiFailureResponse(HttpStatus.UNAUTHORIZED, [ERROR_CODE.CODE004]),
+      ApiFailureResponse(HttpStatus.FORBIDDEN, [ERROR_CODE.CODE006]),
+      ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
+      ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [
+        ERROR_CODE.CODE001,
+      ]),
+    );
+  },
 
-export const ApiIncreaseHit = (summary: string) => {
-  return applyDecorators(
-    ApiOperation({ summary }),
-    ApiNoContentResponse(),
-    ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
-    ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
-    ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
-  );
+  IncreaseHit: (apiOperationOptions: ApiOperationOptions) => {
+    return applyDecorators(
+      ApiOperation(apiOperationOptions),
+      ApiNoContentResponse(),
+      ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
+      ApiFailureResponse(HttpStatus.NOT_FOUND, [ERROR_CODE.CODE005]),
+      ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [
+        ERROR_CODE.CODE001,
+      ]),
+    );
+  },
 };

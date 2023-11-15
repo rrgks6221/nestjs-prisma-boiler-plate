@@ -15,15 +15,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
-import {
-  ApiCreate,
-  ApiFindAllAndCount,
-  ApiFindOne,
-  ApiIncreaseHit,
-  ApiPatchUpdate,
-  ApiPutUpdate,
-  ApiRemove,
-} from '@src/apis/posts/controllers/posts.swagger';
+import { ApiPosts } from '@src/apis/posts/controllers/posts.swagger';
 import { CreatePostRequestBodyDto } from '@src/apis/posts/dto/create-post-request-body.dto';
 import { FindPostListQueryDto } from '@src/apis/posts/dto/find-post-list-query-dto';
 import { PatchUpdatePostBodyDto } from '@src/apis/posts/dto/patch-update-post-body.dto';
@@ -48,7 +40,7 @@ export class PostsController implements RestController<PostResponseDto> {
   constructor(private readonly postService: PostsService) {}
 
   @Version(ApiVersion.One)
-  @ApiFindAllAndCount('post 전체 조회')
+  @ApiPosts.FindAllAndCount({ summary: 'post 전체 조회' })
   @SetResponse({ key: 'posts', type: ResponseType.Pagination })
   @Get()
   async findAllAndCount(
@@ -63,7 +55,7 @@ export class PostsController implements RestController<PostResponseDto> {
   }
 
   @Version(ApiVersion.One)
-  @ApiFindOne('post 상세 조회')
+  @ApiPosts.FindOne({ summary: 'post 상세 조회' })
   @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Get(':postId')
   async findOne(
@@ -78,7 +70,7 @@ export class PostsController implements RestController<PostResponseDto> {
 
   @Version(ApiVersion.One)
   @UseGuards(JwtAuthGuard)
-  @ApiCreate('post 생성')
+  @ApiPosts.Create({ summary: 'post 생성' })
   @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Post()
   async create(
@@ -94,7 +86,7 @@ export class PostsController implements RestController<PostResponseDto> {
 
   @Version(ApiVersion.One)
   @UseGuards(JwtAuthGuard)
-  @ApiPutUpdate('post 수정')
+  @ApiPosts.PutUpdate({ summary: 'post 수정' })
   @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Put(':postId')
   async putUpdate(
@@ -114,7 +106,7 @@ export class PostsController implements RestController<PostResponseDto> {
   }
 
   @Version(ApiVersion.One)
-  @ApiPatchUpdate('post 부분 수정')
+  @ApiPosts.PatchUpdate({ summary: 'post 부분 수정' })
   @UseGuards(JwtAuthGuard)
   @SetResponse({ key: 'post', type: ResponseType.Detail })
   @Patch(':postId')
@@ -135,7 +127,7 @@ export class PostsController implements RestController<PostResponseDto> {
   }
 
   @Version(ApiVersion.One)
-  @ApiRemove('post 삭제')
+  @ApiPosts.Remove({ summary: 'post 삭제' })
   @UseGuards(JwtAuthGuard)
   @SetResponse({ type: ResponseType.Delete })
   @Delete(':postId')
@@ -147,7 +139,10 @@ export class PostsController implements RestController<PostResponseDto> {
   }
 
   @Version(ApiVersion.One)
-  @ApiIncreaseHit('조회수 증가')
+  @ApiPosts.IncreaseHit({
+    summary: '조회수 증가',
+    description: '조회수를 1 증가시킵니다.',
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Put(':postId/hit')
   increaseHit(
