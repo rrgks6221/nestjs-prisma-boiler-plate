@@ -104,7 +104,9 @@ describe('PostCommentsController (e2e)', () => {
     });
   });
 
-  describe.skip('/api/v1/posts/:postId/post-comments (POST)', () => {
+  describe('/api/v1/posts/:postId/post-comments (POST)', () => {
+    let newPostCommentId: number;
+
     it('create post comment', async () => {
       const result = await request(app.getHttpServer())
         .post(basePath)
@@ -116,6 +118,7 @@ describe('PostCommentsController (e2e)', () => {
       const { statusCode, body } = result;
       const { postComment } = body;
       const { id, userId, postId, description } = postComment;
+      newPostCommentId = id;
 
       expect(statusCode).toBe(HttpStatus.CREATED);
 
@@ -123,6 +126,14 @@ describe('PostCommentsController (e2e)', () => {
       expect(userId).toBeInteger();
       expect(postId).toBeInteger();
       expect(description).toBeString();
+    });
+
+    afterAll(async () => {
+      await prismaService.postComment.delete({
+        where: {
+          id: newPostCommentId,
+        },
+      });
     });
   });
 

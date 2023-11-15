@@ -85,12 +85,23 @@ export class PostCommentsController
   @SetResponse({ key: 'postComment', type: ResponseType.Detail })
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(
+  async create(
     @User() user: UserEntity,
     @Param('postId', ParsePositiveIntPipe) postId: number,
     @Body() createPostCommentRequestBodyDto: CreatePostCommentRequestBodyDto,
   ): Promise<PostCommentResponseDto> {
-    return this.postCommentsService.create();
+    const newPostComment = await this.postCommentsService.create(
+      user.id,
+      postId,
+      createPostCommentRequestBodyDto,
+    );
+
+    const response = await this.postCommentsService.buildDetailResponse(
+      postId,
+      newPostComment.id,
+    );
+
+    return new PostCommentResponseDto(response);
   }
 
   @ApiPostComments.PutUpdate({ summary: 'postComment 수정' })

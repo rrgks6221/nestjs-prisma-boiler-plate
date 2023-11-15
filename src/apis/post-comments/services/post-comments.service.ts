@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreatePostCommentRequestBodyDto } from '@src/apis/post-comments/dto/create-post-comment-request-body.dto';
 import { FindPostCommentListQueryDto } from '@src/apis/post-comments/dto/find-post-comment-list-query.dto';
 import { PostCommentResponseDto } from '@src/apis/post-comments/dto/post-comment-response.dto';
 import { PostCommentEntity } from '@src/apis/post-comments/entities/post-comment.entity';
@@ -81,8 +82,18 @@ export class PostCommentsService
     return existPostComment;
   }
 
-  create(...args: unknown[]): Promise<PostCommentResponseDto> {
-    throw new Error('Method not implemented.');
+  create(
+    userId: number,
+    postId: number,
+    createPostCommentRequestBodyDto: CreatePostCommentRequestBodyDto,
+  ): Promise<PostCommentResponseDto> {
+    return this.prismaService.postComment.create({
+      data: {
+        userId,
+        postId,
+        ...createPostCommentRequestBodyDto,
+      },
+    });
   }
 
   putUpdate(...args: unknown[]): Promise<PostCommentResponseDto> {
