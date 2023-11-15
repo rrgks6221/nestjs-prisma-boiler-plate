@@ -12,9 +12,9 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
-  ApiCreateAccessTokenForDevelop,
   ApiGetProfile,
   ApiRefresh,
+  ApiSetAccessTokenForDevelop,
   ApiSignIn,
   ApiSignOut,
 } from '@src/apis/auth/controllers/auth.swagger';
@@ -98,11 +98,20 @@ export class AuthController {
   }
 
   @Version(ApiVersion.One)
-  @ApiCreateAccessTokenForDevelop('개발용으로 생성된 access token 발급 api')
-  @Post('access-token/:userId')
-  createAccessTokenForDevelop(
+  @ApiSetAccessTokenForDevelop('개발용으로 생성된 access token 발급 api')
+  @Post('set-token/:userId')
+  async setAccessTokenForDevelop(
+    @Res({ passthrough: true }) res: Response,
     @Param('userId', ParsePositiveIntPipe) userId: number,
   ): Promise<string> {
+    const accessToken = await this.authService.generateAccessToken(userId);
+    const refreshToken = await this.authService.generateRefreshToken(userId);
+
+    await this.authService.setAuthToken(res, userId, {
+      accessToken,
+      refreshToken,
+    });
+
     return this.authService.generateAccessToken(userId);
   }
 }

@@ -1,9 +1,5 @@
 import { applyDecorators, HttpStatus } from '@nestjs/common';
-import {
-  ApiCreatedResponse,
-  ApiNoContentResponse,
-  ApiOperation,
-} from '@nestjs/swagger';
+import { ApiNoContentResponse, ApiOperation } from '@nestjs/swagger';
 import { UserResponseDto } from '@src/apis/users/dto/user-response.dto';
 import { ERROR_CODE } from '@src/constants/error-response-code.constant';
 import { ApiFailureResponse } from '@src/decorators/swagger/api-failure-response.decorator';
@@ -64,14 +60,10 @@ export const ApiRefresh = (summary: string) => {
   );
 };
 
-export const ApiCreateAccessTokenForDevelop = (summary: string) => {
+export const ApiSetAccessTokenForDevelop = (summary: string) => {
   return applyDecorators(
     ApiOperation({ summary }),
-    ApiCreatedResponse({
-      schema: {
-        type: 'string',
-      },
-    }),
+    ApiNoContentResponse(),
     ApiFailureResponse(HttpStatus.BAD_REQUEST, [ERROR_CODE.CODE003]),
     ApiFailureResponse(HttpStatus.INTERNAL_SERVER_ERROR, [ERROR_CODE.CODE001]),
   );
