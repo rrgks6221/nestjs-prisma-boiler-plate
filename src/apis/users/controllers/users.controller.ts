@@ -13,14 +13,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@src/apis/auth/guards/jwt-auth.guard';
-import {
-  ApiCreate,
-  ApiFindAllAndCount,
-  ApiFindOne,
-  ApiPatchUpdate,
-  ApiPutUpdate,
-  ApiRemove,
-} from '@src/apis/users/controllers/users.swagger';
+import { ApiUsers } from '@src/apis/users/controllers/users.swagger';
 import { CreateUserRequestBodyDto } from '@src/apis/users/dto/create-user-request-body.dto';
 import { FindUserListRequestQueryDto } from '@src/apis/users/dto/find-user-list-request-query.dto';
 import { PatchUpdateUserRequestBodyDto } from '@src/apis/users/dto/patch-update-user-request-body.dto';
@@ -47,7 +40,10 @@ export class UsersController
 
   @Version(ApiVersion.One)
   @SetResponse({ key: 'users', type: ResponseType.Pagination })
-  @ApiFindAllAndCount('유저 리스트 조회')
+  @ApiUsers.FindAllAndCount({
+    summary: '유저 리스트 조회',
+    description: 'pagination',
+  })
   @Get()
   async findAllAndCount(
     @Query() findUserListQueryDto: FindUserListRequestQueryDto,
@@ -60,7 +56,9 @@ export class UsersController
   }
 
   @Version(ApiVersion.One)
-  @ApiFindOne('유저 단일 조회')
+  @ApiUsers.FindOne({
+    summary: '유저 단일 조회',
+  })
   @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Get(':userId')
   async findOne(
@@ -74,7 +72,9 @@ export class UsersController
   }
 
   @Version(ApiVersion.One)
-  @ApiCreate('유저 생성(회원가입)')
+  @ApiUsers.Create({
+    summary: '유저 생성(회원가입)',
+  })
   @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Post()
   async create(
@@ -88,7 +88,7 @@ export class UsersController
   }
 
   @Version(ApiVersion.One)
-  @ApiPatchUpdate('유저 부분 수정')
+  @ApiUsers.PatchUpdate({ summary: '유저 부분 수정' })
   @UseGuards(JwtAuthGuard)
   @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Patch(':userId')
@@ -109,7 +109,7 @@ export class UsersController
   }
 
   @Version(ApiVersion.One)
-  @ApiPutUpdate('유저 수정')
+  @ApiUsers.PatchUpdate({ summary: '유저 수정' })
   @UseGuards(JwtAuthGuard)
   @SetResponse({ key: 'user', type: ResponseType.Detail })
   @Put(':userId')
@@ -130,7 +130,7 @@ export class UsersController
   }
 
   @Version(ApiVersion.One)
-  @ApiRemove('유저 삭제')
+  @ApiUsers.Remove({ summary: '유저 삭제' })
   @UseGuards(JwtAuthGuard)
   @SetResponse({ type: ResponseType.Delete })
   @Delete(':userId')
