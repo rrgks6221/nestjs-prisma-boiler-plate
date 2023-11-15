@@ -39,6 +39,8 @@ model User {
 
   // related posts
   posts Post[]
+  // related postComment
+  postComment PostComment[]
 }
 
 model Post {
@@ -59,6 +61,30 @@ model Post {
   /// 삭제일자
   deletedAt   DateTime? @db.Timestamp(6)
 
+  // related user
+  user User @relation(fields: [userId], references: [id])
+  // related postComment
+  postComment PostComment[]
+}
+
+model PostComment {
+  /// 고유 ID
+  id Int @id @default(autoincrement())
+  /// post 고유 ID
+  postId Int
+  /// user 고유 ID
+  userId Int
+  /// description
+  description String
+  /// 생성일자
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  /// 수정일자
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamp(6)
+  /// 삭제일자
+  deletedAt   DateTime? @db.Timestamp(6)
+
+  // related post
+  post Post @relation(fields: [postId], references: [id])
   // related user
   user User @relation(fields: [userId], references: [id])
 }
