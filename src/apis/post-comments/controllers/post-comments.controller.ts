@@ -28,11 +28,12 @@ import {
 import { User } from '@src/decorators/user.decorator';
 import { ParsePositiveIntPipe } from '@src/pipes/parse-positive-int.pipe';
 import { RestController } from '@src/types/type';
+import { plainToInstance } from 'class-transformer';
 import { PostCommentsService } from '../services/post-comments.service';
 
 @ApiBearerAuth()
 @ApiTags('postComments')
-@Controller('post/:postId/post-comments')
+@Controller('posts/:postId/post-comments')
 export class PostCommentsController
   implements RestController<PostCommentResponseDto>
 {
@@ -45,11 +46,17 @@ export class PostCommentsController
   @Version(ApiVersion.One)
   @SetResponse({ key: 'postComments', type: ResponseType.Pagination })
   @Get()
-  findAllAndCount(
+  async findAllAndCount(
     @Param('postId', ParsePositiveIntPipe) postId: number,
     @Query() findPostCommentListQueryDto: FindPostCommentListQueryDto,
   ): Promise<[PostCommentResponseDto[], number]> {
-    return this.postCommentsService.findAllAndCount();
+    const [postComments, count] =
+      await this.postCommentsService.findAllAndCount(
+        postId,
+        findPostCommentListQueryDto,
+      );
+
+    return [plainToInstance(PostCommentResponseDto, postComments), count];
   }
 
   @ApiPostComments.FindOne({ summary: 'postComment 단일 조회' })

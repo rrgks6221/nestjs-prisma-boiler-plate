@@ -1,6 +1,6 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { POST_COMMENT_ORDER_FIELD } from '@src/apis/post-comments/constants/post-comment.constant';
 import { PostCommentEntity } from '@src/apis/post-comments/entities/post-comment.entity';
-import { POST_ORDER_FIELD } from '@src/apis/posts/constants/post.constant';
 import { SortOrder } from '@src/constants/enum';
 import { ApiPropertyOrderBy } from '@src/decorators/swagger/api-property-order-by.decorator';
 import {
@@ -24,14 +24,6 @@ export class FindPostCommentListQueryDto
   id?: number;
 
   @ApiPropertyOptional({
-    description: 'post 고유 Id',
-    format: 'integer',
-  })
-  @IsOptional()
-  @IsPositiveInt()
-  postId?: number;
-
-  @ApiPropertyOptional({
     description: '게시한 유저 고유 id',
     format: 'integer',
   })
@@ -45,8 +37,8 @@ export class FindPostCommentListQueryDto
   @IsOptional()
   description?: string;
 
-  @ApiPropertyOrderBy(POST_ORDER_FIELD)
-  @CsvToOrderBy<typeof POST_ORDER_FIELD>([...POST_ORDER_FIELD])
+  @ApiPropertyOrderBy(POST_COMMENT_ORDER_FIELD)
+  @CsvToOrderBy<typeof POST_COMMENT_ORDER_FIELD>([...POST_COMMENT_ORDER_FIELD])
   @IsOptional()
-  orderBy: OrderBy<typeof POST_ORDER_FIELD> = { id: SortOrder.Desc };
+  orderBy: OrderBy<typeof POST_COMMENT_ORDER_FIELD> = { id: SortOrder.Desc };
 }
